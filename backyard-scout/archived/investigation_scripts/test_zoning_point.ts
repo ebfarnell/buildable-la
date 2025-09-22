@@ -9,12 +9,12 @@ const ZONEOMICS_API_KEY = 'ed8066dd45cef9ed3bb531483c0e3bb3f0f70519';
 const testProperty = {
   address: '1618 Burning Tree Dr, Thousand Oaks, CA 91362',
   lat: 34.212931,
-  lon: -118.848476
+  lon: -118.848476,
 };
 
 async function testZoningPoint() {
   console.log('🎯 Testing Zoneomics v2/zoning-point Endpoint');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log(`Property: ${testProperty.address}`);
   console.log(`Coordinates: ${testProperty.lat}, ${testProperty.lon}`);
 
@@ -25,11 +25,11 @@ async function testZoningPoint() {
 
   // Try different parameter combinations and auth methods
   const authMethods = [
-    { name: 'Bearer Token', headers: { 'Authorization': `Bearer ${ZONEOMICS_API_KEY}` } },
+    { name: 'Bearer Token', headers: { Authorization: `Bearer ${ZONEOMICS_API_KEY}` } },
     { name: 'X-API-Key', headers: { 'X-API-Key': ZONEOMICS_API_KEY } },
     { name: 'API-Key', headers: { 'API-Key': ZONEOMICS_API_KEY } },
     { name: 'Query Param', headers: {}, params: { api_key: ZONEOMICS_API_KEY } },
-    { name: 'Key Param', headers: {}, params: { key: ZONEOMICS_API_KEY } }
+    { name: 'Key Param', headers: {}, params: { key: ZONEOMICS_API_KEY } },
   ];
 
   for (const auth of authMethods) {
@@ -42,16 +42,16 @@ async function testZoningPoint() {
         lon: testProperty.lon.toString(),
         longitude: testProperty.lon.toString(),
         latitude: testProperty.lat.toString(),
-        ...auth.params
+        ...auth.params,
       });
 
       const response = await fetch(`${baseUrl}${endpoint}?${params}`, {
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          ...auth.headers
+          Accept: 'application/json',
+          ...auth.headers,
         },
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(15000),
       });
 
       console.log(`   GET Status: ${response.status}`);
@@ -94,18 +94,18 @@ async function testZoningPoint() {
         lat: testProperty.lat,
         lon: testProperty.lon,
         address: testProperty.address,
-        ...auth.params
+        ...auth.params,
       };
 
       const response = await fetch(`${baseUrl}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          ...auth.headers
+          Accept: 'application/json',
+          ...auth.headers,
         },
         body: JSON.stringify(postData),
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(15000),
       });
 
       console.log(`   POST Status: ${response.status}`);
@@ -139,7 +139,7 @@ async function testZoningPoint() {
     '/v2/point-zoning',
     '/v2/geocode-zoning',
     '/v2/reports/zoning-point',
-    '/v2/reports/point'
+    '/v2/reports/point',
   ];
 
   for (const relatedEndpoint of relatedEndpoints) {
@@ -148,15 +148,15 @@ async function testZoningPoint() {
 
       const params = new URLSearchParams({
         lat: testProperty.lat.toString(),
-        lon: testProperty.lon.toString()
+        lon: testProperty.lon.toString(),
       });
 
       const response = await fetch(`${baseUrl}${relatedEndpoint}?${params}`, {
         headers: {
-          'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
+          'Content-Type': 'application/json',
         },
-        signal: AbortSignal.timeout(10000)
+        signal: AbortSignal.timeout(10000),
       });
 
       console.log(`     Status: ${response.status}`);
@@ -174,9 +174,9 @@ async function testZoningPoint() {
     }
   }
 
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('🎯 ZONING-POINT TEST COMPLETE');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 }
 
 testZoningPoint().catch(console.error);

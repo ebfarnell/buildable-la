@@ -10,35 +10,39 @@ const ZONEOMICS_API_KEY = 'ed8066dd45cef9ed3bb531483c0e3bb3f0f70519';
 
 // Polaris property coordinates
 const polarisProperty = {
-  address: "10921 Polaris Dr, San Diego, CA, 92126",
+  address: '10921 Polaris Dr, San Diego, CA, 92126',
   lat: 32.8983,
-  lon: -117.1219
+  lon: -117.1219,
 };
 
 // Create test parcel GeoJSON
 const testParcelGeojson = {
-  type: "FeatureCollection",
-  features: [{
-    type: "Feature",
-    properties: {
-      address: polarisProperty.address
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      properties: {
+        address: polarisProperty.address,
+      },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [polarisProperty.lon - 0.0002, polarisProperty.lat - 0.0001],
+            [polarisProperty.lon + 0.0002, polarisProperty.lat - 0.0001],
+            [polarisProperty.lon + 0.0002, polarisProperty.lat + 0.0001],
+            [polarisProperty.lon - 0.0002, polarisProperty.lat + 0.0001],
+            [polarisProperty.lon - 0.0002, polarisProperty.lat - 0.0001],
+          ],
+        ],
+      },
     },
-    geometry: {
-      type: "Polygon",
-      coordinates: [[
-        [polarisProperty.lon - 0.0002, polarisProperty.lat - 0.0001],
-        [polarisProperty.lon + 0.0002, polarisProperty.lat - 0.0001],
-        [polarisProperty.lon + 0.0002, polarisProperty.lat + 0.0001],
-        [polarisProperty.lon - 0.0002, polarisProperty.lat + 0.0001],
-        [polarisProperty.lon - 0.0002, polarisProperty.lat - 0.0001]
-      ]]
-    }
-  }]
+  ],
 };
 
 async function debugPolarisZoning() {
   console.log('🔍 Debugging Polaris Property Zoning Issue');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log(`Property: ${polarisProperty.address}`);
   console.log(`Coordinates: ${polarisProperty.lat}, ${polarisProperty.lon}`);
 
@@ -67,7 +71,7 @@ async function debugPolarisZoning() {
     const zoneomicsResult = await getZoneomicsZoningWithFallback(
       polarisProperty.lat,
       polarisProperty.lon,
-      ZONEOMICS_API_KEY
+      ZONEOMICS_API_KEY,
     );
 
     if (zoneomicsResult) {
@@ -95,14 +99,18 @@ async function debugPolarisZoning() {
   console.log('🏠 Local Estimates: Only Thousand Oaks area (34.1-34.3 lat, -119.0 to -118.7 lon)');
   console.log(`🎯 San Diego coords: ${polarisProperty.lat}, ${polarisProperty.lon}`);
 
-  if (polarisProperty.lat < 34.1 || polarisProperty.lat > 34.3 ||
-      polarisProperty.lon < -119.0 || polarisProperty.lon > -118.7) {
+  if (
+    polarisProperty.lat < 34.1 ||
+    polarisProperty.lat > 34.3 ||
+    polarisProperty.lon < -119.0 ||
+    polarisProperty.lon > -118.7
+  ) {
     console.log('⚠️ San Diego is outside local estimate coverage area');
   }
 
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('🔍 POLARIS ZONING DEBUG COMPLETE');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 }
 
 debugPolarisZoning().catch(console.error);

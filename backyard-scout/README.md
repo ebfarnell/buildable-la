@@ -77,10 +77,12 @@ npm run run:zip -- 91361
       "features": [
         {
           "type": "Feature",
-          "properties": {"apn":"1234-567-890"},
+          "properties": { "apn": "1234-567-890" },
           "geometry": {
             "type": "Polygon",
-            "coordinates": [/* polygon coordinates */]
+            "coordinates": [
+              /* polygon coordinates */
+            ]
           }
         }
       ]
@@ -110,7 +112,7 @@ import { analyzeParcel } from './src/agent_task.js';
 import fs from 'node:fs';
 
 // Load sample data
-const data = JSON.parse(await fs.promises.readFile('./data/parcels_91361.json','utf-8'));
+const data = JSON.parse(await fs.promises.readFile('./data/parcels_91361.json', 'utf-8'));
 
 // Analyze single parcel
 const result = await analyzeParcel(data[0].apn, data[0].zip, data[0].parcel_geojson);
@@ -210,7 +212,7 @@ sqlite3 data.db 'select apn, buildable_footprint_sqft, score from candidates whe
 
 ## Data Sources
 
-- **Building Footprints:** [LA County Building Outlines (2020)](https://services.arcgis.com/RmCCgQtiZLDCtblq/arcgis/rest/services/Countywide_Building_Outlines_(2020)/FeatureServer/0)
+- **Building Footprints:** [LA County Building Outlines (2020)](<https://services.arcgis.com/RmCCgQtiZLDCtblq/arcgis/rest/services/Countywide_Building_Outlines_(2020)/FeatureServer/0>)
 - **Zoning:** [LA County Open Data](https://arcgis.gis.lacounty.gov/arcgis/rest/services/DRP/Open_Data/MapServer/3)
 - **Imagery:** [USGS NAIP](https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer)
 - **Parcels:** CA Statewide Parcels FGDB (user-provided subset)

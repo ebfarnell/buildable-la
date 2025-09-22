@@ -1,6 +1,7 @@
 # 📐 ADU Formula Library
 
 ## Overview
+
 Standardized, deterministic formulas for ADU feasibility analysis. Just plug in values and get consistent results.
 
 ---
@@ -47,6 +48,7 @@ paybackMonths = totalCost / (NOI / 12)
 ## 💻 Usage Examples
 
 ### **Basic Property Analysis**
+
 ```typescript
 import * as formulas from './src/formulas/adu_formulas.js';
 
@@ -55,26 +57,26 @@ const lot = {
   width: 50,
   depth: 150,
   size: 7500,
-  existingBuilding: 2000
+  existingBuilding: 2000,
 };
 
 const setbacks = {
   front: 20,
   side: 5,
-  rear: 15
+  rear: 15,
 };
 
 // Calculate buildable area
 const buildableEnvelope = formulas.calcBuildableEnvelope(
-  lot.width, lot.depth,
-  setbacks.front, setbacks.side, setbacks.rear
+  lot.width,
+  lot.depth,
+  setbacks.front,
+  setbacks.side,
+  setbacks.rear,
 );
 // Result: 3,200 sqft
 
-const netBuildable = formulas.calcNetBuildableArea(
-  buildableEnvelope,
-  lot.existingBuilding
-);
+const netBuildable = formulas.calcNetBuildableArea(buildableEnvelope, lot.existingBuilding);
 // Result: 1,200 sqft
 
 const viable = formulas.isADUViable(netBuildable);
@@ -82,6 +84,7 @@ const viable = formulas.isADUViable(netBuildable);
 ```
 
 ### **Financial Analysis**
+
 ```typescript
 // Calculate investment metrics
 const aduSize = 1000;
@@ -97,11 +100,12 @@ const annualNOI = formulas.calcAnnualNOI(monthlyRent);
 const capRate = formulas.calcCapRate(annualNOI, totalCost);
 // Result: 12.3%
 
-const paybackMonths = formulas.calcPaybackMonths(totalCost, annualNOI/12);
+const paybackMonths = formulas.calcPaybackMonths(totalCost, annualNOI / 12);
 // Result: 98 months
 ```
 
 ### **Complete Analysis**
+
 ```typescript
 // Run all calculations at once
 const analysis = formulas.runCompleteAnalysis({
@@ -115,7 +119,7 @@ const analysis = formulas.runCompleteAnalysis({
   costPerSqft: 150,
   rentPerSqft: 3.0,
   loanToValue: 0.8,
-  interestRate: 0.07
+  interestRate: 0.07,
 });
 
 console.log(analysis);
@@ -127,32 +131,35 @@ console.log(analysis);
 ## 📊 Formula Parameters
 
 ### **Default Values**
-| Parameter | Default | Range | Notes |
-|-----------|---------|-------|-------|
-| costPerSqft | $150 | $100-300 | Varies by finish level |
-| rentPerSqft | $3.00 | $2-5 | Market dependent |
-| minADUSize | 770 sqft | 600-770 | CA minimum |
-| maxADUSize | 1,200 sqft | 800-1200 | CA maximum |
-| vacancyRate | 5% | 3-10% | Market average |
-| operatingExpenses | 30% | 25-35% | Of gross income |
-| loanToValue | 80% | 70-90% | Typical ADU loan |
-| interestRate | 7% | 5-9% | Current rates |
-| softCostPercent | 20% | 15-25% | Permits, design, etc |
+
+| Parameter         | Default    | Range    | Notes                  |
+| ----------------- | ---------- | -------- | ---------------------- |
+| costPerSqft       | $150       | $100-300 | Varies by finish level |
+| rentPerSqft       | $3.00      | $2-5     | Market dependent       |
+| minADUSize        | 770 sqft   | 600-770  | CA minimum             |
+| maxADUSize        | 1,200 sqft | 800-1200 | CA maximum             |
+| vacancyRate       | 5%         | 3-10%    | Market average         |
+| operatingExpenses | 30%        | 25-35%   | Of gross income        |
+| loanToValue       | 80%        | 70-90%   | Typical ADU loan       |
+| interestRate      | 7%         | 5-9%     | Current rates          |
+| softCostPercent   | 20%        | 15-25%   | Permits, design, etc   |
 
 ### **Scoring Scales**
-| Score Type | Scale | Excellent | Good | Fair | Poor |
-|------------|-------|-----------|------|------|------|
-| Opportunity | 1-10 | 8-10 | 6-8 | 4-6 | <4 |
-| Deal Score | 1-10 | 8-10 | 6-8 | 4-6 | <4 |
-| Risk Score | 1-10 | 1-3 | 3-5 | 5-7 | >7 |
-| Cap Rate | % | >15% | 12-15% | 8-12% | <8% |
-| Payback | Months | <60 | 60-84 | 84-120 | >120 |
+
+| Score Type  | Scale  | Excellent | Good   | Fair   | Poor |
+| ----------- | ------ | --------- | ------ | ------ | ---- |
+| Opportunity | 1-10   | 8-10      | 6-8    | 4-6    | <4   |
+| Deal Score  | 1-10   | 8-10      | 6-8    | 4-6    | <4   |
+| Risk Score  | 1-10   | 1-3       | 3-5    | 5-7    | >7   |
+| Cap Rate    | %      | >15%      | 12-15% | 8-12%  | <8%  |
+| Payback     | Months | <60       | 60-84  | 84-120 | >120 |
 
 ---
 
 ## 🎯 Decision Thresholds
 
 ### **Go/No-Go Criteria**
+
 ```typescript
 // Minimum requirements for GO decision
 const GO_CRITERIA = {
@@ -173,15 +180,16 @@ const NO_GO = {
 ```
 
 ### **Prospecting Priorities**
+
 ```typescript
 // HIGH Priority (pursue aggressively)
-opportunityScore >= 8.0 && unusedSpace >= 3000
+opportunityScore >= 8.0 && unusedSpace >= 3000;
 
 // MEDIUM Priority (worth pursuing)
-opportunityScore >= 6.0 && unusedSpace >= 2000
+opportunityScore >= 6.0 && unusedSpace >= 2000;
 
 // LOW Priority (only if easy)
-opportunityScore >= 4.0 || unusedSpace < 2000
+opportunityScore >= 4.0 || unusedSpace < 2000;
 ```
 
 ---
@@ -209,7 +217,7 @@ const csvRow = {
   // From scoring calcs
   opportunity_score: opportunityScore,
   deal_score: dealScore,
-  risk_score: riskScore
+  risk_score: riskScore,
 };
 ```
 
@@ -231,7 +239,7 @@ Test how changes affect outcomes:
 
 ```typescript
 // Test rent sensitivity
-[2.5, 3.0, 3.5, 4.0].forEach(rentPerSqft => {
+[2.5, 3.0, 3.5, 4.0].forEach((rentPerSqft) => {
   const rent = calcMonthlyRent(1000, rentPerSqft);
   const noi = calcAnnualNOI(rent);
   const cap = calcCapRate(noi, 195000);
@@ -239,7 +247,7 @@ Test how changes affect outcomes:
 });
 
 // Test cost sensitivity
-[125, 150, 175, 200].forEach(costPerSqft => {
+[125, 150, 175, 200].forEach((costPerSqft) => {
   const cost = calcTotalDevelopmentCost(1000, costPerSqft);
   const cap = calcCapRate(23940, cost);
   console.log(`$${costPerSqft}/sqft → ${cap}% cap rate`);

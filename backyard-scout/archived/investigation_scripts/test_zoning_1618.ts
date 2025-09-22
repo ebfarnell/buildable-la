@@ -4,22 +4,20 @@ import {
   estimateZoneFromLotSize,
   calculateSetbackEnvelope,
   getADURequirements,
-  getDataQualityNote
+  getDataQualityNote,
 } from '../services/thousand_oaks_zoning';
 
 // Also load from resources
-const zoningData = JSON.parse(
-  fs.readFileSync('./resources/zoning/thousand_oaks.json', 'utf-8')
-);
+const zoningData = JSON.parse(fs.readFileSync('./resources/zoning/thousand_oaks.json', 'utf-8'));
 
 async function testZoningFor1618BurningTree() {
   console.log('🏘️ Testing Zoning Implementation for 1618 Burning Tree Dr');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 
   const propertyData = {
     address: '1618 Burning Tree Dr, Thousand Oaks, CA 91362',
     apn: '570019111',
-    lot_sqft: 13843
+    lot_sqft: 13843,
   };
 
   console.log('\n📍 Property Info:');
@@ -61,7 +59,9 @@ async function testZoningFor1618BurningTree() {
   console.log(`   Max ADU Size: ${aduReqs.max_size.toLocaleString()} sqft`);
   console.log(`   Min ADU Size: ${aduReqs.min_size} sqft`);
   console.log(`   Max ADU Height: ${aduReqs.max_height} feet`);
-  console.log(`   Min Setbacks: ${aduReqs.min_setbacks.side}ft side, ${aduReqs.min_setbacks.rear}ft rear`);
+  console.log(
+    `   Min Setbacks: ${aduReqs.min_setbacks.side}ft side, ${aduReqs.min_setbacks.rear}ft rear`,
+  );
   console.log(`   Parking: ${aduReqs.parking.required_spaces} space required`);
 
   // Compare with previous analysis
@@ -71,16 +71,23 @@ async function testZoningFor1618BurningTree() {
   console.log('     - Buildable: 3,655 sqft (after 30% house estimate)');
 
   console.log(`   Current (${estimatedZone} zone):`);
-  console.log(`     - Setbacks: ${requirements.setbacks.front}ft front, ${requirements.setbacks.side}ft side, ${requirements.setbacks.rear}ft rear`);
+  console.log(
+    `     - Setbacks: ${requirements.setbacks.front}ft front, ${requirements.setbacks.side}ft side, ${requirements.setbacks.rear}ft rear`,
+  );
 
   // Recalculate with new setbacks
-  const existingHouse = Math.round(propertyData.lot_sqft * 0.30); // 30% coverage
+  const existingHouse = Math.round(propertyData.lot_sqft * 0.3); // 30% coverage
   const netBuildable = Math.max(0, envelope.buildableAreaEstimate - existingHouse);
   console.log(`     - Buildable: ${netBuildable.toLocaleString()} sqft (after 30% house estimate)`);
 
   // Data quality
   console.log('\n⚠️ Data Quality Note:');
-  console.log(getDataQualityNote().split('\n').map(line => '   ' + line).join('\n'));
+  console.log(
+    getDataQualityNote()
+      .split('\n')
+      .map((line) => '   ' + line)
+      .join('\n'),
+  );
 
   // Resource files
   console.log('\n📁 Resource Files Created:');
@@ -90,9 +97,9 @@ async function testZoningFor1618BurningTree() {
   console.log('   - src/services/thousand_oaks_zoning.ts');
 
   // Summary
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('✅ ZONING SOLUTION IMPLEMENTED');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log('Problem: Could not access official Thousand Oaks zoning service');
   console.log('Solution: Created local zoning database with:');
   console.log('  1. Regional RE zone standards');

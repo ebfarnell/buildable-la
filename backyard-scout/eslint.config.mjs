@@ -16,8 +16,8 @@ export default [
       '*.min.js',
       '*.config.js',
       '*.config.cjs',
-      '*.config.mjs'
-    ]
+      '*.config.mjs',
+    ],
   },
   {
     files: ['**/*.{ts,tsx}'],
@@ -26,7 +26,7 @@ export default [
       parserOptions: {
         ecmaVersion: 2021,
         sourceType: 'module',
-        project: false
+        project: false,
       },
       globals: {
         console: 'readonly',
@@ -51,18 +51,21 @@ export default [
         setInterval: 'readonly',
         clearInterval: 'readonly',
         setImmediate: 'readonly',
-        clearImmediate: 'readonly'
-      }
+        clearImmediate: 'readonly',
+      },
     },
     plugins: {
-      '@typescript-eslint': tsPlugin
+      '@typescript-eslint': tsPlugin,
     },
     rules: {
       ...tsPlugin.configs.recommended.rules,
-      '@typescript-eslint/no-unused-vars': ['warn', {
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_'
-      }],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -75,22 +78,22 @@ export default [
       'no-debugger': 'warn',
       'no-unused-vars': 'off',
       'prefer-const': 'warn',
-      'no-var': 'error'
-    }
+      'no-var': 'error',
+    },
   },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
       parserOptions: {
         ecmaVersion: 2021,
-        sourceType: 'module'
-      }
+        sourceType: 'module',
+      },
     },
     rules: {
       'no-console': 'off',
       'no-debugger': 'warn',
       'prefer-const': 'warn',
-      'no-var': 'error'
-    }
-  }
+      'no-var': 'error',
+    },
+  },
 ];

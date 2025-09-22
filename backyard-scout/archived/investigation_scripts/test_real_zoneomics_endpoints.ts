@@ -9,12 +9,12 @@ const ZONEOMICS_API_KEY = 'ed8066dd45cef9ed3bb531483c0e3bb3f0f70519';
 const testProperty = {
   address: '1618 Burning Tree Dr, Thousand Oaks, CA 91362',
   lat: 34.212931,
-  lon: -118.848476
+  lon: -118.848476,
 };
 
 async function testRealZoneomicsEndpoints() {
   console.log('🎯 Testing REAL Zoneomics v2 Endpoints');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log(`Property: ${testProperty.address}`);
   console.log(`Coordinates: ${testProperty.lat}, ${testProperty.lon}`);
 
@@ -22,16 +22,16 @@ async function testRealZoneomicsEndpoints() {
 
   // Real endpoints from documentation
   const endpoints = [
-    'zoning-area',      // Area-based zoning
-    'zoning-point',     // Point-based zoning (if exists)
+    'zoning-area', // Area-based zoning
+    'zoning-point', // Point-based zoning (if exists)
     'zone-screenshots', // Visual zoning maps
-    'get-permits',      // Permit information
-    'request',          // General request
-    'tiles',            // Map tiles
-    'strDetail',        // Short-term rental details
-    'parkingDetail',    // Parking information
-    'flum-point',       // Future land use map point
-    'flum-area'         // Future land use map area
+    'get-permits', // Permit information
+    'request', // General request
+    'tiles', // Map tiles
+    'strDetail', // Short-term rental details
+    'parkingDetail', // Parking information
+    'flum-point', // Future land use map point
+    'flum-area', // Future land use map area
   ];
 
   for (const endpoint of endpoints) {
@@ -44,16 +44,16 @@ async function testRealZoneomicsEndpoints() {
         lon: testProperty.lon.toString(),
         latitude: testProperty.lat.toString(),
         longitude: testProperty.lon.toString(),
-        address: testProperty.address
+        address: testProperty.address,
       });
 
       const response = await fetch(`${baseUrl}/${endpoint}?${params}`, {
         headers: {
-          'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
+          Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
-        signal: AbortSignal.timeout(20000)
+        signal: AbortSignal.timeout(20000),
       });
 
       console.log(`   GET Status: ${response.status}`);
@@ -64,7 +64,15 @@ async function testRealZoneomicsEndpoints() {
         console.log(`   ${JSON.stringify(data, null, 2)}`);
 
         // Check for zoning-related data
-        const zoningFields = ['zone', 'zoning', 'zoneClass', 'zone_class', 'designation', 'district', 'zoneCode'];
+        const zoningFields = [
+          'zone',
+          'zoning',
+          'zoneClass',
+          'zone_class',
+          'designation',
+          'district',
+          'zoneCode',
+        ];
         let foundZoning = false;
         for (const field of zoningFields) {
           if (data[field] || (data.data && data.data[field])) {
@@ -84,15 +92,15 @@ async function testRealZoneomicsEndpoints() {
         // Try with different parameter structure
         const altParams = new URLSearchParams({
           lat: testProperty.lat.toString(),
-          lng: testProperty.lon.toString()
+          lng: testProperty.lon.toString(),
         });
 
         const altResponse = await fetch(`${baseUrl}/${endpoint}?${altParams}`, {
           headers: {
-            'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
-            'Content-Type': 'application/json'
+            Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
+            'Content-Type': 'application/json',
           },
-          signal: AbortSignal.timeout(15000)
+          signal: AbortSignal.timeout(15000),
         });
 
         console.log(`   Alt GET Status: ${altResponse.status}`);
@@ -111,18 +119,18 @@ async function testRealZoneomicsEndpoints() {
           lng: testProperty.lon,
           latitude: testProperty.lat,
           longitude: testProperty.lon,
-          address: testProperty.address
+          address: testProperty.address,
         };
 
         const postResponse = await fetch(`${baseUrl}/${endpoint}`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
+            Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            Accept: 'application/json',
           },
           body: JSON.stringify(postData),
-          signal: AbortSignal.timeout(15000)
+          signal: AbortSignal.timeout(15000),
         });
 
         console.log(`   POST Status: ${postResponse.status}`);
@@ -155,9 +163,9 @@ async function testRealZoneomicsEndpoints() {
     }
   }
 
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('🎯 REAL ZONEOMICS ENDPOINTS TEST COMPLETE');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log('Look for ✅ SUCCESS and 🎯 ZONING FOUND messages above!');
 }
 

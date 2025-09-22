@@ -2,27 +2,28 @@ import fs from 'node:fs';
 import * as turf from '@turf/turf';
 import { fetch } from 'undici';
 
-const CA_PARCELS_URL = 'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/CA_Statewide_Parcels_Public_view/FeatureServer/0';
+const CA_PARCELS_URL =
+  'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/CA_Statewide_Parcels_Public_view/FeatureServer/0';
 
 async function analyzeProperty() {
   console.log('🏠 ADU Analysis: 1618 Burning Tree Dr, Thousand Oaks, CA 91362');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 
   // Get full parcel data with geometry for APN 570019111
   const params = new URLSearchParams({
     f: 'json',
     where: `PARCEL_APN='570019111'`,
     outFields: '*',
-    returnGeometry: 'true'
+    returnGeometry: 'true',
   });
 
   const response = await fetch(`${CA_PARCELS_URL}/query`, {
     method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: params.toString()
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: params.toString(),
   });
 
-  const data = await response.json() as any;
+  const data = (await response.json()) as any;
 
   if (!data.features || data.features.length === 0) {
     console.error('❌ Property not found');
@@ -56,15 +57,15 @@ async function analyzeProperty() {
   // Calculate approximate dimensions
   const bbox = turf.bbox(polygon);
   const [minX, minY, maxX, maxY] = bbox;
-  const width = turf.distance([minX, minY], [maxX, minY], {units: 'feet'});
-  const depth = turf.distance([minX, minY], [minX, maxY], {units: 'feet'});
+  const width = turf.distance([minX, minY], [maxX, minY], { units: 'feet' });
+  const depth = turf.distance([minX, minY], [minX, maxY], { units: 'feet' });
   console.log(`   Approximate: ${Math.round(width)}' x ${Math.round(depth)}'`);
 
   // Thousand Oaks zoning setbacks (conservative for residential)
   const setbacks = {
     front: 25,
     side: 5,
-    rear: 15
+    rear: 15,
   };
 
   console.log('\n🏘️ ZONING & SETBACKS');
@@ -77,7 +78,7 @@ async function analyzeProperty() {
   console.log('\n🔨 BUILDABLE AREA CALCULATION');
 
   // Apply uniform side setback first
-  const sideBuffer = turf.buffer(polygon, -setbacks.side, {units: 'feet'});
+  const sideBuffer = turf.buffer(polygon, -setbacks.side, { units: 'feet' });
 
   if (!sideBuffer) {
     console.error('Lot too small for minimum setbacks');
@@ -85,10 +86,9 @@ async function analyzeProperty() {
   }
 
   // Apply additional front/rear reduction (simplified)
-  const avgExtraSetback = ((setbacks.front - setbacks.side) + (setbacks.rear - setbacks.side)) / 4;
-  const envelope = avgExtraSetback > 0
-    ? turf.buffer(sideBuffer, -avgExtraSetback, {units: 'feet'})
-    : sideBuffer;
+  const avgExtraSetback = (setbacks.front - setbacks.side + (setbacks.rear - setbacks.side)) / 4;
+  const envelope =
+    avgExtraSetback > 0 ? turf.buffer(sideBuffer, -avgExtraSetback, { units: 'feet' }) : sideBuffer;
 
   if (!envelope) {
     console.error('Insufficient area after setbacks');
@@ -137,7 +137,7 @@ async function analyzeProperty() {
     const total = construction + softCosts;
     const monthlyRent = targetSize * 3.2;
     const annualIncome = monthlyRent * 12;
-    const roi = (annualIncome / total * 100).toFixed(1);
+    const roi = ((annualIncome / total) * 100).toFixed(1);
 
     console.log('\n💰 INVESTMENT ANALYSIS');
     console.log(`   Target ADU: ${targetSize} sqft`);
@@ -151,7 +151,7 @@ async function analyzeProperty() {
     // Distance to CLU
     const cluCoords = [-118.8784, 34.2249]; // California Lutheran University
     const parcelCentroid = turf.centroid(polygon);
-    const distanceToCLU = turf.distance(parcelCentroid, turf.point(cluCoords), {units: 'miles'});
+    const distanceToCLU = turf.distance(parcelCentroid, turf.point(cluCoords), { units: 'miles' });
 
     console.log('\n📍 LOCATION ADVANTAGES');
     console.log(`   Distance to CLU: ${distanceToCLU.toFixed(1)} miles`);
@@ -169,10 +169,10 @@ async function analyzeProperty() {
     max_adu_sqft: maxADU,
     viable: isViable,
     geometry: parcel.geometry,
-    analyzed_at: new Date().toISOString()
+    analyzed_at: new Date().toISOString(),
   };
 
-  fs.mkdirSync('out', {recursive: true});
+  fs.mkdirSync('out', { recursive: true });
   fs.writeFileSync('out/1618_burning_tree_analysis.json', JSON.stringify(results, null, 2));
 
   console.log('\n📄 Full analysis saved to: out/1618_burning_tree_analysis.json');

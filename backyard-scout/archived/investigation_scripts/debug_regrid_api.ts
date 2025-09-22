@@ -4,20 +4,23 @@
 
 import { fetch } from 'undici';
 
-const API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyZWdyaWQuY29tIiwiaWF0IjoxNzU4MzI3MzM3LCJleHAiOjE3NjA5MTkzMzcsInUiOjU5MTY5OCwiZyI6MjMxNTMsImNhcCI6InBhOnRzOnBzOmJmOm1hOnR5OmVvOnpvOnNiIn0.ajlbLQRjQCDSfd_aq7eNEuON_V_dMmWPXaYpO5ObN-0';
+const API_KEY =
+  'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyZWdyaWQuY29tIiwiaWF0IjoxNzU4MzI3MzM3LCJleHAiOjE3NjA5MTkzMzcsInUiOjU5MTY5OCwiZyI6MjMxNTMsImNhcCI6InBhOnRzOnBzOmJmOm1hOnR5OmVvOnpvOnNiIn0.ajlbLQRjQCDSfd_aq7eNEuON_V_dMmWPXaYpO5ObN-0';
 
 async function debugRegridAPI() {
   console.log('🔍 Debugging Regrid API Integration');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 
   // Test 1: Basic API connectivity
   console.log('\n1️⃣ Testing Basic API Connectivity:');
   try {
-    const response = await fetch(`https://app.regrid.com/api/v2/parcels/query?token=${API_KEY}&limit=1`);
+    const response = await fetch(
+      `https://app.regrid.com/api/v2/parcels/query?token=${API_KEY}&limit=1`,
+    );
     console.log(`   Status: ${response.status}`);
 
     if (response.ok) {
-      const data = await response.json() as any;
+      const data = (await response.json()) as any;
       console.log(`   ✅ API Connected`);
       console.log(`   Sample Response Keys: ${Object.keys(data)}`);
       console.log(`   Total Parcels Available: ${data.parcels?.length || 0}`);
@@ -42,13 +45,13 @@ async function debugRegridAPI() {
     const lon = -118.848476;
 
     const response = await fetch(
-      `https://app.regrid.com/api/v2/parcels/point?lat=${lat}&lon=${lon}&token=${API_KEY}`
+      `https://app.regrid.com/api/v2/parcels/point?lat=${lat}&lon=${lon}&token=${API_KEY}`,
     );
 
     console.log(`   Status: ${response.status}`);
 
     if (response.ok) {
-      const data = await response.json() as any;
+      const data = (await response.json()) as any;
       console.log(`   ✅ Found ${data.parcels?.length || 0} parcels at coordinates`);
 
       if (data.parcels?.[0]) {
@@ -73,13 +76,13 @@ async function debugRegridAPI() {
     const path = encodeURIComponent('/us/ca/ventura/thousand-oaks');
 
     const response = await fetch(
-      `https://app.regrid.com/api/v2/parcels/address?query=${address}&path=${path}&token=${API_KEY}`
+      `https://app.regrid.com/api/v2/parcels/address?query=${address}&path=${path}&token=${API_KEY}`,
     );
 
     console.log(`   Status: ${response.status}`);
 
     if (response.ok) {
-      const data = await response.json() as any;
+      const data = (await response.json()) as any;
       console.log(`   ✅ Found ${data.parcels?.length || 0} parcels by address`);
 
       if (data.parcels?.[0]) {
@@ -99,10 +102,10 @@ async function debugRegridAPI() {
   // Test 4: Try different APN formats
   console.log('\n4️⃣ Testing Different APN Formats:');
   const apnVariations = [
-    '570019111',      // Original
-    '570-019-111',    // With dashes
-    '57-001-9111',    // Different dash pattern
-    '5700-19-111',    // Another pattern
+    '570019111', // Original
+    '570-019-111', // With dashes
+    '57-001-9111', // Different dash pattern
+    '5700-19-111', // Another pattern
   ];
 
   for (const apn of apnVariations) {
@@ -110,16 +113,18 @@ async function debugRegridAPI() {
       console.log(`   Testing APN: ${apn}`);
 
       const response = await fetch(
-        `https://app.regrid.com/api/v2/parcels/query?token=${API_KEY}&fields[parcelnumb][eq]=${encodeURIComponent(apn)}`
+        `https://app.regrid.com/api/v2/parcels/query?token=${API_KEY}&fields[parcelnumb][eq]=${encodeURIComponent(apn)}`,
       );
 
       if (response.ok) {
-        const data = await response.json() as any;
+        const data = (await response.json()) as any;
         console.log(`     Found: ${data.parcels?.length || 0} parcels`);
 
         if (data.parcels?.[0]) {
           const parcel = data.parcels[0];
-          console.log(`     ✅ Match! APN: ${parcel.parcelnumb}, Zoning: ${parcel.zoning || 'N/A'}`);
+          console.log(
+            `     ✅ Match! APN: ${parcel.parcelnumb}, Zoning: ${parcel.zoning || 'N/A'}`,
+          );
         }
       } else {
         console.log(`     Status: ${response.status}`);
@@ -133,19 +138,21 @@ async function debugRegridAPI() {
   console.log('\n5️⃣ Testing Broader County Search:');
   try {
     const response = await fetch(
-      `https://app.regrid.com/api/v2/parcels/query?token=${API_KEY}&fields[county][ilike]=ventura&limit=5`
+      `https://app.regrid.com/api/v2/parcels/query?token=${API_KEY}&fields[county][ilike]=ventura&limit=5`,
     );
 
     console.log(`   Status: ${response.status}`);
 
     if (response.ok) {
-      const data = await response.json() as any;
+      const data = (await response.json()) as any;
       console.log(`   ✅ Found ${data.parcels?.length || 0} parcels in Ventura County`);
 
       if (data.parcels?.length > 0) {
         console.log('   Sample Ventura County parcels:');
         data.parcels.slice(0, 3).forEach((parcel: any, i: number) => {
-          console.log(`     ${i + 1}. APN: ${parcel.parcelnumb}, City: ${parcel.cityname}, Zoning: ${parcel.zoning || 'N/A'}`);
+          console.log(
+            `     ${i + 1}. APN: ${parcel.parcelnumb}, City: ${parcel.cityname}, Zoning: ${parcel.zoning || 'N/A'}`,
+          );
         });
       }
     } else {
@@ -161,7 +168,7 @@ async function debugRegridAPI() {
     const response = await fetch(`https://app.regrid.com/api/v2/account?token=${API_KEY}`);
 
     if (response.ok) {
-      const data = await response.json() as any;
+      const data = (await response.json()) as any;
       console.log(`   ✅ Account Active`);
       console.log(`   Plan: ${data.plan || 'Unknown'}`);
       console.log(`   Usage: ${data.usage || 'Unknown'}`);
@@ -172,9 +179,9 @@ async function debugRegridAPI() {
     console.log(`   Account check failed: ${error}`);
   }
 
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('🎯 DIAGNOSIS COMPLETE');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 }
 
 debugRegridAPI().catch(console.error);

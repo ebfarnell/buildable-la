@@ -1,7 +1,8 @@
 import { fetch } from 'undici';
 import fs from 'node:fs';
 
-const CA_PARCELS_URL = 'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/CA_Statewide_Parcels_Public_view/FeatureServer/0';
+const CA_PARCELS_URL =
+  'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/CA_Statewide_Parcels_Public_view/FeatureServer/0';
 
 // Test major counties
 const TEST_COUNTIES = [
@@ -14,23 +15,28 @@ const TEST_COUNTIES = [
   { name: 'SAN BERNARDINO', city: 'SAN BERNARDINO' },
   { name: 'ALAMEDA', city: 'OAKLAND' },
   { name: 'CONTRA COSTA', city: 'WALNUT CREEK' },
-  { name: 'SANTA BARBARA', city: 'SANTA BARBARA' }
+  { name: 'SANTA BARBARA', city: 'SANTA BARBARA' },
 ];
 
 async function testCounty(countyName: string, cityName: string) {
   const params = new URLSearchParams({
     f: 'json',
     where: `COUNTYNAME='${countyName}' AND SITE_CITY='${cityName}'`,
-    returnCountOnly: 'true'
+    returnCountOnly: 'true',
   });
 
   try {
     const res = await fetch(`${CA_PARCELS_URL}/query?${params}`, {
       // @ts-ignore
-      timeout: 5000
+      timeout: 5000,
     });
-    const data = await res.json() as any;
-    return { county: countyName, city: cityName, count: data.count || 0, error: data.error?.message };
+    const data = (await res.json()) as any;
+    return {
+      county: countyName,
+      city: cityName,
+      count: data.count || 0,
+      error: data.error?.message,
+    };
   } catch (e: any) {
     return { county: countyName, city: cityName, count: 0, error: e.message };
   }
@@ -38,7 +44,7 @@ async function testCounty(countyName: string, cityName: string) {
 
 async function main() {
   console.log('🔍 Testing California Counties in Statewide Parcels Service\n');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 
   const results = [];
 
@@ -57,18 +63,20 @@ async function main() {
     results.push(result);
   }
 
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('\n📊 Summary:');
 
-  const working = results.filter(r => r.count > 0);
-  const failed = results.filter(r => r.error || r.count === 0);
+  const working = results.filter((r) => r.count > 0);
+  const failed = results.filter((r) => r.error || r.count === 0);
 
   console.log(`  Working: ${working.length}/${results.length} counties`);
-  console.log(`  Total parcels accessible: ${working.reduce((sum, r) => sum + r.count, 0).toLocaleString()}`);
+  console.log(
+    `  Total parcels accessible: ${working.reduce((sum, r) => sum + r.count, 0).toLocaleString()}`,
+  );
 
   if (working.length > 0) {
     console.log('\n✅ Successfully tested counties:');
-    working.forEach(r => {
+    working.forEach((r) => {
       console.log(`  - ${r.county}: ${r.count.toLocaleString()} parcels in ${r.city}`);
     });
   }
@@ -82,11 +90,11 @@ async function main() {
     returnDistinctValues: 'true',
     outFields: 'SITE_CITY',
     returnGeometry: 'false',
-    resultRecordCount: '20'
+    resultRecordCount: '20',
   });
 
   const citiesRes = await fetch(`${CA_PARCELS_URL}/query?${citiesParams}`);
-  const citiesData = await citiesRes.json() as any;
+  const citiesData = (await citiesRes.json()) as any;
 
   if (citiesData.features) {
     const cities = citiesData.features
@@ -94,7 +102,9 @@ async function main() {
       .filter(Boolean)
       .sort();
 
-    console.log(`  Found ${cities.length} cities: ${cities.slice(0, 10).join(', ')}${cities.length > 10 ? '...' : ''}`);
+    console.log(
+      `  Found ${cities.length} cities: ${cities.slice(0, 10).join(', ')}${cities.length > 10 ? '...' : ''}`,
+    );
   }
 
   // Save results
@@ -109,11 +119,11 @@ async function main() {
         city: 'SITE_CITY',
         apn: 'PARCEL_APN',
         address: 'SITE_ADDR',
-        zip: 'SITE_ZIP'
-      }
+        zip: 'SITE_ZIP',
+      },
     },
     counties: results,
-    tested_at: new Date().toISOString()
+    tested_at: new Date().toISOString(),
   };
 
   fs.writeFileSync('out/california_counties_test.json', JSON.stringify(config, null, 2));

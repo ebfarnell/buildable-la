@@ -10,12 +10,12 @@ const BASE_URL = 'https://api.zoneomics.com';
 const testProperty = {
   address: '1618 Burning Tree Dr, Thousand Oaks, CA 91362',
   lat: 34.212931,
-  lon: -118.848476
+  lon: -118.848476,
 };
 
 async function testZoneomicsBase() {
   console.log('🔧 Testing Zoneomics API on Working Base URL');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 
   // Test direct endpoints on base URL (no v2)
   const endpoints = [
@@ -32,7 +32,7 @@ async function testZoneomicsBase() {
     '/reports',
     '/brief',
     '/data',
-    '/geo'
+    '/geo',
   ];
 
   console.log('\n1️⃣ Testing Endpoints on Base URL:');
@@ -45,17 +45,17 @@ async function testZoneomicsBase() {
       const params = new URLSearchParams({
         lat: testProperty.lat.toString(),
         lon: testProperty.lon.toString(),
-        api_key: ZONEOMICS_API_KEY
+        api_key: ZONEOMICS_API_KEY,
       });
 
       const response = await fetch(`${BASE_URL}${endpoint}?${params}`, {
         headers: {
-          'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
+          Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
           'X-API-Key': ZONEOMICS_API_KEY,
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(15000),
       });
 
       console.log(`     Status: ${response.status}`);
@@ -84,13 +84,7 @@ async function testZoneomicsBase() {
 
   console.log('\n2️⃣ Testing Address-Based Queries:');
 
-  const addressEndpoints = [
-    '/zoning',
-    '/lookup',
-    '/property',
-    '/reports',
-    '/brief'
-  ];
+  const addressEndpoints = ['/zoning', '/lookup', '/property', '/reports', '/brief'];
 
   for (const endpoint of addressEndpoints) {
     try {
@@ -98,15 +92,15 @@ async function testZoneomicsBase() {
 
       const params = new URLSearchParams({
         address: testProperty.address,
-        api_key: ZONEOMICS_API_KEY
+        api_key: ZONEOMICS_API_KEY,
       });
 
       const response = await fetch(`${BASE_URL}${endpoint}?${params}`, {
         headers: {
-          'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
-          'X-API-Key': ZONEOMICS_API_KEY
+          Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
+          'X-API-Key': ZONEOMICS_API_KEY,
         },
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(15000),
       });
 
       console.log(`     Status: ${response.status}`);
@@ -137,19 +131,19 @@ async function testZoneomicsBase() {
         latitude: testProperty.lat,
         longitude: testProperty.lon,
         address: testProperty.address,
-        api_key: ZONEOMICS_API_KEY
+        api_key: ZONEOMICS_API_KEY,
       };
 
       const response = await fetch(`${BASE_URL}${endpoint}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
+          Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
           'X-API-Key': ZONEOMICS_API_KEY,
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(15000),
       });
 
       console.log(`     Status: ${response.status}`);
@@ -176,10 +170,10 @@ async function testZoneomicsBase() {
     try {
       const response = await fetch(`${BASE_URL}${endpoint}`, {
         headers: {
-          'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
-          'X-API-Key': ZONEOMICS_API_KEY
+          Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
+          'X-API-Key': ZONEOMICS_API_KEY,
         },
-        signal: AbortSignal.timeout(10000)
+        signal: AbortSignal.timeout(10000),
       });
 
       if (response.ok) {
@@ -191,9 +185,9 @@ async function testZoneomicsBase() {
     }
   }
 
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('🎯 ZONEOMICS BASE URL TEST COMPLETE');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 }
 
 testZoneomicsBase().catch(console.error);

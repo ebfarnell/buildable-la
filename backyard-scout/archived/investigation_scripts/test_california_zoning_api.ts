@@ -5,17 +5,18 @@
 
 import { fetch } from 'undici';
 
-const CA_ZONING_API = 'https://services8.arcgis.com/Xr1lDrwMv89PhjD9/arcgis/rest/services/California_Statewide_Zoning_North/FeatureServer/1';
+const CA_ZONING_API =
+  'https://services8.arcgis.com/Xr1lDrwMv89PhjD9/arcgis/rest/services/California_Statewide_Zoning_North/FeatureServer/1';
 
 async function testCaliforniaZoningAPI() {
   console.log('🌟 Testing California Statewide Zoning API (FREE!)');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 
   // Test property: 1618 Burning Tree Dr, Thousand Oaks
   const propertyCoords = {
     lat: 34.212931,
     lon: -118.848476,
-    address: '1618 Burning Tree Dr, Thousand Oaks, CA 91362'
+    address: '1618 Burning Tree Dr, Thousand Oaks, CA 91362',
   };
 
   console.log(`\n📍 Testing Property: ${propertyCoords.address}`);
@@ -26,14 +27,19 @@ async function testCaliforniaZoningAPI() {
   try {
     const response = await fetch(`${CA_ZONING_API}?f=json`);
     if (response.ok) {
-      const info = await response.json() as any;
+      const info = (await response.json()) as any;
       console.log(`   ✅ Service Active`);
       console.log(`   Name: ${info.name || 'N/A'}`);
       console.log(`   Description: ${info.description || 'N/A'}`);
       console.log(`   Max Record Count: ${info.maxRecordCount || 'N/A'}`);
 
       if (info.fields) {
-        console.log(`   Available Fields: ${info.fields.map((f: any) => f.name).slice(0, 10).join(', ')}`);
+        console.log(
+          `   Available Fields: ${info.fields
+            .map((f: any) => f.name)
+            .slice(0, 10)
+            .join(', ')}`,
+        );
       }
     } else {
       console.log(`   ❌ Service Error: ${response.status}`);
@@ -52,7 +58,7 @@ async function testCaliforniaZoningAPI() {
       geometryType: 'esriGeometryPoint',
       spatialRel: 'esriSpatialRelIntersects',
       outFields: '*',
-      returnGeometry: 'false'
+      returnGeometry: 'false',
     });
 
     const response = await fetch(`${CA_ZONING_API}/query?${params}`);
@@ -60,7 +66,7 @@ async function testCaliforniaZoningAPI() {
     console.log(`   Status: ${response.status}`);
 
     if (response.ok) {
-      const data = await response.json() as any;
+      const data = (await response.json()) as any;
       const features = data.features || [];
 
       console.log(`   ✅ Found ${features.length} zoning record(s)`);
@@ -71,8 +77,14 @@ async function testCaliforniaZoningAPI() {
 
         // Common zoning fields to check
         const commonFields = [
-          'ZONE_CLASS', 'ZONING', 'ZONE_CODE', 'ZONE_NAME',
-          'DISTRICT', 'DESIGNATION', 'GENERAL_PLAN', 'JURISDICTION'
+          'ZONE_CLASS',
+          'ZONING',
+          'ZONE_CODE',
+          'ZONE_NAME',
+          'DISTRICT',
+          'DESIGNATION',
+          'GENERAL_PLAN',
+          'JURISDICTION',
         ];
 
         for (const field of commonFields) {
@@ -83,11 +95,13 @@ async function testCaliforniaZoningAPI() {
 
         // Show all available fields
         console.log('\n   🔍 All Available Fields:');
-        Object.keys(zoning).slice(0, 20).forEach(key => {
-          if (zoning[key] !== null && zoning[key] !== '') {
-            console.log(`      ${key}: ${zoning[key]}`);
-          }
-        });
+        Object.keys(zoning)
+          .slice(0, 20)
+          .forEach((key) => {
+            if (zoning[key] !== null && zoning[key] !== '') {
+              console.log(`      ${key}: ${zoning[key]}`);
+            }
+          });
       } else {
         console.log('   ⚠️ No zoning records found at this location');
       }
@@ -108,13 +122,13 @@ async function testCaliforniaZoningAPI() {
       where: "JURISDICTION LIKE '%THOUSAND OAKS%' OR CITY LIKE '%THOUSAND OAKS%'",
       outFields: '*',
       returnGeometry: 'false',
-      resultRecordCount: '5'
+      resultRecordCount: '5',
     });
 
     const response = await fetch(`${CA_ZONING_API}/query?${params}`);
 
     if (response.ok) {
-      const data = await response.json() as any;
+      const data = (await response.json()) as any;
       const features = data.features || [];
 
       console.log(`   ✅ Found ${features.length} Thousand Oaks records`);
@@ -134,9 +148,9 @@ async function testCaliforniaZoningAPI() {
     console.log(`   Error: ${error}`);
   }
 
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('🎯 CALIFORNIA STATEWIDE ZONING API TEST COMPLETE');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log('✅ Covers 535 of 539 California jurisdictions');
   console.log('✅ FREE to use (no API key required)');
   console.log('✅ Updated 2021-2023 data');

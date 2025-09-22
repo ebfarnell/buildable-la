@@ -29,38 +29,34 @@ async function getMicrosoftBuildings(bbox: number[]): Promise<BuildingFootprint[
   const [minX, minY, maxX, maxY] = bbox;
 
   // Expand search area slightly to catch edge buildings
-  const expandedBbox = [
-    minX - 0.0001,
-    minY - 0.0001,
-    maxX + 0.0001,
-    maxY + 0.0001
-  ];
+  const expandedBbox = [minX - 0.0001, minY - 0.0001, maxX + 0.0001, maxY + 0.0001];
 
   const params = new URLSearchParams({
     f: 'json',
-    where: "1=1",
+    where: '1=1',
     geometry: `${expandedBbox[0]},${expandedBbox[1]},${expandedBbox[2]},${expandedBbox[3]}`,
     geometryType: 'esriGeometryEnvelope',
     spatialRel: 'esriSpatialRelIntersects',
     outFields: '*',
     returnGeometry: 'true',
-    maxRecordCount: '100'
+    maxRecordCount: '100',
   });
 
   try {
-    const url = 'https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/Microsoft_Building_Footprints/FeatureServer/0';
+    const url =
+      'https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/Microsoft_Building_Footprints/FeatureServer/0';
 
     console.log('   → Fetching Microsoft Building Footprints...');
 
     const response = await fetch(`${url}/query?${params}`, {
-      signal: AbortSignal.timeout(15000)
+      signal: AbortSignal.timeout(15000),
     });
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
 
     if (!data.features || data.features.length === 0) {
       return [];
@@ -80,13 +76,12 @@ async function getMicrosoftBuildings(bbox: number[]): Promise<BuildingFootprint[
           area_sqft: area,
           geometry: feature.geometry,
           source: 'Microsoft',
-          confidence: 0
+          confidence: 0,
         });
       }
     }
 
     return buildings;
-
   } catch (error: any) {
     console.log(`   ⚠️ Microsoft Buildings error: ${error.message}`);
     return [];
@@ -113,12 +108,12 @@ async function getOSMBuildings(bbox: number[]): Promise<BuildingFootprint[]> {
       method: 'POST',
       body: `data=${encodeURIComponent(query)}`,
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      signal: AbortSignal.timeout(20000)
+      signal: AbortSignal.timeout(20000),
     });
 
     if (!response.ok) return [];
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
     const buildings: BuildingFootprint[] = [];
 
     for (const element of data.elements || []) {
@@ -134,14 +129,13 @@ async function getOSMBuildings(bbox: number[]): Promise<BuildingFootprint[]> {
           area_sqft: area,
           geometry: { rings: [coords] },
           source: 'OpenStreetMap',
-          confidence: 0
+          confidence: 0,
         });
       }
     }
 
     console.log(`   📍 Found ${buildings.length} OSM buildings`);
     return buildings;
-
   } catch (error: any) {
     console.log(`   ⚠️ OSM error: ${error.message}`);
     return [];
@@ -155,9 +149,8 @@ async function getOSMBuildings(bbox: number[]): Promise<BuildingFootprint[]> {
 function scoreBuildings(
   buildings: BuildingFootprint[],
   parcelGeoJson: any,
-  parcelArea: number
+  parcelArea: number,
 ): BuildingFootprint[] {
-
   const parcelCentroid = turf.centroid(parcelGeoJson);
   const scoredBuildings: BuildingFootprint[] = [];
 
@@ -208,14 +201,16 @@ function scoreBuildings(
 
       // Distance weight (30% of score) - closer is better
       const maxDistance = Math.sqrt(parcelArea) * 0.5; // Half the "radius" of the parcel
-      const distanceScore = Math.max(0, 1 - (distance / maxDistance));
+      const distanceScore = Math.max(0, 1 - distance / maxDistance);
       confidence += distanceScore * 0.3;
 
       // Size reasonableness (20% of score)
       const sizeRatio = building.area_sqft / parcelArea;
-      if (sizeRatio > 0.05 && sizeRatio < 0.5) { // Between 5% and 50% of lot
+      if (sizeRatio > 0.05 && sizeRatio < 0.5) {
+        // Between 5% and 50% of lot
         confidence += 0.2;
-      } else if (sizeRatio > 0.02 && sizeRatio < 0.7) { // More lenient
+      } else if (sizeRatio > 0.02 && sizeRatio < 0.7) {
+        // More lenient
         confidence += 0.1;
       }
 
@@ -230,9 +225,8 @@ function scoreBuildings(
         ...building,
         confidence,
         overlap_percent: overlapPercent,
-        distance_from_center: distance
+        distance_from_center: distance,
       });
-
     } catch (error) {
       console.log(`   ⚠️ Error scoring building: ${error}`);
     }
@@ -250,9 +244,8 @@ function scoreBuildings(
 function selectFinalBuildings(
   scoredBuildings: BuildingFootprint[],
   parcelArea: number,
-  options: DetectionOptions = {}
+  options: DetectionOptions = {},
 ): BuildingFootprint[] {
-
   const selected: BuildingFootprint[] = [];
   let totalArea = 0;
 
@@ -265,7 +258,9 @@ function selectFinalBuildings(
       if (totalArea + building.area_sqft <= maxCoverage) {
         selected.push(building);
         totalArea += building.area_sqft;
-        console.log(`     ✓ High confidence (${(building.confidence * 100).toFixed(0)}%): ${building.area_sqft} sqft, ${building.overlap_percent?.toFixed(0)}% overlap`);
+        console.log(
+          `     ✓ High confidence (${(building.confidence * 100).toFixed(0)}%): ${building.area_sqft} sqft, ${building.overlap_percent?.toFixed(0)}% overlap`,
+        );
       }
     }
     // Medium confidence (0.5-0.7) included if space available and aggressive mode
@@ -273,7 +268,9 @@ function selectFinalBuildings(
       if (totalArea + building.area_sqft <= maxCoverage) {
         selected.push(building);
         totalArea += building.area_sqft;
-        console.log(`     ✓ Medium confidence (${(building.confidence * 100).toFixed(0)}%): ${building.area_sqft} sqft`);
+        console.log(
+          `     ✓ Medium confidence (${(building.confidence * 100).toFixed(0)}%): ${building.area_sqft} sqft`,
+        );
       }
     }
     // Low confidence (0.3-0.5) only in very aggressive mode
@@ -281,7 +278,9 @@ function selectFinalBuildings(
       if (totalArea + building.area_sqft <= maxCoverage && totalArea < parcelArea * 0.3) {
         selected.push(building);
         totalArea += building.area_sqft;
-        console.log(`     ⚠️ Low confidence (${(building.confidence * 100).toFixed(0)}%): ${building.area_sqft} sqft`);
+        console.log(
+          `     ⚠️ Low confidence (${(building.confidence * 100).toFixed(0)}%): ${building.area_sqft} sqft`,
+        );
       }
     }
   }
@@ -301,9 +300,8 @@ function selectFinalBuildings(
 export async function getSmartBuildingFootprints(
   parcelGeometry: any,
   apn: string,
-  county: string
+  county: string,
 ): Promise<BuildingFootprint[]> {
-
   console.log('\n🏢 SMART BUILDING DETECTION:');
 
   // Convert to GeoJSON
@@ -357,7 +355,9 @@ export async function getSmartBuildingFootprints(
   }
 
   const totalArea = finalBuildings.reduce((sum, b) => sum + b.area_sqft, 0);
-  console.log(`\n   ✅ Selected ${finalBuildings.length} building(s): ${Math.round(totalArea).toLocaleString()} sqft total`);
+  console.log(
+    `\n   ✅ Selected ${finalBuildings.length} building(s): ${Math.round(totalArea).toLocaleString()} sqft total`,
+  );
 
   return finalBuildings;
 }

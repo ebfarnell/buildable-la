@@ -9,63 +9,68 @@ import * as turf from '@turf/turf';
 // Test coordinates for our three properties
 const testProperties = [
   {
-    name: "Winnetka, CA (LA County)",
+    name: 'Winnetka, CA (LA County)',
     lat: 34.2047,
     lon: -118.5717,
-    county: "LOS ANGELES"
+    county: 'LOS ANGELES',
   },
   {
-    name: "San Diego, CA",
+    name: 'San Diego, CA',
     lat: 32.8983,
     lon: -117.1219,
-    county: "SAN DIEGO"
+    county: 'SAN DIEGO',
   },
   {
-    name: "Los Angeles, CA",
+    name: 'Los Angeles, CA',
     lat: 34.0392,
     lon: -118.3617,
-    county: "LOS ANGELES"
-  }
+    county: 'LOS ANGELES',
+  },
 ];
 
 // Building footprint endpoints to test
 const buildingEndpoints = [
   {
     name: 'LA County Buildings',
-    endpoint: 'https://public.gis.lacounty.gov/public/rest/services/LACounty_Cache/LACounty_Buildings/MapServer/0',
+    endpoint:
+      'https://public.gis.lacounty.gov/public/rest/services/LACounty_Cache/LACounty_Buildings/MapServer/0',
     counties: ['LOS ANGELES'],
-    type: 'arcgis'
+    type: 'arcgis',
   },
   {
     name: 'California Statewide Buildings',
-    endpoint: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Structures/FeatureServer/0',
+    endpoint:
+      'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Structures/FeatureServer/0',
     counties: ['ALL'],
-    type: 'arcgis'
+    type: 'arcgis',
   },
   {
     name: 'Microsoft Building Footprints California',
     endpoint: 'https://planetarycomputer.microsoft.com/api/stac/v1/collections/ms-buildings',
     counties: ['ALL'],
-    type: 'microsoft'
+    type: 'microsoft',
   },
   {
     name: 'San Diego County Buildings',
-    endpoint: 'https://services1.arcgis.com/1vIhDJwtG5eNmiqX/arcgis/rest/services/Building_Footprints/FeatureServer/0',
+    endpoint:
+      'https://services1.arcgis.com/1vIhDJwtG5eNmiqX/arcgis/rest/services/Building_Footprints/FeatureServer/0',
     counties: ['SAN DIEGO'],
-    type: 'arcgis'
+    type: 'arcgis',
   },
   {
     name: 'Orange County Buildings',
-    endpoint: 'https://services2.arcgis.com/LLNIdHmmdjO2qQ5q/arcgis/rest/services/Building_Footprints/FeatureServer/0',
+    endpoint:
+      'https://services2.arcgis.com/LLNIdHmmdjO2qQ5q/arcgis/rest/services/Building_Footprints/FeatureServer/0',
     counties: ['ORANGE'],
-    type: 'arcgis'
+    type: 'arcgis',
   },
   {
     name: 'Ventura County Buildings',
-    endpoint: 'https://gis.ventura.org/arcgis/rest/services/Operational/Building_Footprints/MapServer/0',
+    endpoint:
+      'https://gis.ventura.org/arcgis/rest/services/Operational/Building_Footprints/MapServer/0',
     counties: ['VENTURA'],
-    type: 'arcgis'
-  }
+    type: 'arcgis',
+  },
 ];
 
 async function testArcGISEndpoint(endpoint: string, lat: number, lon: number) {
@@ -82,12 +87,12 @@ async function testArcGISEndpoint(endpoint: string, lat: number, lon: number) {
       spatialRel: 'esriSpatialRelIntersects',
       outFields: '*',
       returnGeometry: 'true',
-      resultRecordCount: '5'
+      resultRecordCount: '5',
     });
 
     console.log(`   Testing: ${endpoint}`);
     const response = await fetch(`${endpoint}/query?${params}`, {
-      signal: AbortSignal.timeout(10000)
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!response.ok) {
@@ -95,7 +100,7 @@ async function testArcGISEndpoint(endpoint: string, lat: number, lon: number) {
       return null;
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
 
     if (data.error) {
       console.log(`   ❌ API Error: ${data.error.message}`);
@@ -120,9 +125,10 @@ async function testArcGISEndpoint(endpoint: string, lat: number, lon: number) {
       }
     }
 
-    console.log(`   ✅ Found ${data.features.length} buildings, ${Math.round(totalArea)} sqft total`);
+    console.log(
+      `   ✅ Found ${data.features.length} buildings, ${Math.round(totalArea)} sqft total`,
+    );
     return { buildings: data.features.length, area: Math.round(totalArea) };
-
   } catch (error: any) {
     console.log(`   ❌ Error: ${error.message}`);
     return null;
@@ -143,7 +149,7 @@ async function testOSMBuildings(lat: number, lon: number) {
       method: 'POST',
       body: `data=${encodeURIComponent(query)}`,
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      signal: AbortSignal.timeout(15000)
+      signal: AbortSignal.timeout(15000),
     });
 
     if (!response.ok) {
@@ -151,7 +157,7 @@ async function testOSMBuildings(lat: number, lon: number) {
       return null;
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
 
     if (!data.elements || data.elements.length === 0) {
       console.log(`   ⚠️ No OSM buildings found in area`);
@@ -173,9 +179,10 @@ async function testOSMBuildings(lat: number, lon: number) {
       }
     }
 
-    console.log(`   ✅ Found ${data.elements.length} OSM buildings, ${Math.round(totalArea)} sqft total`);
+    console.log(
+      `   ✅ Found ${data.elements.length} OSM buildings, ${Math.round(totalArea)} sqft total`,
+    );
     return { buildings: data.elements.length, area: Math.round(totalArea) };
-
   } catch (error: any) {
     console.log(`   ❌ OSM Error: ${error.message}`);
     return null;
@@ -184,7 +191,7 @@ async function testOSMBuildings(lat: number, lon: number) {
 
 async function testBuildingEndpoints() {
   console.log('🏗️ Testing Building Footprint Endpoints');
-  console.log('=' . repeat(70));
+  console.log('='.repeat(70));
 
   const results: any[] = [];
 
@@ -192,18 +199,18 @@ async function testBuildingEndpoints() {
     console.log(`\n📍 Testing: ${property.name}`);
     console.log(`Coordinates: ${property.lat}, ${property.lon}`);
     console.log(`County: ${property.county}`);
-    console.log('─' . repeat(50));
+    console.log('─'.repeat(50));
 
     const propertyResults: any = {
       property: property.name,
       county: property.county,
       coordinates: `${property.lat}, ${property.lon}`,
-      sources: []
+      sources: [],
     };
 
     // Test county-specific endpoints
-    const relevantEndpoints = buildingEndpoints.filter(ep =>
-      ep.counties.includes(property.county) || ep.counties.includes('ALL')
+    const relevantEndpoints = buildingEndpoints.filter(
+      (ep) => ep.counties.includes(property.county) || ep.counties.includes('ALL'),
     );
 
     for (const endpoint of relevantEndpoints) {
@@ -214,7 +221,7 @@ async function testBuildingEndpoints() {
           type: endpoint.type,
           success: result !== null,
           buildings: result?.buildings || 0,
-          total_area_sqft: result?.area || 0
+          total_area_sqft: result?.area || 0,
         });
       }
     }
@@ -226,16 +233,16 @@ async function testBuildingEndpoints() {
       type: 'osm',
       success: osmResult !== null,
       buildings: osmResult?.buildings || 0,
-      total_area_sqft: osmResult?.area || 0
+      total_area_sqft: osmResult?.area || 0,
     });
 
     results.push(propertyResults);
   }
 
   // Summary
-  console.log('\n' + '=' . repeat(70));
+  console.log('\n' + '='.repeat(70));
   console.log('📊 BUILDING FOOTPRINT ENDPOINT RESULTS');
-  console.log('=' . repeat(70));
+  console.log('='.repeat(70));
 
   for (const result of results) {
     console.log(`\n🏠 ${result.property}:`);
@@ -246,7 +253,9 @@ async function testBuildingEndpoints() {
     if (workingSources.length > 0) {
       console.log(`✅ Working sources (${workingSources.length}):`);
       workingSources.forEach((source: any) => {
-        console.log(`   ${source.name}: ${source.buildings} buildings, ${source.total_area_sqft} sqft`);
+        console.log(
+          `   ${source.name}: ${source.buildings} buildings, ${source.total_area_sqft} sqft`,
+        );
       });
     }
 
@@ -264,9 +273,9 @@ async function testBuildingEndpoints() {
   console.log('3. Add county-specific sources where available');
   console.log('4. Prioritize real data over estimates');
 
-  console.log('\n' + '=' . repeat(70));
+  console.log('\n' + '='.repeat(70));
   console.log('🏗️ BUILDING ENDPOINT TEST COMPLETE');
-  console.log('=' . repeat(70));
+  console.log('='.repeat(70));
 }
 
 testBuildingEndpoints().catch(console.error);

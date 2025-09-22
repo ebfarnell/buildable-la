@@ -9,23 +9,23 @@ const ZONEOMICS_API_KEY = 'ed8066dd45cef9ed3bb531483c0e3bb3f0f70519';
 // Test addresses with approximate coordinates
 const testAddresses = [
   {
-    address: "20616 Archwood St, Winnetka, CA, 91306",
+    address: '20616 Archwood St, Winnetka, CA, 91306',
     lat: 34.2047,
     lon: -118.5717,
-    city: "Winnetka"
+    city: 'Winnetka',
   },
   {
-    address: "10921 Polaris Dr, San Diego, CA, 92126",
+    address: '10921 Polaris Dr, San Diego, CA, 92126',
     lat: 32.8983,
     lon: -117.1219,
-    city: "San Diego"
+    city: 'San Diego',
   },
   {
-    address: "1843 S Bedford St, Los Angeles, CA, 90035",
+    address: '1843 S Bedford St, Los Angeles, CA, 90035',
     lat: 34.0392,
     lon: -118.3617,
-    city: "Los Angeles"
-  }
+    city: 'Los Angeles',
+  },
 ];
 
 /**
@@ -37,27 +37,31 @@ function createParcelGeojson(address: string, lat: number, lon: number) {
   const lonOffset = 0.0002; // ~60 feet
 
   return {
-    type: "FeatureCollection",
-    features: [{
-      type: "Feature",
-      properties: { address },
-      geometry: {
-        type: "Polygon",
-        coordinates: [[
-          [lon - lonOffset, lat - latOffset],
-          [lon + lonOffset, lat - latOffset],
-          [lon + lonOffset, lat + latOffset],
-          [lon - lonOffset, lat + latOffset],
-          [lon - lonOffset, lat - latOffset]
-        ]]
-      }
-    }]
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        properties: { address },
+        geometry: {
+          type: 'Polygon',
+          coordinates: [
+            [
+              [lon - lonOffset, lat - latOffset],
+              [lon + lonOffset, lat - latOffset],
+              [lon + lonOffset, lat + latOffset],
+              [lon - lonOffset, lat + latOffset],
+              [lon - lonOffset, lat - latOffset],
+            ],
+          ],
+        },
+      },
+    ],
   };
 }
 
 async function testThreeAddresses() {
   console.log('🏠 Testing Enhanced Zoning Service - Three Addresses');
-  console.log('=' . repeat(70));
+  console.log('='.repeat(70));
 
   const results: any[] = [];
 
@@ -93,7 +97,7 @@ async function testThreeAddresses() {
         source: zoningResult.source,
         verified: zoningResult.verified,
         duration_ms: duration,
-        success: true
+        success: true,
       });
 
       // Validate result
@@ -102,7 +106,6 @@ async function testThreeAddresses() {
       } else {
         console.log(`⚠️ WARNING: No valid zone found`);
       }
-
     } catch (error) {
       console.log(`❌ Error: ${error}`);
       results.push({
@@ -110,18 +113,18 @@ async function testThreeAddresses() {
         city: addr.city,
         coordinates: `${addr.lat}, ${addr.lon}`,
         error: error?.toString(),
-        success: false
+        success: false,
       });
     }
   }
 
   // Summary
-  console.log('\n' + '=' . repeat(70));
+  console.log('\n' + '='.repeat(70));
   console.log('📊 SUMMARY RESULTS');
-  console.log('=' . repeat(70));
+  console.log('='.repeat(70));
 
-  const successful = results.filter(r => r.success);
-  const failed = results.filter(r => !r.success);
+  const successful = results.filter((r) => r.success);
+  const failed = results.filter((r) => !r.success);
 
   console.log(`✅ Successful: ${successful.length}/${results.length}`);
   console.log(`❌ Failed: ${failed.length}/${results.length}`);
@@ -131,7 +134,9 @@ async function testThreeAddresses() {
     successful.forEach((result, i) => {
       console.log(`${i + 1}. ${result.address}`);
       console.log(`   Zone: ${result.zone_code} (${result.source})`);
-      console.log(`   Verified: ${result.verified ? 'Yes' : 'No'} | Duration: ${result.duration_ms}ms`);
+      console.log(
+        `   Verified: ${result.verified ? 'Yes' : 'No'} | Duration: ${result.duration_ms}ms`,
+      );
     });
   }
 
@@ -154,9 +159,9 @@ async function testThreeAddresses() {
     console.log(`${source}: ${count} address(es)`);
   });
 
-  console.log('\n' + '=' . repeat(70));
+  console.log('\n' + '='.repeat(70));
   console.log('🏠 THREE ADDRESS ZONING TEST COMPLETE');
-  console.log('=' . repeat(70));
+  console.log('='.repeat(70));
 }
 
 testThreeAddresses().catch(console.error);

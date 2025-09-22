@@ -440,9 +440,7 @@ async function main(addresses?: string[]) {
   console.log('📊 FINAL SUMMARY');
   console.log('='.repeat(80));
 
-  const viable = results.filter((r): r is AnalysisResult =>
-    'viable' in r && r.viable
-  );
+  const viable = results.filter((r): r is AnalysisResult => 'viable' in r && r.viable);
   console.log(`\nTotal Properties Analyzed: ${results.length}`);
   console.log(`Viable for ADU Development: ${viable.length}/${results.length}`);
 

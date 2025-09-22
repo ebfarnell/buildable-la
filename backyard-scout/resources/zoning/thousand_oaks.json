@@ -36,7 +36,7 @@
         "rear": 20,
         "corner_side": 15
       },
-      "max_lot_coverage": 0.40,
+      "max_lot_coverage": 0.4,
       "max_height": 25,
       "adu_allowed": true
     },
@@ -64,7 +64,7 @@
         "rear": 15,
         "corner_side": 12.5
       },
-      "max_lot_coverage": 0.50,
+      "max_lot_coverage": 0.5,
       "max_height": 25,
       "adu_allowed": true
     },
@@ -77,7 +77,7 @@
         "rear": 15,
         "corner_side": 12.5
       },
-      "max_lot_coverage": 0.40,
+      "max_lot_coverage": 0.4,
       "max_height": 25,
       "adu_allowed": true
     }

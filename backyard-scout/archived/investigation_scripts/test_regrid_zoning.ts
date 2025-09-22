@@ -1,20 +1,21 @@
 import {
   getRegridZoning,
   getSetbacksForZone,
-  testDeterministicZoning
+  testDeterministicZoning,
 } from '../services/regrid_zoning_service';
 
-const REGRID_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyZWdyaWQuY29tIiwiaWF0IjoxNzU4MzI3MzM3LCJleHAiOjE3NjA5MTkzMzcsInUiOjU5MTY5OCwiZyI6MjMxNTMsImNhcCI6InBhOnRzOnBzOmJmOm1hOnR5OmVvOnpvOnNiIn0.ajlbLQRjQCDSfd_aq7eNEuON_V_dMmWPXaYpO5ObN-0';
+const REGRID_API_KEY =
+  'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyZWdyaWQuY29tIiwiaWF0IjoxNzU4MzI3MzM3LCJleHAiOjE3NjA5MTkzMzcsInUiOjU5MTY5OCwiZyI6MjMxNTMsImNhcCI6InBhOnRzOnBzOmJmOm1hOnR5OmVvOnpvOnNiIn0.ajlbLQRjQCDSfd_aq7eNEuON_V_dMmWPXaYpO5ObN-0';
 
 async function testRegridForBurningTree() {
   console.log('🔑 Testing Regrid API Integration for Zoning');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 
   const property = {
     address: '1618 Burning Tree Dr, Thousand Oaks, CA 91362',
     apn: '570019111',
     county: 'Ventura',
-    lot_sqft: 13843
+    lot_sqft: 13843,
   };
 
   console.log('\n📍 Test Property:');
@@ -24,11 +25,7 @@ async function testRegridForBurningTree() {
 
   // Test 1: Get zoning from Regrid
   console.log('\n1️⃣ Fetching Zoning from Regrid API:');
-  const zoningResult = await getRegridZoning(
-    property.apn,
-    property.county,
-    REGRID_API_KEY
-  );
+  const zoningResult = await getRegridZoning(property.apn, property.county, REGRID_API_KEY);
 
   console.log(`   Zone: ${zoningResult.zone}`);
   console.log(`   Description: ${zoningResult.description || 'N/A'}`);
@@ -49,7 +46,7 @@ async function testRegridForBurningTree() {
   const isDeterministic = await testDeterministicZoning(
     property.apn,
     property.county,
-    REGRID_API_KEY
+    REGRID_API_KEY,
   );
 
   if (isDeterministic) {
@@ -62,17 +59,19 @@ async function testRegridForBurningTree() {
   console.log('\n📊 Comparison with Previous Analyses:');
   console.log('   Conservative Defaults: 25ft front, 5ft side, 15ft rear');
   console.log('   Local Database (RE-10): 20ft front, 5ft side, 15ft rear');
-  console.log(`   Regrid + Setbacks: ${setbacks.front}ft front, ${setbacks.side}ft side, ${setbacks.rear}ft rear`);
+  console.log(
+    `   Regrid + Setbacks: ${setbacks.front}ft front, ${setbacks.side}ft side, ${setbacks.rear}ft rear`,
+  );
 
   // Calculate buildable area with official zoning
   console.log('\n🔨 Buildable Area with Official Zoning:');
   const lotArea = property.lot_sqft;
-  const existingHouse = Math.round(lotArea * 0.30); // 30% coverage estimate
+  const existingHouse = Math.round(lotArea * 0.3); // 30% coverage estimate
 
   // Rough envelope calculation
-  const widthReduction = (setbacks.side * 2) / Math.sqrt(lotArea) * 100;
-  const depthReduction = (setbacks.front + setbacks.rear) / Math.sqrt(lotArea) * 100;
-  const envelopePercent = (100 - widthReduction) * (100 - depthReduction) / 10000;
+  const widthReduction = ((setbacks.side * 2) / Math.sqrt(lotArea)) * 100;
+  const depthReduction = ((setbacks.front + setbacks.rear) / Math.sqrt(lotArea)) * 100;
+  const envelopePercent = ((100 - widthReduction) * (100 - depthReduction)) / 10000;
   const envelopeArea = Math.round(lotArea * envelopePercent);
   const buildableArea = Math.max(0, envelopeArea - existingHouse);
 
@@ -83,9 +82,9 @@ async function testRegridForBurningTree() {
   console.log(`   ADU Viable: ${buildableArea >= 770 ? '✅ YES' : '❌ NO'}`);
 
   // Summary
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('✅ REGRID INTEGRATION SUCCESSFUL');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log('• API Connection: Working');
   console.log('• Zoning Retrieved: ' + zoningResult.zone);
   console.log('• Deterministic: ' + (isDeterministic ? 'Yes' : 'No'));

@@ -7,13 +7,13 @@ const CLU = {
   name: 'California Lutheran University',
   lon: -118.8784,
   lat: 34.2249,
-  address: '60 West Olsen Road, Thousand Oaks, CA 91360'
+  address: '60 West Olsen Road, Thousand Oaks, CA 91360',
 };
 
 async function getCLUAreaParcels() {
   // Create 1.5 mile buffer around CLU
   const point = turf.point([CLU.lon, CLU.lat]);
-  const buffer = turf.buffer(point, 1.5, {units: 'miles'});
+  const buffer = turf.buffer(point, 1.5, { units: 'miles' });
   const bbox = turf.bbox(buffer);
 
   console.log('🎓 Getting parcels near California Lutheran University...');
@@ -21,32 +21,35 @@ async function getCLUAreaParcels() {
   console.log(`   Search radius: 1.5 miles`);
 
   // Query CA Statewide Parcels for Thousand Oaks near CLU
-  const url = 'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/CA_Statewide_Parcels_Public_view/FeatureServer/0/query';
+  const url =
+    'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/CA_Statewide_Parcels_Public_view/FeatureServer/0/query';
 
   const params = new URLSearchParams({
     f: 'json',
     where: `COUNTYNAME='Ventura' AND SITE_CITY='THOUSAND OAKS'`,
     geometry: JSON.stringify({
-      xmin: bbox[0], ymin: bbox[1],
-      xmax: bbox[2], ymax: bbox[3]
+      xmin: bbox[0],
+      ymin: bbox[1],
+      xmax: bbox[2],
+      ymax: bbox[3],
     }),
     geometryType: 'esriGeometryEnvelope',
     spatialRel: 'esriSpatialRelIntersects',
     outFields: 'PARCEL_APN,SITE_ADDR,SITE_CITY,SITE_ZIP,SITE_HOUSE_NUMBER,SITE_STREET_NAME',
     returnGeometry: 'true',
     resultRecordCount: '100',
-    orderByFields: 'PARCEL_APN'
+    orderByFields: 'PARCEL_APN',
   });
 
   console.log('\n📊 Fetching parcels...');
 
   const response = await fetch(url, {
     method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: params.toString()
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: params.toString(),
   });
 
-  const data = await response.json() as any;
+  const data = (await response.json()) as any;
 
   if (data.error) {
     console.error('❌ Error:', data.error.message);
@@ -63,24 +66,27 @@ async function getCLUAreaParcels() {
 
     const poly = turf.polygon(p.geometry.rings);
     const lotArea = turf.area(poly);
-    const envelope = turf.buffer(poly, -5, {units: 'feet'}); // 5ft setback
+    const envelope = turf.buffer(poly, -5, { units: 'feet' }); // 5ft setback
     const buildable = envelope ? turf.area(envelope) : 0;
 
     const lotSqft = Math.round(lotArea * 10.7639);
     const buildableSqft = Math.round(buildable * 10.7639);
 
-    if (buildableSqft >= 800) { // Minimum for ADU
-      const distanceMi = turf.distance(point, turf.centroid(poly), {units: 'miles'});
+    if (buildableSqft >= 800) {
+      // Minimum for ADU
+      const distanceMi = turf.distance(point, turf.centroid(poly), { units: 'miles' });
 
       results.push({
         apn: p.attributes.PARCEL_APN,
-        address: `${p.attributes.SITE_HOUSE_NUMBER || ''} ${p.attributes.SITE_STREET_NAME || ''}`.trim() || p.attributes.SITE_ADDR,
+        address:
+          `${p.attributes.SITE_HOUSE_NUMBER || ''} ${p.attributes.SITE_STREET_NAME || ''}`.trim() ||
+          p.attributes.SITE_ADDR,
         city: p.attributes.SITE_CITY,
         zip: p.attributes.SITE_ZIP,
         lot_sqft: lotSqft,
         buildable_sqft: buildableSqft,
         distance_to_clu: Math.round(distanceMi * 10) / 10,
-        rental_score: Math.round((buildableSqft / 1000) * (2 - Math.min(distanceMi, 2)))
+        rental_score: Math.round((buildableSqft / 1000) * (2 - Math.min(distanceMi, 2))),
       });
     }
   }
@@ -104,12 +110,13 @@ async function getCLUAreaParcels() {
   });
 
   // Save to CSV
-  fs.mkdirSync('out', {recursive: true});
+  fs.mkdirSync('out', { recursive: true });
   const csv = [
     'rank,apn,address,city,zip,lot_sqft,buildable_sqft,distance_miles,rental_score',
-    ...top10.map((p, i) =>
-      `${i + 1},${p.apn},"${p.address}",${p.city},${p.zip},${p.lot_sqft},${p.buildable_sqft},${p.distance_to_clu},${p.rental_score}`
-    )
+    ...top10.map(
+      (p, i) =>
+        `${i + 1},${p.apn},"${p.address}",${p.city},${p.zip},${p.lot_sqft},${p.buildable_sqft},${p.distance_to_clu},${p.rental_score}`,
+    ),
   ].join('\n');
 
   fs.writeFileSync('out/top_10_clu_thousand_oaks.csv', csv);

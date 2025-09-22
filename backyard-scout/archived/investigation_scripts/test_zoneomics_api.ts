@@ -11,12 +11,12 @@ const testProperty = {
   address: '1618 Burning Tree Dr, Thousand Oaks, CA 91362',
   lat: 34.212931,
   lon: -118.848476,
-  apn: '570019111'
+  apn: '570019111',
 };
 
 async function testZoneomicsAPI() {
   console.log('🌟 Testing Zoneomics API with User Key');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log(`Property: ${testProperty.address}`);
   console.log(`Coordinates: ${testProperty.lat}, ${testProperty.lon}`);
 
@@ -27,18 +27,11 @@ async function testZoneomicsAPI() {
     'https://zoneomics.com/api',
     'https://zoneomics.com/api/v2',
     'https://app.zoneomics.com/api',
-    'https://app.zoneomics.com/api/v2'
+    'https://app.zoneomics.com/api/v2',
   ];
 
   // Common endpoint patterns
-  const endpointPatterns = [
-    '/zoning',
-    '/zone',
-    '/property',
-    '/lookup',
-    '/search',
-    '/query'
-  ];
+  const endpointPatterns = ['/zoning', '/zone', '/property', '/lookup', '/search', '/query'];
 
   console.log('\n1️⃣ Testing API Base URLs:');
 
@@ -49,11 +42,11 @@ async function testZoneomicsAPI() {
       // Test basic connectivity
       const response = await fetch(`${base}`, {
         headers: {
-          'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
+          Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
-        signal: AbortSignal.timeout(10000)
+        signal: AbortSignal.timeout(10000),
       });
 
       console.log(`     Status: ${response.status}`);
@@ -97,17 +90,17 @@ async function testZoneomicsAPI() {
         lon: testProperty.lon.toString(),
         lng: testProperty.lon.toString(), // Some APIs use lng instead of lon
         longitude: testProperty.lon.toString(),
-        latitude: testProperty.lat.toString()
+        latitude: testProperty.lat.toString(),
       });
 
       const response = await fetch(`${baseUrl}${endpoint}?${params}`, {
         headers: {
-          'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
+          Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
           'X-API-Key': ZONEOMICS_API_KEY,
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
-        signal: AbortSignal.timeout(10000)
+        signal: AbortSignal.timeout(10000),
       });
 
       console.log(`     Status: ${response.status}`);
@@ -144,7 +137,7 @@ async function testZoneomicsAPI() {
     `/zoning?address=${encodeURIComponent(testProperty.address)}`,
     `/lookup?address=${encodeURIComponent(testProperty.address)}`,
     `/property?address=${encodeURIComponent(testProperty.address)}`,
-    `/search?q=${encodeURIComponent(testProperty.address)}`
+    `/search?q=${encodeURIComponent(testProperty.address)}`,
   ];
 
   for (const endpoint of addressEndpoints) {
@@ -153,11 +146,11 @@ async function testZoneomicsAPI() {
 
       const response = await fetch(`${baseUrl}${endpoint}`, {
         headers: {
-          'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
+          Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
           'X-API-Key': ZONEOMICS_API_KEY,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        signal: AbortSignal.timeout(10000)
+        signal: AbortSignal.timeout(10000),
       });
 
       console.log(`     Status: ${response.status}`);
@@ -174,9 +167,9 @@ async function testZoneomicsAPI() {
     }
   }
 
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('🎯 ZONEOMICS API TEST COMPLETE');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log('Look for ✅ SUCCESS messages above for working endpoints!');
 }
 

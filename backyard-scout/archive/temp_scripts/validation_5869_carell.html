@@ -1,109 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
     <title>ADU Validation: 5869 CARELL AVE</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h1 { color: #2c3e50; }
-        h2 { color: #34495e; margin-top: 30px; }
-        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
-        .metric { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 15px; border-radius: 8px; color: white; }
-        .metric-label { font-size: 12px; opacity: 0.9; }
-        .metric-value { font-size: 24px; font-weight: bold; margin: 5px 0; }
-        .metric-unit { font-size: 14px; opacity: 0.9; }
-        .calculation { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #667eea; }
-        .step { margin: 10px 0; }
-        .result { background: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin: 10px 0; font-weight: bold; }
-        .warning { background: #fff3cd; color: #856404; padding: 10px; border-radius: 4px; margin: 10px 0; }
-        .visual { margin: 20px 0; }
-        .bar { background: linear-gradient(90deg, #667eea, #764ba2); height: 30px; margin: 5px 0; border-radius: 4px; display: flex; align-items: center; padding: 0 10px; color: white; font-size: 12px; }
-        .check { color: #28a745; font-weight: bold; }
-        .cross { color: #dc3545; font-weight: bold; }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background: #f5f5f5;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #2c3e50;
+      }
+      h2 {
+        color: #34495e;
+        margin-top: 30px;
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+      }
+      .metric {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 15px;
+        border-radius: 8px;
+        color: white;
+      }
+      .metric-label {
+        font-size: 12px;
+        opacity: 0.9;
+      }
+      .metric-value {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 5px 0;
+      }
+      .metric-unit {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+      .calculation {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 4px solid #667eea;
+      }
+      .step {
+        margin: 10px 0;
+      }
+      .result {
+        background: #d4edda;
+        color: #155724;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+        font-weight: bold;
+      }
+      .warning {
+        background: #fff3cd;
+        color: #856404;
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+      }
+      .visual {
+        margin: 20px 0;
+      }
+      .bar {
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        height: 30px;
+        margin: 5px 0;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        color: white;
+        font-size: 12px;
+      }
+      .check {
+        color: #28a745;
+        font-weight: bold;
+      }
+      .cross {
+        color: #dc3545;
+        font-weight: bold;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>✅ ADU Buildability Validation</h1>
-        <h2>Property: 5869 CARELL AVE, Agoura Hills, CA 91301</h2>
-        <p><strong>APN:</strong> 2048-001-033</p>
+      <h1>✅ ADU Buildability Validation</h1>
+      <h2>Property: 5869 CARELL AVE, Agoura Hills, CA 91301</h2>
+      <p><strong>APN:</strong> 2048-001-033</p>
 
-        <div class="metrics">
-            <div class="metric">
-                <div class="metric-label">Lot Size</div>
-                <div class="metric-value">10,562</div>
-                <div class="metric-unit">square feet</div>
-            </div>
-            <div class="metric" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                <div class="metric-label">Existing Buildings</div>
-                <div class="metric-value">5,699</div>
-                <div class="metric-unit">square feet</div>
-            </div>
-            <div class="metric" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                <div class="metric-label">Buildable Area</div>
-                <div class="metric-value">3,994</div>
-                <div class="metric-unit">square feet</div>
-            </div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">Lot Size</div>
+          <div class="metric-value">10,562</div>
+          <div class="metric-unit">square feet</div>
         </div>
-
-        <h2>Calculation Method</h2>
-        <div class="calculation">
-            <div class="step"><strong>Step 1:</strong> Start with total lot area: <strong>10,562 sqft</strong></div>
-            <div class="step"><strong>Step 2:</strong> Apply California ADU setbacks:
-                <ul>
-                    <li>Front: 10 feet</li>
-                    <li>Sides: 4 feet each</li>
-                    <li>Rear: 4 feet</li>
-                </ul>
-                Using maximum (10 ft) for uniform inward buffer → <strong>6,362 sqft</strong> envelope
-            </div>
-            <div class="step"><strong>Step 3:</strong> Identify existing structures:
-                <ul>
-                    <li>Building 1: 2,918 sqft</li>
-                    <li>Building 2: 2,781 sqft</li>
-                    <li>Total: <strong>5,699 sqft</strong></li>
-                </ul>
-            </div>
-            <div class="step"><strong>Step 4:</strong> Subtract only the portions of buildings within the setback envelope using precise geometry operations</div>
-            <div class="result">Final Buildable Area: 3,994 square feet</div>
+        <div class="metric" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+          <div class="metric-label">Existing Buildings</div>
+          <div class="metric-value">5,699</div>
+          <div class="metric-unit">square feet</div>
         </div>
-
-        <h2>Why the Math Works</h2>
-        <div class="warning">
-            <strong>Important:</strong> The simple calculation (6,362 - 5,699 = 663 sqft) doesn't match the actual buildable area (3,994 sqft) because:
-            <ul>
-                <li>Existing buildings are positioned near the property edges</li>
-                <li>Parts of the buildings fall outside the setback envelope</li>
-                <li>The actual calculation uses precise polygon intersection/difference operations</li>
-                <li>Only the portions of buildings WITHIN the buildable envelope are subtracted</li>
-            </ul>
+        <div class="metric" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)">
+          <div class="metric-label">Buildable Area</div>
+          <div class="metric-value">3,994</div>
+          <div class="metric-unit">square feet</div>
         </div>
+      </div>
 
-        <h2>Visual Scale Comparison</h2>
-        <div class="visual">
-            <div class="bar" style="width: 100%;">Lot: 10,562 sqft</div>
-            <div class="bar" style="width: 54%;">Existing Buildings: 5,699 sqft</div>
-            <div class="bar" style="width: 38%; background: linear-gradient(90deg, #4facfe, #00f2fe);">Buildable Area: 3,994 sqft</div>
-            <div class="bar" style="width: 9.5%; background: linear-gradient(90deg, #28a745, #20c997);">1,000 sqft ADU (minimum)</div>
-            <div class="bar" style="width: 11.4%; background: linear-gradient(90deg, #ffc107, #ff9800);">1,200 sqft ADU (CA maximum)</div>
+      <h2>Calculation Method</h2>
+      <div class="calculation">
+        <div class="step">
+          <strong>Step 1:</strong> Start with total lot area: <strong>10,562 sqft</strong>
         </div>
-
-        <h2>ADU Viability Assessment</h2>
-        <div class="result">
-            <div><span class="check">✅</span> Can accommodate 1,000 sqft ADU (minimum size)</div>
-            <div><span class="check">✅</span> Can accommodate 1,200 sqft ADU (California maximum)</div>
-            <div><span class="check">✅</span> Has 3.99x the minimum required space</div>
-            <div><span class="check">✅</span> Could potentially fit multiple ADUs or a large single unit</div>
+        <div class="step">
+          <strong>Step 2:</strong> Apply California ADU setbacks:
+          <ul>
+            <li>Front: 10 feet</li>
+            <li>Sides: 4 feet each</li>
+            <li>Rear: 4 feet</li>
+          </ul>
+          Using maximum (10 ft) for uniform inward buffer → <strong>6,362 sqft</strong> envelope
         </div>
+        <div class="step">
+          <strong>Step 3:</strong> Identify existing structures:
+          <ul>
+            <li>Building 1: 2,918 sqft</li>
+            <li>Building 2: 2,781 sqft</li>
+            <li>Total: <strong>5,699 sqft</strong></li>
+          </ul>
+        </div>
+        <div class="step">
+          <strong>Step 4:</strong> Subtract only the portions of buildings within the setback
+          envelope using precise geometry operations
+        </div>
+        <div class="result">Final Buildable Area: 3,994 square feet</div>
+      </div>
 
-        <h2>Data Sources & Validation</h2>
+      <h2>Why the Math Works</h2>
+      <div class="warning">
+        <strong>Important:</strong> The simple calculation (6,362 - 5,699 = 663 sqft) doesn't match
+        the actual buildable area (3,994 sqft) because:
         <ul>
-            <li><strong>Parcel Data:</strong> Los Angeles County Assessor (2024)</li>
-            <li><strong>Building Footprints:</strong> LA County Building Outlines (2020)</li>
-            <li><strong>Setback Requirements:</strong> California ADU Standards (SB 13)</li>
-            <li><strong>Calculation Engine:</strong> Turf.js geometric operations</li>
-            <li><strong>Validation:</strong> ✅ All stored values match calculated values exactly</li>
+          <li>Existing buildings are positioned near the property edges</li>
+          <li>Parts of the buildings fall outside the setback envelope</li>
+          <li>The actual calculation uses precise polygon intersection/difference operations</li>
+          <li>Only the portions of buildings WITHIN the buildable envelope are subtracted</li>
         </ul>
+      </div>
+
+      <h2>Visual Scale Comparison</h2>
+      <div class="visual">
+        <div class="bar" style="width: 100%">Lot: 10,562 sqft</div>
+        <div class="bar" style="width: 54%">Existing Buildings: 5,699 sqft</div>
+        <div class="bar" style="width: 38%; background: linear-gradient(90deg, #4facfe, #00f2fe)">
+          Buildable Area: 3,994 sqft
+        </div>
+        <div class="bar" style="width: 9.5%; background: linear-gradient(90deg, #28a745, #20c997)">
+          1,000 sqft ADU (minimum)
+        </div>
+        <div class="bar" style="width: 11.4%; background: linear-gradient(90deg, #ffc107, #ff9800)">
+          1,200 sqft ADU (CA maximum)
+        </div>
+      </div>
+
+      <h2>ADU Viability Assessment</h2>
+      <div class="result">
+        <div><span class="check">✅</span> Can accommodate 1,000 sqft ADU (minimum size)</div>
+        <div><span class="check">✅</span> Can accommodate 1,200 sqft ADU (California maximum)</div>
+        <div><span class="check">✅</span> Has 3.99x the minimum required space</div>
+        <div>
+          <span class="check">✅</span> Could potentially fit multiple ADUs or a large single unit
+        </div>
+      </div>
+
+      <h2>Data Sources & Validation</h2>
+      <ul>
+        <li><strong>Parcel Data:</strong> Los Angeles County Assessor (2024)</li>
+        <li><strong>Building Footprints:</strong> LA County Building Outlines (2020)</li>
+        <li><strong>Setback Requirements:</strong> California ADU Standards (SB 13)</li>
+        <li><strong>Calculation Engine:</strong> Turf.js geometric operations</li>
+        <li><strong>Validation:</strong> ✅ All stored values match calculated values exactly</li>
+      </ul>
     </div>
-</body>
+  </body>
 </html>

@@ -11,77 +11,77 @@ const potentialSources = [
   {
     name: 'LA County Building Footprints (v1)',
     url: 'https://maps.gis.lacounty.gov/arcgis/rest/services/LACounty_Buildings/MapServer/0',
-    counties: ['LOS ANGELES']
+    counties: ['LOS ANGELES'],
   },
   {
     name: 'LA County Building Footprints (v2)',
     url: 'https://egis.lacounty.gov/arcgis/rest/services/Layers/LACounty_Buildings/MapServer/0',
-    counties: ['LOS ANGELES']
+    counties: ['LOS ANGELES'],
   },
   {
     name: 'LA County Structures',
     url: 'https://public.gis.lacounty.gov/public/rest/services/LACounty_Dynamic/LACounty_Buildings/MapServer/0',
-    counties: ['LOS ANGELES']
+    counties: ['LOS ANGELES'],
   },
 
   // San Diego County
   {
     name: 'San Diego County Buildings',
     url: 'https://sdgis.sandag.org/arcgis/rest/services/Regional/Building_Footprints/MapServer/0',
-    counties: ['SAN DIEGO']
+    counties: ['SAN DIEGO'],
   },
   {
     name: 'City of San Diego Buildings',
     url: 'https://services.arcgis.com/1vIhDJwtG5eNmiqX/arcgis/rest/services/Buildings/FeatureServer/0',
-    counties: ['SAN DIEGO']
+    counties: ['SAN DIEGO'],
   },
 
   // Orange County
   {
     name: 'Orange County Buildings',
     url: 'https://ocgis.com/arcgis2/rest/services/Public_Safety/OC_Buildings/MapServer/0',
-    counties: ['ORANGE']
+    counties: ['ORANGE'],
   },
 
   // Ventura County
   {
     name: 'Ventura County Buildings',
     url: 'https://gis.ventura.org/arcgis/rest/services/Operational/Buildings/MapServer/0',
-    counties: ['VENTURA']
+    counties: ['VENTURA'],
   },
 
   // Sacramento County
   {
     name: 'Sacramento County Buildings',
     url: 'https://services.gis.saccounty.net/arcgis/rest/services/Property/Buildings/MapServer/0',
-    counties: ['SACRAMENTO']
+    counties: ['SACRAMENTO'],
   },
 
   // Santa Clara County
   {
     name: 'Santa Clara County Buildings',
     url: 'https://www.sccgov.org/sites/dpd/GIS/GISMaps/rest/services/Building_Footprints/MapServer/0',
-    counties: ['SANTA CLARA']
+    counties: ['SANTA CLARA'],
   },
 
   // Alameda County
   {
     name: 'Alameda County Buildings',
     url: 'https://maps.acgov.org/arcgis/rest/services/Community_Development/Buildings/MapServer/0',
-    counties: ['ALAMEDA']
+    counties: ['ALAMEDA'],
   },
 
   // Statewide sources
   {
     name: 'California Building Footprints',
     url: 'https://services.arcgis.com/jIL9msH9OI208GCb/arcgis/rest/services/California_Building_Footprints/FeatureServer/0',
-    counties: ['ALL']
+    counties: ['ALL'],
   },
   {
     name: 'USA Structures (ESRI)',
     url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Structures_View/FeatureServer/0',
-    counties: ['ALL']
-  }
+    counties: ['ALL'],
+  },
 ];
 
 async function testEndpointHealth(url: string): Promise<any> {
@@ -90,14 +90,14 @@ async function testEndpointHealth(url: string): Promise<any> {
     console.log(`   Testing: ${url}`);
 
     const response = await fetch(`${url}?f=json`, {
-      signal: AbortSignal.timeout(10000)
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!response.ok) {
       return { success: false, error: `HTTP ${response.status}` };
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
 
     if (data.error) {
       return { success: false, error: data.error.message };
@@ -114,9 +114,8 @@ async function testEndpointHealth(url: string): Promise<any> {
       description: data.description,
       geometryType: data.geometryType,
       fields: data.fields?.length || 0,
-      capabilities: data.capabilities
+      capabilities: data.capabilities,
     };
-
   } catch (error: any) {
     return { success: false, error: error.message };
   }
@@ -137,18 +136,18 @@ async function testEndpointData(url: string): Promise<any> {
       spatialRel: 'esriSpatialRelIntersects',
       outFields: '*',
       returnGeometry: 'false',
-      resultRecordCount: '5'
+      resultRecordCount: '5',
     });
 
     const response = await fetch(`${url}/query?${params}`, {
-      signal: AbortSignal.timeout(15000)
+      signal: AbortSignal.timeout(15000),
     });
 
     if (!response.ok) {
       return { hasData: false, error: `HTTP ${response.status}` };
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
 
     if (data.error) {
       return { hasData: false, error: data.error.message };
@@ -157,9 +156,8 @@ async function testEndpointData(url: string): Promise<any> {
     return {
       hasData: true,
       features: data.features?.length || 0,
-      exceededTransferLimit: data.exceededTransferLimit || false
+      exceededTransferLimit: data.exceededTransferLimit || false,
     };
-
   } catch (error: any) {
     return { hasData: false, error: error.message };
   }
@@ -167,7 +165,7 @@ async function testEndpointData(url: string): Promise<any> {
 
 async function findWorkingBuildingSources() {
   console.log('🔍 Testing Building Footprint Sources Across California');
-  console.log('=' . repeat(70));
+  console.log('='.repeat(70));
 
   const workingSources: any[] = [];
   const failedSources: any[] = [];
@@ -201,18 +199,18 @@ async function findWorkingBuildingSources() {
     workingSources.push({
       ...source,
       health: healthResult,
-      data: dataResult
+      data: dataResult,
     });
   }
 
   // Results summary
-  console.log('\n' + '=' . repeat(70));
+  console.log('\n' + '='.repeat(70));
   console.log('📊 BUILDING SOURCE DISCOVERY RESULTS');
-  console.log('=' . repeat(70));
+  console.log('='.repeat(70));
 
   if (workingSources.length > 0) {
     console.log(`\n✅ Working Sources (${workingSources.length}):`);
-    workingSources.forEach(source => {
+    workingSources.forEach((source) => {
       console.log(`   ${source.name}`);
       console.log(`     URL: ${source.url}`);
       console.log(`     Counties: ${source.counties.join(', ')}`);
@@ -222,7 +220,7 @@ async function findWorkingBuildingSources() {
 
   if (failedSources.length > 0) {
     console.log(`\n❌ Failed Sources (${failedSources.length}):`);
-    failedSources.forEach(source => {
+    failedSources.forEach((source) => {
       console.log(`   ${source.name}: ${source.error}`);
     });
   }
@@ -233,21 +231,21 @@ async function findWorkingBuildingSources() {
   console.log('const WORKING_BUILDING_SOURCES = {');
 
   const countiesBySource: any = {};
-  workingSources.forEach(source => {
+  workingSources.forEach((source) => {
     source.counties.forEach((county: string) => {
       if (!countiesBySource[county]) countiesBySource[county] = [];
       countiesBySource[county].push({
         name: source.name,
         endpoint: source.url,
         priority: 1,
-        available: true
+        available: true,
       });
     });
   });
 
   Object.entries(countiesBySource).forEach(([county, sources]) => {
     console.log(`  '${county}': [`);
-    (sources as any[]).forEach(source => {
+    (sources as any[]).forEach((source) => {
       console.log(`    {`);
       console.log(`      name: '${source.name}',`);
       console.log(`      endpoint: '${source.endpoint}',`);
@@ -276,9 +274,9 @@ async function findWorkingBuildingSources() {
   console.log('};');
   console.log('```');
 
-  console.log('\n' + '=' . repeat(70));
+  console.log('\n' + '='.repeat(70));
   console.log('🔍 BUILDING SOURCE DISCOVERY COMPLETE');
-  console.log('=' . repeat(70));
+  console.log('='.repeat(70));
 }
 
 findWorkingBuildingSources().catch(console.error);

@@ -13,5 +13,5 @@ module.exports = {
   endOfLine: 'lf',
   proseWrap: 'preserve',
   htmlWhitespaceSensitivity: 'css',
-  embeddedLanguageFormatting: 'auto'
+  embeddedLanguageFormatting: 'auto',
 };

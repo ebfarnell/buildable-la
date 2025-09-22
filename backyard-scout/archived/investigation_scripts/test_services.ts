@@ -15,14 +15,14 @@ async function testEndpoint(url: string, timeout = 10000): Promise<TestResult> {
   const start = Date.now();
   try {
     // Test with a small query first
-    const testUrl = url.includes('?') ?
-      `${url}&f=json&where=1=1&returnCountOnly=true` :
-      `${url}?f=json&where=1=1&returnCountOnly=true`;
+    const testUrl = url.includes('?')
+      ? `${url}&f=json&where=1=1&returnCountOnly=true`
+      : `${url}?f=json&where=1=1&returnCountOnly=true`;
 
     const res = await fetch(testUrl, {
       // @ts-ignore
       timeout,
-      headers: { 'User-Agent': 'backyard-scout/1.0' }
+      headers: { 'User-Agent': 'backyard-scout/1.0' },
     });
 
     const responseTime = Date.now() - start;
@@ -31,7 +31,7 @@ async function testEndpoint(url: string, timeout = 10000): Promise<TestResult> {
       return { url, status: 'error', responseTime, error: `HTTP ${res.status}` };
     }
 
-    const json = await res.json() as any;
+    const json = (await res.json()) as any;
     if (json.error) {
       return { url, status: 'error', responseTime, error: json.error.message };
     }
@@ -40,7 +40,7 @@ async function testEndpoint(url: string, timeout = 10000): Promise<TestResult> {
       url,
       status: 'ok',
       responseTime,
-      featureCount: json.count ?? json.features?.length ?? 0
+      featureCount: json.count ?? json.features?.length ?? 0,
     };
   } catch (e: any) {
     const responseTime = Date.now() - start;
@@ -65,13 +65,14 @@ async function testRateLimit(url: string, maxRps = 10): Promise<number> {
     const promises: Promise<TestResult>[] = [];
     for (let i = 0; i < testCount; i++) {
       promises.push(testEndpoint(url, 5000));
-      await new Promise(r => setTimeout(r, delay));
+      await new Promise((r) => setTimeout(r, delay));
     }
 
     const results = await Promise.all(promises);
-    failures = results.filter(r => r.status !== 'ok').length;
+    failures = results.filter((r) => r.status !== 'ok').length;
 
-    if (failures > testCount * 0.1) { // More than 10% failure
+    if (failures > testCount * 0.1) {
+      // More than 10% failure
       console.log(`  ✗ Failed at ${rps} RPS (${failures}/${testCount} failed)`);
       return Math.max(1, rps - 1);
     }
@@ -84,7 +85,7 @@ async function testRateLimit(url: string, maxRps = 10): Promise<number> {
 
 async function testAllServices() {
   console.log('🔍 Testing ArcGIS Service Connectivity...\n');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 
   const results: Record<string, any> = {};
 
@@ -114,7 +115,9 @@ async function testAllServices() {
       results[county][service] = result;
 
       if (result.status === 'ok') {
-        console.log(`  ✅ ${service}: OK (${result.responseTime}ms, ${result.featureCount ?? 'N/A'} features)`);
+        console.log(
+          `  ✅ ${service}: OK (${result.responseTime}ms, ${result.featureCount ?? 'N/A'} features)`,
+        );
 
         // Test rate limit for parcels only
         if (service === 'parcels') {
@@ -144,15 +147,18 @@ async function testAllServices() {
       const url = (cfg as any).url;
       const result = await testEndpoint(url);
       results.overlays[`${provider}_${service}`] = result;
-      console.log(`  ${result.status === 'ok' ? '✅' : '❌'} ${provider}/${service}: ${result.status}`);
+      console.log(
+        `  ${result.status === 'ok' ? '✅' : '❌'} ${provider}/${service}: ${result.status}`,
+      );
     }
   }
 
   // Save results
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('\n📊 Summary:');
 
-  let working = 0, failed = 0;
+  let working = 0,
+    failed = 0;
   for (const [category, services] of Object.entries(results)) {
     if (typeof services === 'object' && !Array.isArray(services)) {
       for (const result of Object.values(services as any)) {

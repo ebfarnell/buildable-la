@@ -234,7 +234,10 @@ async function analyzeProperty(address: string): Promise<PropertyAnalysis> {
       total_area_sqft: totalBuildingArea,
       source: buildingResult.detection_method || 'N/A',
       quality: buildingResult.data_quality || 'N/A',
-      details: buildings.map((b: any, idx: number) => ({ id: `bldg-${idx}`, area_sqft: b.area_sqft || 0 })),
+      details: buildings.map((b: any, idx: number) => ({
+        id: `bldg-${idx}`,
+        area_sqft: b.area_sqft || 0,
+      })),
     },
     buildable: {
       area_sqft: buildableArea,

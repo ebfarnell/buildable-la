@@ -12,7 +12,10 @@ import proj4 from 'proj4';
 
 // LA County uses California State Plane Zone 5 (EPSG:2229)
 // Define the projection for proper coordinate transformation
-proj4.defs('EPSG:2229', '+proj=lcc +lat_1=35.46666666666667 +lat_2=34.03333333333333 +lat_0=33.5 +lon_0=-118 +x_0=2000000 +y_0=500000 +ellps=GRS80 +datum=NAD83 +units=us-ft +no_defs');
+proj4.defs(
+  'EPSG:2229',
+  '+proj=lcc +lat_1=35.46666666666667 +lat_2=34.03333333333333 +lat_0=33.5 +lon_0=-118 +x_0=2000000 +y_0=500000 +ellps=GRS80 +datum=NAD83 +units=us-ft +no_defs',
+);
 
 interface BuildingFootprint {
   id: string;
@@ -32,13 +35,16 @@ interface ParcelGeometry {
 
 // LA County Building Outlines endpoint (2020 version)
 // From: https://egis-lacounty.hub.arcgis.com/maps/e6a1e375e12a4fe6849d896a26ec028a
-const LA_COUNTY_BUILDINGS = 'https://services.gis.lacounty.gov/arcgis/rest/services/LACounty_Building_Outlines_2020/MapServer/0';
+const LA_COUNTY_BUILDINGS =
+  'https://services.gis.lacounty.gov/arcgis/rest/services/LACounty_Building_Outlines_2020/MapServer/0';
 
 // Alternative endpoint from LARIAC
-const LARIAC_BUILDINGS = 'https://services5.arcgis.com/okE6CZ9z71jl65j7/arcgis/rest/services/LARIAC_Buildings_2020/FeatureServer/0';
+const LARIAC_BUILDINGS =
+  'https://services5.arcgis.com/okE6CZ9z71jl65j7/arcgis/rest/services/LARIAC_Buildings_2020/FeatureServer/0';
 
 // LA County Parcels endpoint (native, not statewide)
-const LA_COUNTY_PARCELS = 'https://public.gis.lacounty.gov/public/rest/services/LACounty_Cache/LACounty_Parcel/MapServer/0';
+const LA_COUNTY_PARCELS =
+  'https://public.gis.lacounty.gov/public/rest/services/LACounty_Cache/LACounty_Parcel/MapServer/0';
 
 /**
  * Get buildings for a specific parcel using proper spatial matching
@@ -46,7 +52,7 @@ const LA_COUNTY_PARCELS = 'https://public.gis.lacounty.gov/public/rest/services/
  */
 export async function getLACountyBuildings(
   parcelGeometry: ParcelGeometry,
-  apn: string
+  apn: string,
 ): Promise<BuildingFootprint[]> {
   try {
     // Convert parcel to GeoJSON for turf operations
@@ -72,19 +78,19 @@ export async function getLACountyBuildings(
         ymin: minY,
         xmax: maxX,
         ymax: maxY,
-        spatialReference: { wkid: 4326 }
+        spatialReference: { wkid: 4326 },
       }),
       geometryType: 'esriGeometryEnvelope',
       spatialRel: 'esriSpatialRelIntersects',
       outFields: 'AIN,SHAPE_Area,BldgType,YearBuilt,Units,Source',
       returnGeometry: 'true',
-      maxRecordCount: '50'
+      maxRecordCount: '50',
     });
 
     console.log('   → Querying LA County Building Outlines...');
 
     let response = await fetch(`${LA_COUNTY_BUILDINGS}/query?${params}`, {
-      signal: AbortSignal.timeout(15000)
+      signal: AbortSignal.timeout(15000),
     });
 
     let data: any = null;
@@ -98,7 +104,7 @@ export async function getLACountyBuildings(
     if (!data || data.error || !data.features) {
       console.log('   → Trying LARIAC Buildings 2020...');
       response = await fetch(`${LARIAC_BUILDINGS}/query?${params}`, {
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(15000),
       });
 
       if (!response.ok) {
@@ -125,10 +131,7 @@ export async function getLACountyBuildings(
       const buildingCentroid = turf.centroid(buildingPoly);
 
       // Primary test: Building centroid must be within shrunken parcel
-      const centroidInParcel = turf.booleanPointInPolygon(
-        buildingCentroid,
-        shrunkParcel
-      );
+      const centroidInParcel = turf.booleanPointInPolygon(buildingCentroid, shrunkParcel);
 
       if (!centroidInParcel) {
         continue; // Skip buildings whose center is outside the parcel
@@ -159,7 +162,7 @@ export async function getLACountyBuildings(
           year_built: attrs.YearBuilt,
           use_type: attrs.BldgType,
           geometry: feature.geometry,
-          source: 'LA County Building Outlines'
+          source: 'LA County Building Outlines',
         });
       }
     }
@@ -186,17 +189,20 @@ export async function getLACountyBuildings(
           }
         }
 
-        console.log(`   ✅ Selected ${finalBuildings.length} building(s): ${Math.round(cumArea)} sqft`);
+        console.log(
+          `   ✅ Selected ${finalBuildings.length} building(s): ${Math.round(cumArea)} sqft`,
+        );
         return finalBuildings;
       }
 
-      console.log(`   ✅ Found ${validBuildings.length} building(s): ${Math.round(totalBuildingArea)} sqft`);
+      console.log(
+        `   ✅ Found ${validBuildings.length} building(s): ${Math.round(totalBuildingArea)} sqft`,
+      );
       return validBuildings;
     }
 
     console.log('   ℹ No buildings within parcel boundaries');
     return [];
-
   } catch (error: any) {
     console.error(`   ❌ LA County Buildings error: ${error.message}`);
     return [];
@@ -208,7 +214,7 @@ export async function getLACountyBuildings(
  * Uses same centroid-in-parcel matching logic
  */
 export async function getMicrosoftBuildingsWithProperMatching(
-  parcelGeometry: ParcelGeometry
+  parcelGeometry: ParcelGeometry,
 ): Promise<BuildingFootprint[]> {
   try {
     const parcelGeoJson = turf.polygon(parcelGeometry.rings);
@@ -218,26 +224,27 @@ export async function getMicrosoftBuildingsWithProperMatching(
 
     const params = new URLSearchParams({
       f: 'json',
-      where: "1=1",
+      where: '1=1',
       geometry: `${minX},${minY},${maxX},${maxY}`,
       geometryType: 'esriGeometryEnvelope',
       spatialRel: 'esriSpatialRelIntersects',
       outFields: '*',
       returnGeometry: 'true',
-      maxRecordCount: '50'
+      maxRecordCount: '50',
     });
 
-    const url = 'https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/Microsoft_Building_Footprints/FeatureServer/0';
+    const url =
+      'https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/Microsoft_Building_Footprints/FeatureServer/0';
 
     console.log('   → Trying Microsoft Building Footprints...');
 
     const response = await fetch(`${url}/query?${params}`, {
-      signal: AbortSignal.timeout(10000)
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!response.ok) return [];
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
     const validBuildings: BuildingFootprint[] = [];
 
     for (const feature of data.features || []) {
@@ -257,19 +264,18 @@ export async function getMicrosoftBuildingsWithProperMatching(
         const intersectionArea = turf.area(intersection);
         const buildingArea = turf.area(buildingPoly);
 
-        if ((intersectionArea / buildingArea) >= 0.5) {
+        if (intersectionArea / buildingArea >= 0.5) {
           validBuildings.push({
             id: `MSFT_${feature.attributes?.OBJECTID || Math.random()}`,
             area_sqft: Math.round(buildingArea * 10.7639),
             geometry: feature.geometry,
-            source: 'Microsoft Building Footprints'
+            source: 'Microsoft Building Footprints',
           });
         }
       }
     }
 
     return validBuildings;
-
   } catch (error) {
     console.error(`   ❌ Microsoft Buildings error: ${error}`);
     return [];
@@ -285,9 +291,8 @@ export async function getMicrosoftBuildingsWithProperMatching(
 export async function getBuildingsWithProperData(
   parcelGeometry: ParcelGeometry,
   apn: string,
-  county: string
+  county: string,
 ): Promise<BuildingFootprint[]> {
-
   // For LA County, use native data
   if (county === 'LOS ANGELES') {
     const buildings = await getLACountyBuildings(parcelGeometry, apn);
@@ -315,12 +320,14 @@ export async function getBuildingsWithProperData(
 
   if (parcelArea > 3000 && parcelArea < 20000) {
     console.log('   📐 Using conservative estimate (no building data available)');
-    return [{
-      id: `EST_${apn}`,
-      area_sqft: Math.round(parcelArea * 0.22),
-      geometry: null,
-      source: 'Conservative Estimate (22% coverage)'
-    }];
+    return [
+      {
+        id: `EST_${apn}`,
+        area_sqft: Math.round(parcelArea * 0.22),
+        geometry: null,
+        source: 'Conservative Estimate (22% coverage)',
+      },
+    ];
   }
 
   return [];

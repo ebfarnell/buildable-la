@@ -8,13 +8,15 @@ import { getEnhancedZoning } from './src/services/enhanced_zoning_service.js';
 
 // Test property: 1843 S Bedford St, Los Angeles, CA 90035
 const TEST_GEOMETRY = {
-  rings: [[
-    [-118.3896, 34.0522],
-    [-118.3895, 34.0522],
-    [-118.3895, 34.0521],
-    [-118.3896, 34.0521],
-    [-118.3896, 34.0522]
-  ]]
+  rings: [
+    [
+      [-118.3896, 34.0522],
+      [-118.3895, 34.0522],
+      [-118.3895, 34.0521],
+      [-118.3896, 34.0521],
+      [-118.3896, 34.0522],
+    ],
+  ],
 };
 
 async function testBuildingAPI() {
@@ -22,11 +24,7 @@ async function testBuildingAPI() {
   console.log('----------------------------------------');
 
   try {
-    const buildings = await getBuildingFootprints(
-      TEST_GEOMETRY,
-      'LOS ANGELES',
-      '4303015010'
-    );
+    const buildings = await getBuildingFootprints(TEST_GEOMETRY, 'LOS ANGELES', '4303015010');
 
     console.log(`✅ SUCCESS: Retrieved ${buildings.length} building(s)`);
 
@@ -46,14 +44,16 @@ async function testZoningAPI() {
 
   const parcelGeoJson = {
     type: 'FeatureCollection',
-    features: [{
-      type: 'Feature',
-      geometry: {
-        type: 'Polygon',
-        coordinates: TEST_GEOMETRY.rings
+    features: [
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: TEST_GEOMETRY.rings,
+        },
+        properties: {},
       },
-      properties: {}
-    }]
+    ],
   };
 
   try {

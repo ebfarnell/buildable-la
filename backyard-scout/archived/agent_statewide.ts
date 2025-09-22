@@ -6,8 +6,8 @@
  *   npx tsx agent_statewide.ts --addresses "address1" "address2" "address3"
  */
 
-import * as turf from "@turf/turf";
-import fetch from "node-fetch";
+import * as turf from '@turf/turf';
+import fetch from 'node-fetch';
 
 interface AddressAnalysis {
   address: string;
@@ -18,7 +18,7 @@ interface AddressAnalysis {
   setbacks?: { front: number; side: number; rear: number };
   maxAduSize?: number;
   constraints?: string[];
-  viability: "High" | "Medium" | "Low";
+  viability: 'High' | 'Medium' | 'Low';
   notes?: string[];
 }
 
@@ -32,8 +32,8 @@ class CaliforniaADUAnalyzer {
       if (!geocoded) {
         return {
           address,
-          viability: "Low",
-          notes: ["Could not geocode address"]
+          viability: 'Low',
+          notes: ['Could not geocode address'],
         };
       }
 
@@ -42,8 +42,8 @@ class CaliforniaADUAnalyzer {
       if (!parcel) {
         return {
           address,
-          viability: "Low",
-          notes: ["Could not find parcel data"]
+          viability: 'Low',
+          notes: ['Could not find parcel data'],
         };
       }
 
@@ -58,41 +58,42 @@ class CaliforniaADUAnalyzer {
         apn: parcel.apn,
         parcelSize: analysis.parcelSize,
         buildableArea: analysis.buildableArea,
-        zoning: analysis.zoning || "Unknown",
+        zoning: analysis.zoning || 'Unknown',
         setbacks: analysis.setbacks,
         maxAduSize: analysis.maxAduSize,
         constraints: analysis.constraints,
         viability,
-        notes: analysis.notes
+        notes: analysis.notes,
       };
-
     } catch (error) {
       console.error(`❌ Error analyzing ${address}:`, error);
       return {
         address,
-        viability: "Low",
-        notes: [`Error: ${error instanceof Error ? error.message : 'Unknown error'}`]
+        viability: 'Low',
+        notes: [`Error: ${error instanceof Error ? error.message : 'Unknown error'}`],
       };
     }
   }
 
   private async geocodeAddress(address: string): Promise<any> {
     // Use OpenStreetMap Nominatim for geocoding (works statewide)
-    const url = `https://nominatim.openstreetmap.org/search?` + new URLSearchParams({
-      q: address + ', California, USA', // Include state in the query string
-      format: 'json',
-      limit: '1'
-    });
+    const url =
+      `https://nominatim.openstreetmap.org/search?` +
+      new URLSearchParams({
+        q: address + ', California, USA', // Include state in the query string
+        format: 'json',
+        limit: '1',
+      });
 
     console.log(`  Geocoding address...`);
 
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'BackyardScout/1.0'
-      }
+        'User-Agent': 'BackyardScout/1.0',
+      },
     });
 
-    const results = await response.json() as any[];
+    const results = (await response.json()) as any[];
 
     if (!Array.isArray(results)) {
       console.warn(`  ⚠️ Unexpected response format:`, results);
@@ -115,21 +116,22 @@ class CaliforniaADUAnalyzer {
     return {
       lat: parseFloat(result.lat),
       lon: parseFloat(result.lon),
-      displayName: result.display_name
+      displayName: result.display_name,
     };
   }
 
   private async fetchParcel(geocoded: any): Promise<any> {
     // Query California Statewide Parcels Service directly
-    const url = 'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/CA_Statewide_Parcels_Public_view/FeatureServer/0/query';
+    const url =
+      'https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/CA_Statewide_Parcels_Public_view/FeatureServer/0/query';
 
     // Use point geometry for the query
     const point = {
       x: geocoded.lon,
       y: geocoded.lat,
       spatialReference: {
-        wkid: 4326
-      }
+        wkid: 4326,
+      },
     };
 
     // Try simpler point format
@@ -142,12 +144,12 @@ class CaliforniaADUAnalyzer {
       outFields: '*',
       returnGeometry: 'true',
       inSR: '4326',
-      f: 'json'
+      f: 'json',
     });
 
     console.log(`  Querying parcel service...`);
     const response = await fetch(url + '?' + params);
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
 
     if (data.error) {
       console.error(`  ❌ Service error:`, data.error);
@@ -168,11 +170,11 @@ class CaliforniaADUAnalyzer {
         spatialRel: 'esriSpatialRelIntersects',
         outFields: 'PARCEL_APN,SITE_ADDR,SITE_CITY,SITE_ZIP,COUNTYNAME,LOT_SIZE_SQFT',
         returnGeometry: 'true',
-        f: 'json'
+        f: 'json',
       });
 
       const bufferResponse = await fetch(url + '?' + bufferParams);
-      const bufferData = await bufferResponse.json() as any;
+      const bufferData = (await bufferResponse.json()) as any;
 
       if (!bufferData.features || bufferData.features.length === 0) {
         console.warn(`  ⚠️ No parcel found at location`);
@@ -191,7 +193,7 @@ class CaliforniaADUAnalyzer {
         zip: props.SITE_ZIP,
         county: props.COUNTYNAME,
         lotSize: props.LOT_SIZE_SQFT || 0,
-        geometry: feature.geometry
+        geometry: feature.geometry,
       };
     }
 
@@ -207,7 +209,7 @@ class CaliforniaADUAnalyzer {
       zip: props.SITE_ZIP,
       county: props.COUNTYNAME,
       lotSize: props.LOT_SIZE_SQFT || 0,
-      geometry: feature.geometry
+      geometry: feature.geometry,
     };
   }
 
@@ -215,8 +217,8 @@ class CaliforniaADUAnalyzer {
     // Conservative default setbacks
     const setbacks = {
       front: 20, // feet
-      side: 5,   // feet
-      rear: 5    // feet
+      side: 5, // feet
+      rear: 5, // feet
     };
 
     // Estimate parcel area if not provided
@@ -239,19 +241,19 @@ class CaliforniaADUAnalyzer {
     const notes = [];
 
     if (parcelSize < 3000) {
-      constraints.push("Small lot size");
+      constraints.push('Small lot size');
       maxAduSize = Math.min(800, buildableArea);
     }
 
     if (buildableArea < 400) {
-      constraints.push("Limited buildable area");
+      constraints.push('Limited buildable area');
     }
 
     // Check county-specific rules
     if (parcel.county === 'LOS ANGELES') {
-      notes.push("LA County allows ADUs up to 1200 sq ft");
+      notes.push('LA County allows ADUs up to 1200 sq ft');
     } else if (parcel.county === 'SAN DIEGO') {
-      notes.push("San Diego allows ADUs up to 1200 sq ft");
+      notes.push('San Diego allows ADUs up to 1200 sq ft');
     }
 
     return {
@@ -259,19 +261,19 @@ class CaliforniaADUAnalyzer {
       buildableArea: Math.round(buildableArea),
       setbacks,
       maxAduSize,
-      zoning: "Residential", // Default assumption
+      zoning: 'Residential', // Default assumption
       constraints,
-      notes
+      notes,
     };
   }
 
-  private assessViability(analysis: any): "High" | "Medium" | "Low" {
+  private assessViability(analysis: any): 'High' | 'Medium' | 'Low' {
     if (analysis.buildableArea >= 800 && analysis.constraints.length === 0) {
-      return "High";
+      return 'High';
     } else if (analysis.buildableArea >= 500) {
-      return "Medium";
+      return 'Medium';
     } else {
-      return "Low";
+      return 'Low';
     }
   }
 
@@ -294,9 +296,9 @@ class CaliforniaADUAnalyzer {
     report += `Generated: ${timestamp}\n\n`;
     report += `## Summary\n\n`;
     report += `Total properties analyzed: ${analyses.length}\n`;
-    report += `- High viability: ${analyses.filter(a => a.viability === "High").length}\n`;
-    report += `- Medium viability: ${analyses.filter(a => a.viability === "Medium").length}\n`;
-    report += `- Low viability: ${analyses.filter(a => a.viability === "Low").length}\n\n`;
+    report += `- High viability: ${analyses.filter((a) => a.viability === 'High').length}\n`;
+    report += `- Medium viability: ${analyses.filter((a) => a.viability === 'Medium').length}\n`;
+    report += `- Low viability: ${analyses.filter((a) => a.viability === 'Low').length}\n\n`;
 
     report += `## Detailed Analysis\n\n`;
 
@@ -320,10 +322,10 @@ class CaliforniaADUAnalyzer {
         report += `- **Setbacks:** Front: ${analysis.setbacks.front}ft, Side: ${analysis.setbacks.side}ft, Rear: ${analysis.setbacks.rear}ft\n`;
       }
       if (analysis.constraints && analysis.constraints.length > 0) {
-        report += `- **Constraints:** ${analysis.constraints.join(", ")}\n`;
+        report += `- **Constraints:** ${analysis.constraints.join(', ')}\n`;
       }
       if (analysis.notes && analysis.notes.length > 0) {
-        report += `- **Notes:** ${analysis.notes.join("; ")}\n`;
+        report += `- **Notes:** ${analysis.notes.join('; ')}\n`;
       }
 
       report += `\n`;
@@ -336,16 +338,16 @@ class CaliforniaADUAnalyzer {
 // Main execution
 async function main() {
   const addresses = [
-    "20616 Archwood St, Winnetka, CA, 91306",
-    "10921 Polaris Dr, San Diego, CA, 92126",
-    "1843 S Bedford St, Los Angeles, CA, 90035"
+    '20616 Archwood St, Winnetka, CA, 91306',
+    '10921 Polaris Dr, San Diego, CA, 92126',
+    '1843 S Bedford St, Los Angeles, CA, 90035',
   ];
 
   const analyzer = new CaliforniaADUAnalyzer();
   const analyses: AddressAnalysis[] = [];
 
-  console.log("🏠 California ADU Buildability Analyzer");
-  console.log("========================================\n");
+  console.log('🏠 California ADU Buildability Analyzer');
+  console.log('========================================\n');
 
   for (const address of addresses) {
     const analysis = await analyzer.analyzeAddress(address);
@@ -363,28 +365,28 @@ async function main() {
 
   await fs.writeFile(outputPath, report);
 
-  console.log("\n========================================");
-  console.log("✅ Analysis complete!");
+  console.log('\n========================================');
+  console.log('✅ Analysis complete!');
   console.log(`📄 Report saved to: ${outputPath}`);
 
   // Print summary
-  console.log("\n📊 Quick Summary:");
+  console.log('\n📊 Quick Summary:');
   for (const analysis of analyses) {
     console.log(`  ${analysis.viability.padEnd(6)} - ${analysis.address}`);
   }
 }
 
 // Run if called directly
-console.log("Script loaded, checking if main should run...");
-console.log("import.meta.url:", import.meta.url);
-console.log("process.argv[1]:", process.argv[1]);
+console.log('Script loaded, checking if main should run...');
+console.log('import.meta.url:', import.meta.url);
+console.log('process.argv[1]:', process.argv[1]);
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  console.log("Running main function...");
+  console.log('Running main function...');
   main().catch(console.error);
 } else {
   // Always run main for now during testing
-  console.log("Running main function (fallback)...");
+  console.log('Running main function (fallback)...');
   main().catch(console.error);
 }
 

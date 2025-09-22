@@ -10,19 +10,24 @@ const ZONEOMICS_API_KEY = 'ed8066dd45cef9ed3bb531483c0e3bb3f0f70519';
 const testProperty = {
   address: '1618 Burning Tree Dr, Thousand Oaks, CA 91362',
   lat: 34.212931,
-  lon: -118.848476
+  lon: -118.848476,
 };
 
 // Convert lat/lon to tile coordinates
 function latLonToTile(lat: number, lon: number, zoom: number) {
-  const x = Math.floor((lon + 180) / 360 * Math.pow(2, zoom));
-  const y = Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, zoom));
+  const x = Math.floor(((lon + 180) / 360) * Math.pow(2, zoom));
+  const y = Math.floor(
+    ((1 -
+      Math.log(Math.tan((lat * Math.PI) / 180) + 1 / Math.cos((lat * Math.PI) / 180)) / Math.PI) /
+      2) *
+      Math.pow(2, zoom),
+  );
   return { x, y, z: zoom };
 }
 
 async function testWorkingEndpoints() {
   console.log('🔧 Testing Zoneomics Endpoints with Proper Parameters');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log(`Property: ${testProperty.address}`);
   console.log(`Coordinates: ${testProperty.lat}, ${testProperty.lon}`);
 
@@ -42,11 +47,11 @@ async function testWorkingEndpoints() {
         x: tile.x.toString(),
         y: tile.y.toString(),
         z: tile.z.toString(),
-        api_key: ZONEOMICS_API_KEY
+        api_key: ZONEOMICS_API_KEY,
       });
 
       const response = await fetch(`${baseUrl}/tiles?${params}`, {
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(15000),
       });
 
       console.log(`     Status: ${response.status}`);
@@ -56,7 +61,9 @@ async function testWorkingEndpoints() {
         console.log(`     ✅ SUCCESS! Content-Type: ${contentType}`);
 
         if (contentType?.includes('image')) {
-          console.log(`     🗺️ Received image tile (${response.headers.get('content-length')} bytes)`);
+          console.log(
+            `     🗺️ Received image tile (${response.headers.get('content-length')} bytes)`,
+          );
         } else if (contentType?.includes('json')) {
           const data = await response.json();
           console.log(`     📄 JSON Response: ${JSON.stringify(data, null, 2)}`);
@@ -83,11 +90,11 @@ async function testWorkingEndpoints() {
       lng: testProperty.lon.toString(),
       latitude: testProperty.lat.toString(),
       longitude: testProperty.lon.toString(),
-      api_key: ZONEOMICS_API_KEY
+      api_key: ZONEOMICS_API_KEY,
     });
 
     const response = await fetch(`${baseUrl}/strDetail?${params}`, {
-      signal: AbortSignal.timeout(15000)
+      signal: AbortSignal.timeout(15000),
     });
 
     console.log(`   Status: ${response.status}`);
@@ -117,11 +124,11 @@ async function testWorkingEndpoints() {
     const params = new URLSearchParams({
       lat: testProperty.lat.toString(),
       lon: testProperty.lon.toString(),
-      api_key: ZONEOMICS_API_KEY
+      api_key: ZONEOMICS_API_KEY,
     });
 
     const response = await fetch(`${baseUrl}/parkingDetail?${params}`, {
-      signal: AbortSignal.timeout(15000)
+      signal: AbortSignal.timeout(15000),
     });
 
     console.log(`   Status: ${response.status}`);
@@ -153,7 +160,7 @@ async function testWorkingEndpoints() {
     'property-info',
     'location-info',
     'zone-lookup',
-    'property-lookup'
+    'property-lookup',
   ];
 
   for (const endpoint of otherEndpoints) {
@@ -161,11 +168,11 @@ async function testWorkingEndpoints() {
       const params = new URLSearchParams({
         lat: testProperty.lat.toString(),
         lon: testProperty.lon.toString(),
-        api_key: ZONEOMICS_API_KEY
+        api_key: ZONEOMICS_API_KEY,
       });
 
       const response = await fetch(`${baseUrl}/${endpoint}?${params}`, {
-        signal: AbortSignal.timeout(10000)
+        signal: AbortSignal.timeout(10000),
       });
 
       if (response.ok) {
@@ -181,9 +188,9 @@ async function testWorkingEndpoints() {
     }
   }
 
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('🎯 WORKING ENDPOINTS TEST COMPLETE');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 }
 
 testWorkingEndpoints().catch(console.error);

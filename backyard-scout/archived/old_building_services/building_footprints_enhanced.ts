@@ -29,104 +29,110 @@ interface BuildingSource {
 const COUNTY_ENDPOINTS: Record<string, BuildingSource> = {
   'LOS ANGELES': {
     name: 'LA County Buildings',
-    endpoint: 'https://public.gis.lacounty.gov/public/rest/services/LACounty_Cache/LACounty_Buildings/MapServer/0',
+    endpoint:
+      'https://public.gis.lacounty.gov/public/rest/services/LACounty_Cache/LACounty_Buildings/MapServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
   'SAN DIEGO': {
     name: 'San Diego Buildings',
     endpoint: 'https://sdgis.sandag.org/arcgis/rest/services/Buildings/MapServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
-  'ORANGE': {
+  ORANGE: {
     name: 'Orange County Buildings',
-    endpoint: 'https://services1.arcgis.com/vY6WuhLW0HkFe6Fl/ArcGIS/rest/services/Building_Footprints/FeatureServer/0',
+    endpoint:
+      'https://services1.arcgis.com/vY6WuhLW0HkFe6Fl/ArcGIS/rest/services/Building_Footprints/FeatureServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
   'SAN FRANCISCO': {
     name: 'SF Buildings',
     endpoint: 'https://sfplanninggis.org/arcgis/rest/services/BuildingFootprints/MapServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
-  'SACRAMENTO': {
+  SACRAMENTO: {
     name: 'Sacramento Buildings',
-    endpoint: 'https://services1.arcgis.com/5NARefyPVtAeuJPU/arcgis/rest/services/Building_Footprints/FeatureServer/0',
+    endpoint:
+      'https://services1.arcgis.com/5NARefyPVtAeuJPU/arcgis/rest/services/Building_Footprints/FeatureServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
-  'ALAMEDA': {
+  ALAMEDA: {
     name: 'Alameda Buildings',
-    endpoint: 'https://gismaps.oaklandca.gov/oaklandgis/rest/services/BuildingFootprints/MapServer/0',
+    endpoint:
+      'https://gismaps.oaklandca.gov/oaklandgis/rest/services/BuildingFootprints/MapServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
   'SANTA CLARA': {
     name: 'Santa Clara Buildings',
     endpoint: 'https://gis.sccgov.org/arcgis/rest/services/BuildingFootprints/MapServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
-  'RIVERSIDE': {
+  RIVERSIDE: {
     name: 'Riverside Buildings',
     endpoint: 'https://gis.rivcoca.org/arcgis/rest/services/BuildingFootprints/FeatureServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
-  'VENTURA': {
+  VENTURA: {
     name: 'Ventura Buildings',
     endpoint: 'https://maps.ventura.org/arcgis/rest/services/Buildings/MapServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
   'CONTRA COSTA': {
     name: 'Contra Costa Buildings',
     endpoint: 'https://gis.cccounty.us/arcgis/rest/services/BuildingFootprints/MapServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
   'SAN MATEO': {
     name: 'San Mateo Buildings',
-    endpoint: 'https://services3.arcgis.com/WznFNxVBdIyJbqto/arcgis/rest/services/Building_Footprints/FeatureServer/0',
+    endpoint:
+      'https://services3.arcgis.com/WznFNxVBdIyJbqto/arcgis/rest/services/Building_Footprints/FeatureServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
-  'MARIN': {
+  MARIN: {
     name: 'Marin Buildings',
     endpoint: 'https://gis.marinpublic.com/arcgis/rest/services/BuildingFootprints/MapServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
-  'KERN': {
+  KERN: {
     name: 'Kern Buildings',
     endpoint: 'https://maps.kerncounty.com/arcgis/rest/services/BuildingFootprints/MapServer/0',
     priority: 1,
-    available: true
+    available: true,
   },
   'SANTA BARBARA': {
     name: 'Santa Barbara Buildings',
     endpoint: 'https://cosb.countyofsb.org/arcgis/rest/services/BuildingFootprints/MapServer/0',
     priority: 1,
-    available: true
-  }
+    available: true,
+  },
 };
 
 // Statewide and fallback sources
 const STATEWIDE_SOURCES: BuildingSource[] = [
   {
     name: 'Microsoft Building Footprints',
-    endpoint: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/Microsoft_Building_Footprints/FeatureServer/0',
+    endpoint:
+      'https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/Microsoft_Building_Footprints/FeatureServer/0',
     priority: 2,
-    available: true
+    available: true,
   },
   {
     name: 'OpenStreetMap Buildings',
     endpoint: 'https://overpass-api.de/api/interpreter',
     priority: 3,
-    available: true
-  }
+    available: true,
+  },
 ];
 
 /**
@@ -137,11 +143,11 @@ function normalizeGeometry(geometry: any): any {
     return {
       ...geometry,
       rings: geometry.rings.map((ring: number[][]) =>
-        ring.map(coord => [
+        ring.map((coord) => [
           Math.round(coord[0] * 1000000) / 1000000,
-          Math.round(coord[1] * 1000000) / 1000000
-        ])
-      )
+          Math.round(coord[1] * 1000000) / 1000000,
+        ]),
+      ),
     };
   }
   return geometry;
@@ -154,7 +160,7 @@ function normalizeGeometry(geometry: any): any {
 export async function getBuildingFootprints(
   parcelGeometry: any,
   countyName: string,
-  apn: string
+  apn: string,
 ): Promise<BuildingFootprint[]> {
   const county = countyName.toUpperCase();
 
@@ -199,7 +205,7 @@ export async function getBuildingFootprints(
       geometry: null,
       source: 'Baseline Estimate',
       retrieved_at: new Date().toISOString(),
-      checksum: ''
+      checksum: '',
     };
     console.log(`   📊 Baseline estimate: ${estimatedBuildingArea.toLocaleString()} sqft`);
   }
@@ -245,15 +251,13 @@ export async function getBuildingFootprints(
             const [bLon, bLat] = buildingCentroid.geometry.coordinates;
 
             // Calculate distance from building to parcel centroid
-            const distance = turf.distance(
-              buildingCentroid,
-              centroid,
-              { units: 'feet' }
-            );
+            const distance = turf.distance(buildingCentroid, centroid, { units: 'feet' });
 
             // Debug first few buildings
             if (idx < 3) {
-              console.log(`     Building ${idx + 1}: ${Math.round(distance)} ft from parcel center`);
+              console.log(
+                `     Building ${idx + 1}: ${Math.round(distance)} ft from parcel center`,
+              );
             }
 
             // Very lenient: Accept any building within 100 feet of parcel center
@@ -272,7 +276,9 @@ export async function getBuildingFootprints(
 
                 // Accept even 10% overlap
                 if (overlapPercent > 10) {
-                  console.log(`     ✓ Accepted building ${idx + 1} with ${Math.round(overlapPercent)}% overlap`);
+                  console.log(
+                    `     ✓ Accepted building ${idx + 1} with ${Math.round(overlapPercent)}% overlap`,
+                  );
                   return true;
                 }
               }
@@ -298,7 +304,9 @@ export async function getBuildingFootprints(
             // Use all buildings if under threshold
             actualBuildingsFound = true;
             bestMatchBuildings = validBuildings;
-            console.log(`   ✅ Using ${validBuildings.length} buildings totaling ${Math.round(totalArea)} sqft`);
+            console.log(
+              `   ✅ Using ${validBuildings.length} buildings totaling ${Math.round(totalArea)} sqft`,
+            );
             break;
           } else {
             // Take only the closest/largest building if total is too high
@@ -327,7 +335,9 @@ export async function getBuildingFootprints(
             if (mainBuildings.length > 0) {
               actualBuildingsFound = true;
               bestMatchBuildings = mainBuildings;
-              console.log(`   ⚠️ Selected ${mainBuildings.length} main building(s) totaling ${Math.round(cumArea)} sqft`);
+              console.log(
+                `   ⚠️ Selected ${mainBuildings.length} main building(s) totaling ${Math.round(cumArea)} sqft`,
+              );
               break;
             }
           }
@@ -355,7 +365,11 @@ export async function getBuildingFootprints(
 /**
  * Fetch buildings from Microsoft Building Footprints
  */
-async function fetchMicrosoftBuildings(bbox: number[], lat: number, lon: number): Promise<BuildingFootprint[]> {
+async function fetchMicrosoftBuildings(
+  bbox: number[],
+  lat: number,
+  lon: number,
+): Promise<BuildingFootprint[]> {
   const [minX, minY, maxX, maxY] = bbox;
 
   const params = new URLSearchParams({
@@ -366,7 +380,7 @@ async function fetchMicrosoftBuildings(bbox: number[], lat: number, lon: number)
     spatialRel: 'esriSpatialRelIntersects',
     outFields: '*',
     returnGeometry: 'true',
-    maxRecordCount: '100'
+    maxRecordCount: '100',
   });
 
   const url = `https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/Microsoft_Building_Footprints/FeatureServer/0/query?${params}`;
@@ -375,7 +389,7 @@ async function fetchMicrosoftBuildings(bbox: number[], lat: number, lon: number)
     const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
     if (!response.ok) return [];
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
     const buildings: BuildingFootprint[] = [];
 
     for (const feature of data.features || []) {
@@ -389,7 +403,7 @@ async function fetchMicrosoftBuildings(bbox: number[], lat: number, lon: number)
           geometry: normalizeGeometry(feature.geometry),
           source: 'Microsoft Buildings',
           retrieved_at: new Date().toISOString(),
-          checksum: ''
+          checksum: '',
         });
       }
     }
@@ -416,12 +430,12 @@ async function fetchOSMBuildings(bbox: number[]): Promise<BuildingFootprint[]> {
       method: 'POST',
       body: `data=${encodeURIComponent(query)}`,
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      signal: AbortSignal.timeout(20000)
+      signal: AbortSignal.timeout(20000),
     });
 
     if (!response.ok) return [];
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
     const buildings: BuildingFootprint[] = [];
 
     for (const element of data.elements || []) {
@@ -438,7 +452,7 @@ async function fetchOSMBuildings(bbox: number[]): Promise<BuildingFootprint[]> {
           geometry: normalizeGeometry({ rings: [coords] }),
           source: 'OSM',
           retrieved_at: new Date().toISOString(),
-          checksum: ''
+          checksum: '',
         });
       }
     }
@@ -453,7 +467,11 @@ async function fetchOSMBuildings(bbox: number[]): Promise<BuildingFootprint[]> {
 /**
  * Fetch buildings from ArcGIS endpoint
  */
-async function fetchArcGISBuildings(endpoint: string, bbox: number[], sourceName: string): Promise<BuildingFootprint[]> {
+async function fetchArcGISBuildings(
+  endpoint: string,
+  bbox: number[],
+  sourceName: string,
+): Promise<BuildingFootprint[]> {
   const [minX, minY, maxX, maxY] = bbox;
 
   const params = new URLSearchParams({
@@ -464,7 +482,7 @@ async function fetchArcGISBuildings(endpoint: string, bbox: number[], sourceName
     spatialRel: 'esriSpatialRelIntersects',
     outFields: '*',
     returnGeometry: 'true',
-    maxRecordCount: '100'
+    maxRecordCount: '100',
   });
 
   const url = `${endpoint}/query?${params}`;
@@ -475,7 +493,7 @@ async function fetchArcGISBuildings(endpoint: string, bbox: number[], sourceName
       throw new Error(`HTTP ${response.status}`);
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
 
     if (data.error) {
       throw new Error(data.error.message || 'ArcGIS error');
@@ -494,7 +512,7 @@ async function fetchArcGISBuildings(endpoint: string, bbox: number[], sourceName
           geometry: normalizeGeometry(feature.geometry),
           source: sourceName,
           retrieved_at: new Date().toISOString(),
-          checksum: ''
+          checksum: '',
         });
       }
     }
@@ -511,7 +529,7 @@ async function fetchArcGISBuildings(endpoint: string, bbox: number[], sourceName
 export function calculateBuildableArea(
   parcelGeometry: any,
   buildingFootprints: BuildingFootprint[],
-  setbacks: { front: number; side: number; rear: number }
+  setbacks: { front: number; side: number; rear: number },
 ): number {
   const normalizedParcel = normalizeGeometry(parcelGeometry);
   const parcelPolygon = turf.polygon(normalizedParcel.rings);
@@ -520,10 +538,9 @@ export function calculateBuildableArea(
   const sideBuffer = turf.buffer(parcelPolygon, -setbacks.side, { units: 'feet' });
   if (!sideBuffer) return 0;
 
-  const avgExtraSetback = ((setbacks.front - setbacks.side) + (setbacks.rear - setbacks.side)) / 4;
-  const envelope = avgExtraSetback > 0
-    ? turf.buffer(sideBuffer, -avgExtraSetback, { units: 'feet' })
-    : sideBuffer;
+  const avgExtraSetback = (setbacks.front - setbacks.side + (setbacks.rear - setbacks.side)) / 4;
+  const envelope =
+    avgExtraSetback > 0 ? turf.buffer(sideBuffer, -avgExtraSetback, { units: 'feet' }) : sideBuffer;
 
   if (!envelope) return 0;
 

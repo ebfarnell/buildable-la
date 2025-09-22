@@ -9,12 +9,12 @@ const ZONEOMICS_API_KEY = 'ed8066dd45cef9ed3bb531483c0e3bb3f0f70519';
 const testProperty = {
   address: '1618 Burning Tree Dr, Thousand Oaks, CA 91362',
   lat: 34.212931,
-  lon: -118.848476
+  lon: -118.848476,
 };
 
 async function testZoneomicsParsing() {
   console.log('🧪 Testing Zoneomics Tiles Parsing Service');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log(`Property: ${testProperty.address}`);
   console.log(`Coordinates: ${testProperty.lat}, ${testProperty.lon}`);
 
@@ -24,7 +24,7 @@ async function testZoneomicsParsing() {
     const zoningResult = await getZoneomicsZoningWithFallback(
       testProperty.lat,
       testProperty.lon,
-      ZONEOMICS_API_KEY
+      ZONEOMICS_API_KEY,
     );
 
     if (zoningResult) {
@@ -51,14 +51,13 @@ async function testZoneomicsParsing() {
       console.log('- Protobuf parsing needs adjustment');
       console.log('- API returned empty tiles');
     }
-
   } catch (error) {
     console.error('\n❌ Error testing Zoneomics parsing:', error);
   }
 
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('🧪 ZONEOMICS PARSING TEST COMPLETE');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
 }
 
 testZoneomicsParsing().catch(console.error);

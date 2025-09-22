@@ -9,12 +9,12 @@ const ZONEOMICS_API_KEY = 'ed8066dd45cef9ed3bb531483c0e3bb3f0f70519';
 const testProperty = {
   address: '1618 Burning Tree Dr, Thousand Oaks, CA 91362',
   lat: 34.212931,
-  lon: -118.848476
+  lon: -118.848476,
 };
 
 async function findV2Endpoints() {
   console.log('🔍 Finding Correct v2 API Endpoints');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log('API says: "Please transition to our /v2 APIs"');
 
   // Try different v2 endpoint structures
@@ -59,17 +59,17 @@ async function findV2Endpoints() {
         lon: testProperty.lon.toString(),
         latitude: testProperty.lat.toString(),
         longitude: testProperty.lon.toString(),
-        address: testProperty.address
+        address: testProperty.address,
       });
 
       const response = await fetch(`${endpoint}?${params}`, {
         headers: {
-          'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
+          Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
           'X-API-Key': ZONEOMICS_API_KEY,
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(15000),
       });
 
       console.log(`     GET Status: ${response.status}`);
@@ -86,17 +86,17 @@ async function findV2Endpoints() {
         const postResponse = await fetch(endpoint, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
+            Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
             'X-API-Key': ZONEOMICS_API_KEY,
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            Accept: 'application/json',
           },
           body: JSON.stringify({
             latitude: testProperty.lat,
             longitude: testProperty.lon,
-            address: testProperty.address
+            address: testProperty.address,
           }),
-          signal: AbortSignal.timeout(15000)
+          signal: AbortSignal.timeout(15000),
         });
 
         console.log(`     POST Status: ${postResponse.status}`);
@@ -140,10 +140,10 @@ async function findV2Endpoints() {
 
       const response = await fetch(`${endpoint}?lat=${testProperty.lat}&lon=${testProperty.lon}`, {
         headers: {
-          'Authorization': `Bearer ${ZONEOMICS_API_KEY}`,
-          'X-API-Key': ZONEOMICS_API_KEY
+          Authorization: `Bearer ${ZONEOMICS_API_KEY}`,
+          'X-API-Key': ZONEOMICS_API_KEY,
         },
-        signal: AbortSignal.timeout(10000)
+        signal: AbortSignal.timeout(10000),
       });
 
       console.log(`     Status: ${response.status}`);
@@ -161,9 +161,9 @@ async function findV2Endpoints() {
     }
   }
 
-  console.log('\n' + '=' . repeat(60));
+  console.log('\n' + '='.repeat(60));
   console.log('🎯 v2 ENDPOINT DISCOVERY COMPLETE');
-  console.log('=' . repeat(60));
+  console.log('='.repeat(60));
   console.log('If no ✅ SUCCESS found, the v2 API might not be publicly accessible');
   console.log('or requires different authentication method.');
 }

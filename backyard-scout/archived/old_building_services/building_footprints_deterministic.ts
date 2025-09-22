@@ -22,15 +22,15 @@ interface BuildingSource {
 // NOTE: Comprehensive testing showed ALL county ArcGIS endpoints are broken/non-existent
 // OSM provides excellent coverage and real building data across California
 const BUILDING_SOURCES: Record<string, BuildingSource[]> = {
-  'DEFAULT': [
+  DEFAULT: [
     {
       name: 'OpenStreetMap Buildings',
       endpoint: 'https://overpass-api.de/api/interpreter',
       priority: 1,
-      available: true
-    }
+      available: true,
+    },
     // NO FALLBACKS - No estimated sources
-  ]
+  ],
 };
 
 /**
@@ -50,11 +50,11 @@ function normalizeGeometry(geometry: any): any {
     return {
       ...geometry,
       rings: geometry.rings.map((ring: number[][]) =>
-        ring.map(coord => [
+        ring.map((coord) => [
           Math.round(coord[0] * 1000000) / 1000000,
-          Math.round(coord[1] * 1000000) / 1000000
-        ])
-      )
+          Math.round(coord[1] * 1000000) / 1000000,
+        ]),
+      ),
     };
   }
   return geometry;
@@ -67,7 +67,7 @@ function normalizeGeometry(geometry: any): any {
 export async function getBuildingFootprints(
   parcelGeometry: any,
   countyName: string,
-  apn: string
+  apn: string,
 ): Promise<BuildingFootprint[]> {
   const county = countyName.toUpperCase();
   const sources = [...(BUILDING_SOURCES[county] || []), ...BUILDING_SOURCES.DEFAULT];
@@ -91,10 +91,10 @@ export async function getBuildingFootprints(
       if (source.name === 'OpenStreetMap Buildings') {
         const buildings = await fetchOSMBuildings(bbox);
         if (buildings.length > 0) {
-          return buildings.map(b => ({
+          return buildings.map((b) => ({
             ...b,
             source: 'OSM',
-            checksum: calculateGeometryHash(b.geometry)
+            checksum: calculateGeometryHash(b.geometry),
           }));
         }
       }
@@ -102,10 +102,10 @@ export async function getBuildingFootprints(
       // Try ArcGIS endpoint
       const buildings = await fetchArcGISBuildings(source.endpoint, bbox);
       if (buildings.length > 0) {
-        return buildings.map(b => ({
+        return buildings.map((b) => ({
           ...b,
           source: source.name,
-          checksum: calculateGeometryHash(b.geometry)
+          checksum: calculateGeometryHash(b.geometry),
         }));
       }
     } catch (error) {
@@ -124,7 +124,9 @@ export async function getBuildingFootprints(
 async function fetchOSMBuildings(bbox: number[]): Promise<BuildingFootprint[]> {
   const [minX, minY, maxX, maxY] = bbox;
 
-  console.log(`   OSM Query: bbox=[${minX.toFixed(6)}, ${minY.toFixed(6)}, ${maxX.toFixed(6)}, ${maxY.toFixed(6)}]`);
+  console.log(
+    `   OSM Query: bbox=[${minX.toFixed(6)}, ${minY.toFixed(6)}, ${maxX.toFixed(6)}, ${maxY.toFixed(6)}]`,
+  );
 
   const query = `[out:json][timeout:25];
     way["building"](${minY},${minX},${maxY},${maxX});
@@ -135,7 +137,7 @@ async function fetchOSMBuildings(bbox: number[]): Promise<BuildingFootprint[]> {
       method: 'POST',
       body: `data=${encodeURIComponent(query)}`,
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      signal: AbortSignal.timeout(20000) // 20 second timeout
+      signal: AbortSignal.timeout(20000), // 20 second timeout
     });
 
     if (!response.ok) {
@@ -143,7 +145,7 @@ async function fetchOSMBuildings(bbox: number[]): Promise<BuildingFootprint[]> {
       return [];
     }
 
-    const data = await response.json() as any;
+    const data = (await response.json()) as any;
     const buildings: BuildingFootprint[] = [];
 
     console.log(`   OSM Response: ${data.elements?.length || 0} elements found`);
@@ -162,7 +164,7 @@ async function fetchOSMBuildings(bbox: number[]): Promise<BuildingFootprint[]> {
           geometry: normalizeGeometry({ rings: [coords] }),
           source: 'OSM',
           retrieved_at: new Date().toISOString(),
-          checksum: ''
+          checksum: '',
         });
       }
     }
@@ -180,7 +182,10 @@ async function fetchOSMBuildings(bbox: number[]): Promise<BuildingFootprint[]> {
 /**
  * Fetch buildings from ArcGIS endpoint
  */
-async function fetchArcGISBuildings(endpoint: string, bbox: number[]): Promise<BuildingFootprint[]> {
+async function fetchArcGISBuildings(
+  endpoint: string,
+  bbox: number[],
+): Promise<BuildingFootprint[]> {
   const [minX, minY, maxX, maxY] = bbox;
   const params = new URLSearchParams({
     f: 'json',
@@ -189,13 +194,13 @@ async function fetchArcGISBuildings(endpoint: string, bbox: number[]): Promise<B
     geometryType: 'esriGeometryEnvelope',
     spatialRel: 'esriSpatialRelIntersects',
     outFields: '*',
-    returnGeometry: 'true'
+    returnGeometry: 'true',
   });
 
   const response = await fetch(`${endpoint}/query?${params}`);
   if (!response.ok) return [];
 
-  const data = await response.json() as any;
+  const data = (await response.json()) as any;
   const buildings: BuildingFootprint[] = [];
 
   for (const feature of data.features || []) {
@@ -209,7 +214,7 @@ async function fetchArcGISBuildings(endpoint: string, bbox: number[]): Promise<B
         geometry: normalizeGeometry(feature.geometry),
         source: endpoint,
         retrieved_at: new Date().toISOString(),
-        checksum: ''
+        checksum: '',
       });
     }
   }
@@ -225,7 +230,7 @@ async function fetchArcGISBuildings(endpoint: string, bbox: number[]): Promise<B
 export function calculateBuildableArea(
   parcelGeometry: any,
   buildingFootprints: BuildingFootprint[],
-  setbacks: { front: number; side: number; rear: number }
+  setbacks: { front: number; side: number; rear: number },
 ): number {
   // 1. Normalize parcel geometry
   const normalizedParcel = normalizeGeometry(parcelGeometry);
@@ -236,10 +241,9 @@ export function calculateBuildableArea(
   if (!sideBuffer) return 0;
 
   // Apply directional setbacks (simplified for determinism)
-  const avgExtraSetback = ((setbacks.front - setbacks.side) + (setbacks.rear - setbacks.side)) / 4;
-  const envelope = avgExtraSetback > 0
-    ? turf.buffer(sideBuffer, -avgExtraSetback, { units: 'feet' })
-    : sideBuffer;
+  const avgExtraSetback = (setbacks.front - setbacks.side + (setbacks.rear - setbacks.side)) / 4;
+  const envelope =
+    avgExtraSetback > 0 ? turf.buffer(sideBuffer, -avgExtraSetback, { units: 'feet' }) : sideBuffer;
 
   if (!envelope) return 0;
 
@@ -278,7 +282,7 @@ export function calculateBuildableArea(
 export async function testDeterministicBehavior(
   parcelGeometry: any,
   countyName: string,
-  apn: string
+  apn: string,
 ): Promise<boolean> {
   console.log('Testing deterministic behavior...');
 
@@ -286,27 +290,27 @@ export async function testDeterministicBehavior(
   const results = [];
   for (let i = 0; i < 3; i++) {
     const buildings = await getBuildingFootprints(parcelGeometry, countyName, apn);
-    const buildable = calculateBuildableArea(
-      parcelGeometry,
-      buildings,
-      { front: 25, side: 5, rear: 15 }
-    );
+    const buildable = calculateBuildableArea(parcelGeometry, buildings, {
+      front: 25,
+      side: 5,
+      rear: 15,
+    });
 
     results.push({
       buildingCount: buildings.length,
       totalBuildingArea: buildings.reduce((sum, b) => sum + b.area_sqft, 0),
       buildableArea: buildable,
-      checksums: buildings.map(b => b.checksum).join(',')
+      checksums: buildings.map((b) => b.checksum).join(','),
     });
   }
 
   // Verify all results are identical
   const firstResult = JSON.stringify(results[0]);
-  const allIdentical = results.every(r => JSON.stringify(r) === firstResult);
+  const allIdentical = results.every((r) => JSON.stringify(r) === firstResult);
 
   console.log('Deterministic test results:', {
     passed: allIdentical,
-    runs: results
+    runs: results,
   });
 
   return allIdentical;
