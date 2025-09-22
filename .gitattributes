@@ -1,0 +1,42 @@
+# Auto detect text files and perform LF normalization
+* text=auto eol=lf
+
+# Text files
+*.ts text
+*.tsx text
+*.js text
+*.jsx text
+*.json text
+*.md text
+*.yml text
+*.yaml text
+*.html text
+*.css text
+*.scss text
+*.sh text
+*.env text
+*.example text
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.db binary
+*.sqlite binary
+*.gdb binary
+*.gdbtable binary
+*.gdbtablx binary
+*.spx binary
+
+# Exclude from diff
+*.min.js -diff
+*.min.css -diff
+package-lock.json -diff
+pnpm-lock.yaml -diff
+yarn.lock -diff
