@@ -38,7 +38,14 @@ export default [
         module: 'readonly',
         require: 'readonly',
         global: 'readonly',
-        URL: 'readonly'
+        URL: 'readonly',
+        URLSearchParams: 'readonly',
+        AbortSignal: 'readonly',
+        AbortController: 'readonly',
+        fetch: 'readonly',
+        Response: 'readonly',
+        Request: 'readonly',
+        Headers: 'readonly'
       }
     },
     plugins: {
