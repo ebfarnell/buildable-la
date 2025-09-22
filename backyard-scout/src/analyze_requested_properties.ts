@@ -170,17 +170,16 @@ async function analyzeProperty(config: PropertyConfig, parcelFeature: any) {
   console.log(`   Lot Size: ${areaSqft.toLocaleString()} sqft`);
   console.log(`   Zoning: Checking...`);
 
-  // Get zoning data - create geojson for centroid calculation
-  const geojsonForCentroid = {
-    type: 'Feature',
-    geometry: {
-      type: 'Polygon',
-      coordinates: geometry.rings,
-    },
-    properties: {},
-  };
-  // Centroid calculation removed as it was not being used
+  // Get zoning data - centroid calculation removed as it was not being used
   // Can be re-added if coordinates are needed in future:
+  // const geojsonForCentroid = {
+  //   type: 'Feature',
+  //   geometry: {
+  //     type: 'Polygon',
+  //     coordinates: geometry.rings,
+  //   },
+  //   properties: {},
+  // };
   // const centroid = turf.centroid(geojsonForCentroid as any);
   // const [lng, lat] = centroid.geometry.coordinates;
 
