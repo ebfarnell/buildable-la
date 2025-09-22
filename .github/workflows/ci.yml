@@ -74,7 +74,7 @@ jobs:
       - name: Check file sizes
         run: |
           echo "Checking for large files..."
-          find . -type f -size +10M -exec ls -lh {} \; | grep -v node_modules | grep -v .git
+          find . -type f -size +10M -exec ls -lh {} \; | grep -v node_modules | grep -v .git || echo "No large files found (good!)"
 
       - name: Check for TODO items
         run: |
