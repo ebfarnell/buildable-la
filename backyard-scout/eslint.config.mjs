@@ -45,7 +45,13 @@ export default [
         fetch: 'readonly',
         Response: 'readonly',
         Request: 'readonly',
-        Headers: 'readonly'
+        Headers: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        setImmediate: 'readonly',
+        clearImmediate: 'readonly'
       }
     },
     plugins: {
@@ -61,6 +67,10 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-non-null-assertion': 'warn',
+      '@typescript-eslint/ban-ts-comment': 'off',
+      'no-useless-catch': 'off',
+      'no-empty': 'warn',
+      'no-const-assign': 'error',
       'no-console': 'off',
       'no-debugger': 'warn',
       'no-unused-vars': 'off',
