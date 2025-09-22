@@ -31,3 +31,8 @@ yarn.lock
 *.min.js
 *.min.css
 *.map
+
+# YAML files with issues
+.claude_code_agent.yaml
+agent_config.yaml
+*.yaml
