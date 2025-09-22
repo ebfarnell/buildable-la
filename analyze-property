@@ -1,0 +1,247 @@
+#!/bin/bash
+
+# Property Analysis Tool Selector
+# Helps choose and run the right analysis tool based on user needs
+
+# Color codes for output
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+# Function to display the menu
+show_menu() {
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${GREEN}🏠 PROPERTY ANALYSIS TOOL SELECTOR${NC}"
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo
+    echo "Choose the analysis type you need:"
+    echo
+    echo -e "${YELLOW}1)${NC} ⚡ Quick Check - Rapid feasibility assessment (5 seconds)"
+    echo "   Example: Is 123 Main St worth looking at?"
+    echo
+    echo -e "${YELLOW}2)${NC} 🏠 ADU Analysis - Detailed ADU buildability study"
+    echo "   Example: Can I build an ADU at this address?"
+    echo
+    echo -e "${YELLOW}3)${NC} ✂️  Lot Splitting - Find subdividable properties in area"
+    echo "   Example: Find lots I can split in ZIP 91301"
+    echo
+    echo -e "${YELLOW}4)${NC} 🗺️  Area ADU Search - Find all ADU opportunities in area"
+    echo "   Example: Show all ADU properties in Agoura Hills"
+    echo
+    echo -e "${YELLOW}5)${NC} 📊 Property Compare - Compare multiple properties"
+    echo "   Example: Which of these 3 properties is best?"
+    echo
+    echo -e "${YELLOW}6)${NC} 📖 Help - Show detailed usage for each tool"
+    echo
+    echo -e "${YELLOW}0)${NC} Exit"
+    echo
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+}
+
+# Function to run quick check
+run_quick_check() {
+    echo -e "${GREEN}⚡ QUICK FEASIBILITY CHECK${NC}"
+    echo "Enter property address (or 'back' to return):"
+    read -r address
+
+    if [ "$address" != "back" ]; then
+        echo -e "${BLUE}Running quick check...${NC}"
+        cd backyard-scout && npx tsx src/tools/quick_check.ts "$address"
+    fi
+}
+
+# Function to run ADU analysis
+run_adu_analysis() {
+    echo -e "${GREEN}🏠 DETAILED ADU ANALYSIS${NC}"
+    echo "Enter property addresses (comma-separated or one per line):"
+    echo "Press Enter twice when done:"
+
+    addresses=""
+    while IFS= read -r line; do
+        [ -z "$line" ] && break
+        addresses="$addresses \"$line\""
+    done
+
+    if [ -n "$addresses" ]; then
+        echo -e "${BLUE}Running ADU analysis...${NC}"
+        eval "cd backyard-scout && npx tsx src/analyze_requested_properties.ts $addresses"
+    fi
+}
+
+# Function to run lot splitting analysis
+run_lot_split() {
+    echo -e "${GREEN}✂️ LOT SPLITTING ANALYSIS${NC}"
+    echo "Enter ZIP code or city name:"
+    read -r location
+
+    echo "Minimum lot size in sqft (default: 15000):"
+    read -r minsize
+    minsize=${minsize:-15000}
+
+    if [[ "$location" =~ ^[0-9]{5}$ ]]; then
+        echo -e "${BLUE}Searching for splittable lots in ZIP $location...${NC}"
+        cd backyard-scout && npx tsx src/tools/lot_split_analyzer.ts --zip "$location" --min-size "$minsize"
+    else
+        echo -e "${BLUE}Searching for splittable lots in $location...${NC}"
+        cd backyard-scout && npx tsx src/tools/lot_split_analyzer.ts --city "$location" --min-size "$minsize"
+    fi
+}
+
+# Function to run area ADU search
+run_area_search() {
+    echo -e "${GREEN}🗺️ AREA-WIDE ADU SEARCH${NC}"
+    echo "Enter ZIP code or city name:"
+    read -r location
+
+    echo "Show only viable properties? (y/n, default: y):"
+    read -r viable
+    viable=${viable:-y}
+
+    if [[ "$location" =~ ^[0-9]{5}$ ]]; then
+        echo -e "${BLUE}Searching for ADU opportunities in ZIP $location...${NC}"
+        if [ "$viable" = "n" ]; then
+            cd backyard-scout && npx tsx src/tools/area_adu_search.ts --zip "$location" --all
+        else
+            cd backyard-scout && npx tsx src/tools/area_adu_search.ts --zip "$location"
+        fi
+    else
+        echo -e "${BLUE}Searching for ADU opportunities in $location...${NC}"
+        if [ "$viable" = "n" ]; then
+            cd backyard-scout && npx tsx src/tools/area_adu_search.ts --city "$location" --all
+        else
+            cd backyard-scout && npx tsx src/tools/area_adu_search.ts --city "$location"
+        fi
+    fi
+}
+
+# Function to run property comparison
+run_comparison() {
+    echo -e "${GREEN}📊 PROPERTY COMPARISON${NC}"
+    echo "Enter property addresses to compare (one per line):"
+    echo "Press Enter twice when done:"
+
+    addresses=""
+    count=0
+    while IFS= read -r line; do
+        [ -z "$line" ] && break
+        addresses="$addresses \"$line\""
+        count=$((count + 1))
+    done
+
+    if [ $count -ge 2 ]; then
+        echo -e "${BLUE}Comparing $count properties...${NC}"
+        eval "cd backyard-scout && npx tsx src/tools/property_compare.ts $addresses"
+    else
+        echo -e "${RED}Need at least 2 properties to compare${NC}"
+    fi
+}
+
+# Function to show help
+show_help() {
+    echo -e "${GREEN}📖 DETAILED TOOL USAGE${NC}"
+    echo
+    echo -e "${YELLOW}1. Quick Check:${NC}"
+    echo "   - Single API call for instant assessment"
+    echo "   - Returns: 🟢 Excellent, 🟡 Good, 🟠 Fair, 🔴 Poor"
+    echo "   - Usage: npx tsx src/tools/quick_check.ts \"address\""
+    echo
+    echo -e "${YELLOW}2. ADU Analysis:${NC}"
+    echo "   - Full zoning, setbacks, building detection"
+    echo "   - Returns: Buildable area, max ADU size, financials"
+    echo "   - Usage: npx tsx src/analyze_requested_properties.ts \"addr1\" \"addr2\""
+    echo
+    echo -e "${YELLOW}3. Lot Splitting:${NC}"
+    echo "   - Finds all splittable parcels in an area"
+    echo "   - Returns: Ranked list by split potential"
+    echo "   - Usage: npx tsx src/tools/lot_split_analyzer.ts --zip 91301"
+    echo
+    echo -e "${YELLOW}4. Area ADU Search:${NC}"
+    echo "   - Analyzes all properties in ZIP/city"
+    echo "   - Returns: Top ADU opportunities ranked"
+    echo "   - Usage: npx tsx src/tools/area_adu_search.ts --city \"Agoura Hills\""
+    echo
+    echo -e "${YELLOW}5. Property Compare:${NC}"
+    echo "   - Side-by-side comparison of multiple properties"
+    echo "   - Returns: Rankings by ADU, splitting, investment"
+    echo "   - Usage: npx tsx src/tools/property_compare.ts \"addr1\" \"addr2\""
+    echo
+    echo "Press Enter to continue..."
+    read -r
+}
+
+# Main script logic
+main() {
+    # Check if we're in the right directory
+    if [ ! -d "backyard-scout" ]; then
+        echo -e "${RED}Error: Must run from Buildable-LA project root${NC}"
+        exit 1
+    fi
+
+    # If arguments provided, try to auto-detect tool
+    if [ $# -gt 0 ]; then
+        case "$1" in
+            quick|check)
+                shift
+                cd backyard-scout && npx tsx src/tools/quick_check.ts "$@"
+                ;;
+            adu|feasibility)
+                shift
+                cd backyard-scout && npx tsx src/analyze_requested_properties.ts "$@"
+                ;;
+            split|subdivide)
+                shift
+                cd backyard-scout && npx tsx src/tools/lot_split_analyzer.ts "$@"
+                ;;
+            area|search)
+                shift
+                cd backyard-scout && npx tsx src/tools/area_adu_search.ts "$@"
+                ;;
+            compare|rank)
+                shift
+                cd backyard-scout && npx tsx src/tools/property_compare.ts "$@"
+                ;;
+            *)
+                # Try to detect based on content
+                if [[ "$*" == *"--zip"* ]] || [[ "$*" == *"--city"* ]]; then
+                    cd backyard-scout && npx tsx src/tools/area_adu_search.ts "$@"
+                else
+                    # Default to quick check for single address
+                    cd backyard-scout && npx tsx src/tools/quick_check.ts "$@"
+                fi
+                ;;
+        esac
+    else
+        # Interactive menu mode
+        while true; do
+            show_menu
+            echo -n "Enter your choice: "
+            read -r choice
+
+            case $choice in
+                1) run_quick_check ;;
+                2) run_adu_analysis ;;
+                3) run_lot_split ;;
+                4) run_area_search ;;
+                5) run_comparison ;;
+                6) show_help ;;
+                0)
+                    echo -e "${GREEN}Thank you for using Property Analysis Tools!${NC}"
+                    exit 0
+                    ;;
+                *)
+                    echo -e "${RED}Invalid option. Please try again.${NC}"
+                    sleep 2
+                    ;;
+            esac
+
+            echo
+            echo "Press Enter to continue..."
+            read -r
+        done
+    fi
+}
+
+# Run main function
+main "$@"

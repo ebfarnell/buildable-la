@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+/**
+ * Quick ADU Feasibility Analyzer
+ * Usage: ./analyze
+ *
+ * This script is designed to be auto-detected by Claude when asking about
+ * property feasibility in the Buildable-LA directory
+ */
+
+const { execSync } = require('child_process');
+const path = require('path');
+
+// Default properties for testing
+const DEFAULT_PROPERTIES = [
+  "20616 Archwood St, Winnetka, CA 91306",
+  "10921 Polaris Dr, San Diego, CA 92126",
+  "1843 S Bedford St, Los Angeles, CA 90035"
+];
+
+// Get properties from command line or use defaults
+const properties = process.argv.slice(2).length > 0
+  ? process.argv.slice(2)
+  : DEFAULT_PROPERTIES;
+
+console.log('🏠 ADU FEASIBILITY ANALYSIS');
+console.log('===========================\n');
+console.log('Analyzing properties:');
+properties.forEach((p, i) => console.log(`  ${i + 1}. ${p}`));
+console.log('\n');
+
+// Build command
+const scriptPath = path.join(__dirname, 'backyard-scout', 'src', 'analyze_requested_properties.ts');
+const args = properties.map(p => `"${p}"`).join(' ');
+const command = `cd "${path.join(__dirname, 'backyard-scout')}" && npx tsx src/analyze_requested_properties.ts ${args}`;
+
+try {
+  // Run analysis
+  console.log('Running analysis...\n');
+  execSync(command, { stdio: 'inherit' });
+
+  console.log('\n✅ Analysis complete!');
+  console.log('\n📊 Results saved to: backyard-scout/out/');
+  console.log('📋 View recommendations: ADU_Property_Recommendations.md');
+
+} catch (error) {
+  console.error('❌ Error running analysis:', error.message);
+  console.log('\nTroubleshooting:');
+  console.log('  1. Check that you have Node.js installed');
+  console.log('  2. Run: cd backyard-scout && npm install');
+  console.log('  3. Test APIs: cd backyard-scout && npx tsx tests/test_api_services.ts');
+  console.log('  4. See AGENT_FIXES_AND_BEST_PRACTICES.md for help');
+  process.exit(1);
+}

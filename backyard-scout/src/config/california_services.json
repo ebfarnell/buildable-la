@@ -1,0 +1,417 @@
+{
+  "statewide": {
+    "parcels": {
+      "name": "California Statewide Parcels",
+      "url": "https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/CA_Statewide_Parcels_Public_view/FeatureServer/0",
+      "coverage": "All 58 California Counties",
+      "provider": "California State",
+      "fields": {
+        "county": "COUNTYNAME",
+        "city": "SITE_CITY",
+        "apn": "PARCEL_APN",
+        "address": "SITE_ADDR",
+        "zip": "SITE_ZIP",
+        "house_number": "SITE_HOUSE_NUMBER",
+        "street_name": "SITE_STREET_NAME"
+      },
+      "query_examples": {
+        "by_county": "COUNTYNAME='ORANGE'",
+        "by_city": "COUNTYNAME='ORANGE' AND SITE_CITY='IRVINE'",
+        "by_zip": "SITE_ZIP='92612'"
+      }
+    }
+  },
+  "counties": {
+    "alameda": {
+      "name": "Alameda County",
+      "cities": [
+        "Oakland",
+        "Berkeley",
+        "Fremont",
+        "Hayward",
+        "San Leandro",
+        "Alameda",
+        "Union City",
+        "Pleasanton",
+        "Dublin",
+        "Livermore"
+      ],
+      "additional_services": {
+        "zoning": "https://services3.arcgis.com/8mRVhBBtAu5eqZUu/ArcGIS/rest/services/Zoning/FeatureServer/0"
+      }
+    },
+    "contra_costa": {
+      "name": "Contra Costa County",
+      "cities": [
+        "Concord",
+        "Richmond",
+        "Antioch",
+        "Walnut Creek",
+        "San Ramon",
+        "Pittsburg",
+        "Martinez",
+        "Pleasant Hill",
+        "Brentwood"
+      ],
+      "additional_services": {}
+    },
+    "fresno": {
+      "name": "Fresno County",
+      "cities": [
+        "Fresno",
+        "Clovis",
+        "Sanger",
+        "Selma",
+        "Kerman",
+        "Coalinga",
+        "Kingsburg",
+        "Mendota",
+        "Fowler"
+      ],
+      "additional_services": {}
+    },
+    "kern": {
+      "name": "Kern County",
+      "cities": [
+        "Bakersfield",
+        "Delano",
+        "Ridgecrest",
+        "Wasco",
+        "Shafter",
+        "Arvin",
+        "Tehachapi",
+        "California City"
+      ],
+      "additional_services": {}
+    },
+    "los_angeles": {
+      "name": "Los Angeles County",
+      "cities": [
+        "Los Angeles",
+        "Long Beach",
+        "Santa Clarita",
+        "Glendale",
+        "Lancaster",
+        "Palmdale",
+        "Pomona",
+        "Torrance",
+        "Pasadena",
+        "Santa Monica"
+      ],
+      "additional_services": {
+        "parcels_local": "https://public.gis.lacounty.gov/public/rest/services/LACounty_Cache/LACounty_Parcel/MapServer/0",
+        "zoning": "https://public.gis.lacounty.gov/public/rest/services/LACounty_Dynamic/Planning_Zoning/MapServer/11",
+        "buildings": "https://maps.lacity.org/lahub/rest/services/Buildings_2008/MapServer/0"
+      }
+    },
+    "marin": {
+      "name": "Marin County",
+      "cities": [
+        "San Rafael",
+        "Novato",
+        "Mill Valley",
+        "San Anselmo",
+        "Larkspur",
+        "Corte Madera",
+        "Fairfax",
+        "Tiburon",
+        "Sausalito"
+      ],
+      "additional_services": {}
+    },
+    "monterey": {
+      "name": "Monterey County",
+      "cities": [
+        "Salinas",
+        "Monterey",
+        "Seaside",
+        "Marina",
+        "Pacific Grove",
+        "Hollister",
+        "Soledad",
+        "Greenfield",
+        "Carmel"
+      ],
+      "additional_services": {}
+    },
+    "orange": {
+      "name": "Orange County",
+      "cities": [
+        "Anaheim",
+        "Santa Ana",
+        "Irvine",
+        "Huntington Beach",
+        "Garden Grove",
+        "Fullerton",
+        "Orange",
+        "Costa Mesa",
+        "Mission Viejo",
+        "Westminster"
+      ],
+      "additional_services": {
+        "parcels_local": "https://services.arcgis.com/b8yF60mg2FkPqnhS/ArcGIS/rest/services/Parcels/FeatureServer/0",
+        "zoning": "https://services.arcgis.com/b8yF60mg2FkPqnhS/ArcGIS/rest/services/Zoning/FeatureServer/0"
+      }
+    },
+    "placer": {
+      "name": "Placer County",
+      "cities": ["Roseville", "Rocklin", "Lincoln", "Auburn", "Granite Bay", "Loomis", "Colfax"],
+      "additional_services": {}
+    },
+    "riverside": {
+      "name": "Riverside County",
+      "cities": [
+        "Riverside",
+        "Moreno Valley",
+        "Corona",
+        "Murrieta",
+        "Temecula",
+        "Menifee",
+        "Hemet",
+        "Perris",
+        "Lake Elsinore",
+        "Palm Desert"
+      ],
+      "additional_services": {
+        "parcels_local": "https://gis1.countyofriverside.us/arcgis/rest/services/Parcels/Parcels/MapServer/0"
+      }
+    },
+    "sacramento": {
+      "name": "Sacramento County",
+      "cities": [
+        "Sacramento",
+        "Elk Grove",
+        "Citrus Heights",
+        "Folsom",
+        "Rancho Cordova",
+        "Galt",
+        "Isleton"
+      ],
+      "additional_services": {
+        "parcels_local": "https://services1.arcgis.com/5NARefyPVtAeuJPU/arcgis/rest/services/Parcels/FeatureServer/0"
+      }
+    },
+    "san_bernardino": {
+      "name": "San Bernardino County",
+      "cities": [
+        "San Bernardino",
+        "Fontana",
+        "Ontario",
+        "Rancho Cucamonga",
+        "Victorville",
+        "Rialto",
+        "Hesperia",
+        "Chino",
+        "Chino Hills",
+        "Upland"
+      ],
+      "additional_services": {
+        "parcels_local": "https://services1.arcgis.com/WCEItvfmZL7TdUWz/arcgis/rest/services/Parcels/FeatureServer/0"
+      }
+    },
+    "san_diego": {
+      "name": "San Diego County",
+      "cities": [
+        "San Diego",
+        "Chula Vista",
+        "Oceanside",
+        "Escondido",
+        "Carlsbad",
+        "El Cajon",
+        "Vista",
+        "San Marcos",
+        "Encinitas",
+        "National City"
+      ],
+      "additional_services": {
+        "parcels_local": "https://services.arcgis.com/J6j0gLTKRhQlDNdC/arcgis/rest/services/Parcels/FeatureServer/0",
+        "zoning": "https://services.arcgis.com/J6j0gLTKRhQlDNdC/arcgis/rest/services/Zoning/FeatureServer/0"
+      }
+    },
+    "san_francisco": {
+      "name": "San Francisco County",
+      "cities": ["San Francisco"],
+      "additional_services": {
+        "parcels_local": "https://services.arcgis.com/bkFwd5D6cpUfVNIN/arcgis/rest/services/Parcels/FeatureServer/0",
+        "zoning": "https://services.arcgis.com/bkFwd5D6cpUfVNIN/arcgis/rest/services/Zoning_Districts/FeatureServer/0"
+      }
+    },
+    "san_joaquin": {
+      "name": "San Joaquin County",
+      "cities": ["Stockton", "Tracy", "Manteca", "Lodi", "Lathrop", "Ripon", "Escalon"],
+      "additional_services": {}
+    },
+    "san_luis_obispo": {
+      "name": "San Luis Obispo County",
+      "cities": [
+        "San Luis Obispo",
+        "Paso Robles",
+        "Arroyo Grande",
+        "Atascadero",
+        "Pismo Beach",
+        "Morro Bay",
+        "Grover Beach"
+      ],
+      "additional_services": {}
+    },
+    "san_mateo": {
+      "name": "San Mateo County",
+      "cities": [
+        "Daly City",
+        "San Mateo",
+        "Redwood City",
+        "South San Francisco",
+        "San Bruno",
+        "Pacifica",
+        "Menlo Park",
+        "Foster City",
+        "Burlingame"
+      ],
+      "additional_services": {}
+    },
+    "santa_barbara": {
+      "name": "Santa Barbara County",
+      "cities": [
+        "Santa Barbara",
+        "Santa Maria",
+        "Lompoc",
+        "Goleta",
+        "Carpinteria",
+        "Solvang",
+        "Guadalupe"
+      ],
+      "additional_services": {
+        "parcels_local": "https://services1.arcgis.com/rXKaFVTxOLDGpqWO/arcgis/rest/services/Parcels/FeatureServer/0"
+      }
+    },
+    "santa_clara": {
+      "name": "Santa Clara County",
+      "cities": [
+        "San Jose",
+        "Sunnyvale",
+        "Santa Clara",
+        "Mountain View",
+        "Milpitas",
+        "Palo Alto",
+        "Cupertino",
+        "Gilroy",
+        "Campbell",
+        "Morgan Hill"
+      ],
+      "additional_services": {
+        "parcels_local": "https://services.arcgis.com/OoBKFhD5fG8dJVwO/arcgis/rest/services/Parcels/FeatureServer/0",
+        "zoning": "https://services.arcgis.com/OoBKFhD5fG8dJVwO/arcgis/rest/services/Zoning/FeatureServer/0"
+      }
+    },
+    "santa_cruz": {
+      "name": "Santa Cruz County",
+      "cities": ["Santa Cruz", "Watsonville", "Scotts Valley", "Capitola"],
+      "additional_services": {}
+    },
+    "solano": {
+      "name": "Solano County",
+      "cities": [
+        "Vallejo",
+        "Fairfield",
+        "Vacaville",
+        "Suisun City",
+        "Benicia",
+        "Dixon",
+        "Rio Vista"
+      ],
+      "additional_services": {}
+    },
+    "sonoma": {
+      "name": "Sonoma County",
+      "cities": [
+        "Santa Rosa",
+        "Petaluma",
+        "Rohnert Park",
+        "Windsor",
+        "Healdsburg",
+        "Sonoma",
+        "Sebastopol",
+        "Cotati",
+        "Cloverdale"
+      ],
+      "additional_services": {}
+    },
+    "stanislaus": {
+      "name": "Stanislaus County",
+      "cities": [
+        "Modesto",
+        "Turlock",
+        "Ceres",
+        "Oakdale",
+        "Riverbank",
+        "Patterson",
+        "Newman",
+        "Waterford"
+      ],
+      "additional_services": {}
+    },
+    "ventura": {
+      "name": "Ventura County",
+      "cities": [
+        "Oxnard",
+        "Thousand Oaks",
+        "Simi Valley",
+        "Ventura",
+        "Camarillo",
+        "Moorpark",
+        "Santa Paula",
+        "Port Hueneme",
+        "Fillmore",
+        "Ojai"
+      ],
+      "additional_services": {
+        "parcels_local": "https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/Assessor_Public_Parcels/FeatureServer/0",
+        "buildings": "https://services2.arcgis.com/SCn6czzcqKAFwdGU/arcgis/rest/services/Building_Footprints_2024/FeatureServer"
+      }
+    },
+    "yolo": {
+      "name": "Yolo County",
+      "cities": ["Davis", "West Sacramento", "Woodland", "Winters"],
+      "additional_services": {}
+    }
+  },
+  "overlays": {
+    "fire_hazard": {
+      "name": "CAL FIRE Fire Hazard Severity Zones",
+      "sra": "https://services.gis.ca.gov/arcgis/rest/services/Environment/Fire_Hazard_Severity_Zones/MapServer/0",
+      "lra": "https://services.gis.ca.gov/arcgis/rest/services/Environment/Fire_Hazard_Severity_Zones/MapServer/1"
+    },
+    "fema_flood": {
+      "name": "FEMA National Flood Hazard Layer",
+      "url": "https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer"
+    },
+    "earthquake": {
+      "name": "California Earthquake Hazard Zones",
+      "url": "https://services.conservation.ca.gov/arcgis/rest/services/CGS/EQ_Zones/MapServer"
+    },
+    "coastal": {
+      "name": "California Coastal Commission Boundaries",
+      "url": "https://services2.arcgis.com/Uq9r85Potqm3MfRV/arcgis/rest/services/California_Coastal_Commission_Boundary/FeatureServer/0"
+    }
+  },
+  "utilities": {
+    "osm_nominatim": {
+      "name": "OpenStreetMap Nominatim",
+      "url": "https://nominatim.openstreetmap.org/search",
+      "usage": "Area and POI discovery",
+      "note": "Read-only, no key required"
+    },
+    "census": {
+      "name": "US Census TIGER",
+      "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/tigerWMS_Current/MapServer"
+    }
+  },
+  "usage_notes": {
+    "primary_source": "Use the statewide parcels service for all California counties",
+    "local_fallback": "Some counties have additional local services with more detailed data",
+    "query_format": "Always use uppercase for COUNTYNAME values (e.g., 'ORANGE' not 'Orange')",
+    "rate_limits": "Start with 2 requests/second, scale up to 5 if stable",
+    "timeout": "Use 15-second timeout for large queries",
+    "pagination": "Use resultRecordCount and resultOffset for large datasets"
+  }
+}

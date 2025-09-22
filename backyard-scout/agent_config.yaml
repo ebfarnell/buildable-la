@@ -1,0 +1,263 @@
+name: backyard-scout-pro
+description: Comprehensive California property analysis system with ADU, lot splitting, and investment analysis
+version: 2.0.0
+author: Buildable-LA Team
+updated: 2025-09-22
+
+system_capabilities:
+  core_functions:
+    - ADU feasibility analysis with setback calculations
+    - Lot splitting/subdivision potential assessment
+    - Area-wide property search and ranking
+    - Multi-property comparison and investment analysis
+    - Quick feasibility screening (5-second checks)
+    - Building footprint detection with confidence scoring
+    - Zoning and setback requirement lookup
+    - Financial projections (cap rates, ROI, payback)
+
+  data_sources:
+    california_parcels:
+      endpoint: https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/CA_Statewide_Parcels_Public_view/FeatureServer/0
+      status: REQUIRED
+      purpose: Parcel boundaries, APNs, addresses, lot sizes
+      coverage: All 58 California counties
+
+    zoneomics:
+      endpoint: https://api.zoneomics.com/v2/parcels/tile
+      api_key: ed8066dd45cef9ed3bb531483c0e3bb3f0f70519
+      status: REQUIRED
+      purpose: Zoning codes, setback requirements
+      coverage: All California
+
+    building_sources:
+      priority_order:
+        - county_specific: LA, Orange, San Diego, SF, Alameda, etc.
+        - microsoft_buildings: Statewide ML-generated footprints
+        - openstreetmap: Urban areas, community-sourced
+        - assessor_data: LA County only, square footage only
+        - intelligent_estimate: Zone-based coverage estimates
+      fallback: 22% lot coverage when no data available
+
+tools:
+  quick_check:
+    name: Quick Feasibility Check
+    file: src/tools/quick_check.ts
+    execution_time: 5 seconds
+    api_calls: 1
+
+    trigger_words:
+      - "quick check"
+      - "rapid assessment"
+      - "worth looking at"
+      - "initial screening"
+      - "is it worth"
+
+    use_cases:
+      - Initial property screening
+      - Batch property evaluation
+      - Quick yes/no decisions
+      - Pre-qualification checks
+
+    returns:
+      - Status: 🟢 EXCELLENT / 🟡 GOOD / 🟠 FAIR / 🔴 POOR
+      - Estimated ADU size
+      - Split potential (number of lots)
+      - Key factors and next steps
+
+    command: |
+      npx tsx src/tools/quick_check.ts "address"
+      npx tsx src/tools/quick_check.ts --apn APN_NUMBER
+      npx tsx src/tools/quick_check.ts --batch addresses.txt
+
+  adu_analysis:
+    name: Detailed ADU Analysis
+    file: src/analyze_requested_properties.ts
+    execution_time: 30-60 seconds per property
+    api_calls: 3-5
+
+    trigger_words:
+      - "can I build an ADU"
+      - "ADU feasibility"
+      - "buildable area"
+      - "accessory dwelling unit"
+      - "backyard potential"
+
+    use_cases:
+      - Detailed ADU buildability study
+      - Accurate setback calculations
+      - Financial projections
+      - Building detection with sources
+
+    returns:
+      - Exact buildable area after setbacks
+      - Maximum ADU size allowed
+      - Development costs and ROI
+      - Monthly rent projections
+      - Cap rates and payback period
+      - Data quality indicators
+
+    command: |
+      npx tsx src/analyze_requested_properties.ts "address1" "address2"
+
+  lot_splitting:
+    name: Lot Splitting Analyzer
+    file: src/tools/lot_split_analyzer.ts
+    execution_time: 2-5 minutes for area search
+    api_calls: 50-200 (batch)
+
+    trigger_words:
+      - "split lots"
+      - "subdivide"
+      - "lot splitting"
+      - "find splittable properties"
+      - "parcels to split"
+      - "subdivision potential"
+
+    use_cases:
+      - Find all splittable parcels in area
+      - Identify subdivision opportunities
+      - Calculate maximum splits possible
+      - Rank by development potential
+
+    returns:
+      - List of splittable properties
+      - Maximum number of lots per property
+      - Minimum lot size requirements
+      - Existing building constraints
+      - Split potential scores
+      - Estimated land values
+
+    command: |
+      npx tsx src/tools/lot_split_analyzer.ts --zip 91301
+      npx tsx src/tools/lot_split_analyzer.ts --city "Agoura Hills"
+      npx tsx src/tools/lot_split_analyzer.ts --min-size 20000
+
+  area_search:
+    name: Area-Wide ADU Search
+    file: src/tools/area_adu_search.ts
+    execution_time: 3-10 minutes
+    api_calls: 100-500 (batch)
+
+    trigger_words:
+      - "find properties in [area]"
+      - "ADU opportunities in [city]"
+      - "scan neighborhood"
+      - "all properties in ZIP"
+      - "area analysis"
+      - "neighborhood opportunities"
+
+    use_cases:
+      - Comprehensive area analysis
+      - Find all ADU opportunities
+      - Market opportunity assessment
+      - Investment area selection
+
+    returns:
+      - Ranked ADU opportunities
+      - Viability assessments
+      - Financial metrics per property
+      - Area statistics and trends
+      - Data quality breakdown
+
+    command: |
+      npx tsx src/tools/area_adu_search.ts --zip 91301
+      npx tsx src/tools/area_adu_search.ts --city "Agoura Hills"
+      npx tsx src/tools/area_adu_search.ts --neighborhood "Old Agoura"
+
+  property_compare:
+    name: Property Comparison Tool
+    file: src/tools/property_compare.ts
+    execution_time: 1-2 minutes
+    api_calls: 3-5 per property
+
+    trigger_words:
+      - "compare properties"
+      - "which is better"
+      - "rank these"
+      - "best investment"
+      - "property comparison"
+
+    use_cases:
+      - Side-by-side property comparison
+      - Investment decision support
+      - Portfolio selection
+      - Opportunity ranking
+
+    returns:
+      - Comparison tables
+      - Rankings by multiple criteria
+      - ADU scores
+      - Splitting scores
+      - Investment scores
+      - Best overall recommendation
+
+    command: |
+      npx tsx src/tools/property_compare.ts "addr1" "addr2" "addr3"
+      npx tsx src/tools/property_compare.ts --file properties.txt
+
+decision_tree:
+  question_1: "How many properties?"
+    single_property:
+      question_2: "How much detail needed?"
+        minimal: USE quick_check
+        detailed: USE adu_analysis
+
+    multiple_properties:
+      question_2: "What's the goal?"
+        compare_them: USE property_compare
+        find_in_area: USE area_search
+        find_splittable: USE lot_splitting
+
+  question_1_alt: "What's the user asking?"
+    is_it_worth_it: USE quick_check
+    can_i_build_adu: USE adu_analysis
+    find_opportunities: USE area_search
+    split_lots: USE lot_splitting
+    which_is_better: USE property_compare
+
+error_handling:
+  api_failures:
+    california_parcels: CRITICAL - Cannot proceed without parcel data
+    zoneomics: DEGRADED - Use default setbacks (20' front, 5' side, 15' rear)
+    building_data: ACCEPTABLE - Use 22% coverage estimate
+
+  retry_strategy:
+    max_retries: 3
+    backoff: exponential
+    timeout: 10 seconds per API call
+
+performance_notes:
+  - Quick check is fastest (1 API call only)
+  - ADU analysis most accurate (full data pipeline)
+  - Area searches cache results for 7 days
+  - Building detection uses hierarchical fallbacks
+  - Batch operations more efficient than individual
+
+critical_reminders:
+  - NEVER use web search for property data
+  - ALWAYS use local APIs and tools only
+  - Clear cache if getting inconsistent results: rm -rf cache/*
+  - Building data quality varies by source - check confidence scores
+  - Zoneomics required for accurate setbacks
+  - California Parcels API is the single source of truth for parcels
+
+master_script:
+  name: analyze-property
+  location: ./analyze-property
+  purpose: Interactive tool selector with menu
+  usage: |
+    ./analyze-property                    # Interactive menu
+    ./analyze-property "address"          # Auto-detect tool
+    ./analyze-property split --zip 91301  # Direct tool selection
+
+agent_behavior:
+  1. Listen for trigger words to identify user intent
+  2. Select appropriate tool based on decision tree
+  3. Execute tool with proper parameters
+  4. Present results in clear, structured format
+  5. Suggest next steps or additional analysis
+  6. Never search web - use only configured APIs
+  7. Track data quality and report confidence levels
+
+last_updated: 2025-09-22
+api_status_check: Run 'node test-apis.js' to verify all endpoints

@@ -1,0 +1,132 @@
+🏠 COMPLETE ADU FEASIBILITY ANALYSIS
+📅 9/22/2025, 11:20:37 AM
+
+======================================================================
+📍 20616 Archwood St, Winnetka, CA 91306
+======================================================================
+
+📦 PARCEL DATA
+
+🗺️ Fetching parcel boundary for: 20616 Archwood St, Winnetka, CA 91306
+   📝 Search: 20616 ARCHWOOD, WINNETKA
+   🔄 Attempt 1/1 - Address search
+   🌐 Querying California Statewide Parcels...
+   ✅ Found parcel: 2148020015 (7,504 sqft)
+   ✅ APN: 2148020015
+   📐 Lot: 7,504 sqft (60' x 125')
+
+🏛️ ZONING DATA
+📦 Using cached zoning for 34.191469, -118.582667
+   Zone: RS-1-RIO
+   Setbacks: Front 20', Side 5', Rear 15'
+
+🏢 EXISTING BUILDINGS
+   ⚠️ Using estimate: 1,651 sqft (22% coverage)
+
+📊 BUILDABLE AREA ANALYSIS
+   Buildable Envelope: 3,843 sqft
+   Less Existing: -1,651 sqft
+   Net Buildable: 2,192 sqft
+   Max ADU Size: 1,200 sqft
+
+======================================================================
+📋 ADU FEASIBILITY RESULTS
+======================================================================
+
+✅ VIABILITY: YES (Score: 100/100)
+
+📐 BUILDABLE AREA:
+   Lot Size: 7,504 sqft
+   Buildable Envelope: 3,843 sqft
+   Existing Buildings: 1,651 sqft
+   Net Buildable: 2,192 sqft
+   Max ADU Allowed: 1,200 sqft
+
+✅ OPPORTUNITIES:
+   • 2,192 sqft available for ADU
+   • Can build maximum 1200 sqft ADU
+   • 18% lot coverage available
+   • Excellent buildable area available
+
+💰 FINANCIAL PROJECTIONS:
+   Recommended ADU: 1,000 sqft
+   Development Cost: $195,000
+   Monthly Rent: $3,000
+   Annual NOI: $23,940
+   Cap Rate: 12.3%
+   Payback: 98 months
+
+======================================================================
+📍 10921 Polaris Dr, San Diego, CA 92126
+======================================================================
+
+📦 PARCEL DATA
+
+🗺️ Fetching parcel boundary for: 10921 Polaris Dr, San Diego, CA 92126
+   📝 Search: 10921 POLARIS, SAN DIEGO
+   🔄 Attempt 1/1 - Address search
+   🌐 Querying California Statewide Parcels...
+   ✅ Found parcel: 3181941500 (5,079 sqft)
+   ✅ APN: 3181941500
+   📐 Lot: 5,079 sqft (101' x 53')
+
+🏛️ ZONING DATA
+📦 Using cached zoning for 32.917998, -117.131370
+   Zone: EMX-1
+   Setbacks: Front 20', Side 5', Rear 15'
+
+🏢 EXISTING BUILDINGS
+   ⚠️ Using estimate: 1,117 sqft (22% coverage)
+
+📊 BUILDABLE AREA ANALYSIS
+   Buildable Envelope: 2,189 sqft
+   Less Existing: -1,117 sqft
+   Net Buildable: 1,072 sqft
+   Max ADU Size: 915 sqft
+
+======================================================================
+📋 ADU FEASIBILITY RESULTS
+======================================================================
+
+✅ VIABILITY: YES (Score: 90/100)
+
+📐 BUILDABLE AREA:
+   Lot Size: 5,079 sqft
+   Buildable Envelope: 2,189 sqft
+   Existing Buildings: 1,117 sqft
+   Net Buildable: 1,072 sqft
+   Max ADU Allowed: 915 sqft
+
+✅ OPPORTUNITIES:
+   • 1,072 sqft available for ADU
+   • Can build maximum 915 sqft ADU
+   • 18% lot coverage available
+
+💰 FINANCIAL PROJECTIONS:
+   Recommended ADU: 915 sqft
+   Development Cost: $178,425
+   Monthly Rent: $2,745
+   Annual NOI: $21,905
+   Cap Rate: 12.3%
+   Payback: 98 months
+
+======================================================================
+📍 1843 S Bedford St, Los Angeles, CA 90035
+======================================================================
+
+📦 PARCEL DATA
+
+🗺️ Fetching parcel boundary for: 1843 S Bedford St, Los Angeles, CA 90035
+   📝 Search: 1843 S BEDFORD, LOS ANGELES
+   🔄 Attempt 1/1 - Address search
+   🌐 Querying California Statewide Parcels...
+   ✅ Found parcel: 4303015010 (8,212 sqft)
+   ✅ APN: 4303015010
+   📐 Lot: 8,212 sqft (139' x 103')
+
+🏛️ ZONING DATA
+📦 Using cached zoning for 34.044389, -118.382915
+   Zone: PD
+   Setbacks: Front 20', Side 5', Rear 15'
+
+🏢 EXISTING BUILDINGS

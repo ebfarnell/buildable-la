@@ -1,0 +1,24 @@
+# ADU Development Analysis Report - Developer Edition
+# Stage 1: SCREENING METRICS (Go/No-Go Decision)
+property_address,apn,deal_viable,viable_adu_sqft,estimated_all_in_cost,estimated_monthly_rent,cash_on_cash_return,months_to_positive_cashflow,deal_score,deal_rank,screening_flags
+
+# Stage 2: FINANCIAL ANALYSIS
+property_address,construction_cost_per_sqft,land_prep_cost,soft_costs_estimate,total_development_cost,projected_annual_noi,cap_rate,irr_5year,equity_required,loan_amount,debt_service_coverage,breakeven_occupancy
+
+# Stage 3: RISK ASSESSMENT
+property_address,zoning_risk,zoning_verified,building_data_confidence,site_constraints,utility_risk,permitting_complexity,construction_difficulty,market_risk,exit_strategy_options,overall_risk_score
+
+# Stage 4: SITE CHARACTERISTICS
+property_address,lot_size_sqft,existing_building_sqft,buildable_area_sqft,max_adu_size,lot_coverage_current,lot_coverage_after_adu,setbacks_f_s_r,lot_regularity,slope,access_type,parking_available
+
+# Stage 5: REGULATORY COMPLIANCE
+property_address,zone_code,zone_name,adu_ordinance_compliant,owner_occupancy_required,parking_required,hoa_restrictions,historic_district,coastal_zone,fire_zone,special_overlay_districts
+
+# Stage 6: MARKET ANALYSIS
+property_address,neighborhood_tier,median_rent_1br,median_rent_2br,rental_demand_score,days_on_market_avg,comparable_adu_rents,appreciation_rate_3yr,demographic_score,walkability_score,school_rating
+
+# Stage 7: DEVELOPMENT TIMELINE
+property_address,design_weeks,permitting_weeks,construction_weeks,total_timeline_weeks,seasonality_factors,inspection_milestones,critical_path_items
+
+# Stage 8: DATA QUALITY & SOURCES
+property_address,analysis_date,data_quality_score,zoning_source,building_source,confidence_level,manual_verification_needed,notes,analyst_recommendations

@@ -1,0 +1,87 @@
+{
+  "counties": {
+    "los_angeles": {
+      "parcels": {
+        "url": "https://public.gis.lacounty.gov/public/rest/services/LACounty_Cache/LACounty_Parcel/MapServer/0",
+        "alternates": [
+          "https://arcgis-server.gis.lacounty.gov/arcgis/rest/services/DAER/PARCELS/FeatureServer/0",
+          "https://public.gis.lacounty.gov/public/rest/services/LACounty_Dynamic/LACounty_Parcels/MapServer/0"
+        ]
+      },
+      "buildings": {
+        "url": "https://arcgis-server.gis.lacounty.gov/arcgis/rest/services/LACounty_Buildings/MapServer/0"
+      },
+      "zoning": {
+        "url": "https://public.gis.lacounty.gov/public/rest/services/LACounty_Dynamic/Planning_Zoning/MapServer/11"
+      },
+      "city_boundaries": {
+        "url": "https://public.gis.lacounty.gov/public/rest/services/LACounty_Cache/LACounty_Political_Boundaries/MapServer/1"
+      }
+    },
+    "ventura": {
+      "parcels": {
+        "url": "https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/Assessor_Public_Parcels/FeatureServer/0",
+        "alternates": [
+          "https://maps.ventura.org/arcgis/rest/services/Images_Parcels/Parcels/MapServer/0",
+          "https://maps.ventura.org/arcgis/rest/services/Ventura_County_Parcels/MapServer/1"
+        ]
+      },
+      "buildings": {
+        "url": "https://services2.arcgis.com/SCn6czzcqKAFwdGU/arcgis/rest/services/Building_Footprints_2024/FeatureServer"
+      },
+      "zoning": {
+        "url": "https://maps.ventura.org/arcgis/rest/services/Planning/Planning_Zoning/MapServer/0"
+      },
+      "city_boundaries": {
+        "url": "https://maps.ventura.org/arcgis/rest/services/Images_Parcels/City_Boundaries/MapServer/0"
+      }
+    }
+  },
+  "cities": {
+    "los_angeles_city": {
+      "zoning": {
+        "url": "https://maps.lacity.org/lahub/rest/services/ZIMAS/MapServer/0"
+      }
+    },
+    "thousand_oaks": {
+      "parcels": {
+        "url": "https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/Assessor_Public_Parcels/FeatureServer/0"
+      },
+      "zoning": {
+        "url": "https://maps.ventura.org/arcgis/rest/services/Planning/Planning_Zoning/MapServer/0"
+      }
+    }
+  },
+  "overlays": {
+    "cal_fire": {
+      "fhsz_sra": {
+        "url": "https://services.gis.ca.gov/arcgis/rest/services/Environment/Fire_Hazard_Severity_Zones/MapServer/0"
+      },
+      "fhsz_lra": {
+        "url": "https://services.gis.ca.gov/arcgis/rest/services/Environment/Fire_Hazard_Severity_Zones/MapServer/1"
+      }
+    },
+    "fema": {
+      "nfhl_flood": {
+        "url": "https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer"
+      }
+    }
+  },
+  "osm": {
+    "nominatim": {
+      "url": "https://nominatim.openstreetmap.org/search",
+      "note": "Read-only, no key needed"
+    }
+  },
+  "rate_limits": {
+    "default": {
+      "requests_per_second": 2,
+      "concurrent": 2,
+      "timeout_ms": 15000,
+      "retry_count": 3
+    },
+    "tested": {
+      "los_angeles_parcels": 5
+    }
+  }
+}
