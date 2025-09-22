@@ -173,7 +173,12 @@ export function calculateSetbackEnvelope(
   zoneCode?: string,
 ): {
   zone: string;
-  setbacks: any;
+  setbacks: {
+    front: number;
+    side: number;
+    rear: number;
+    corner_side: number;
+  };
   maxCoverage: number;
   buildableAreaEstimate: number;
 } {

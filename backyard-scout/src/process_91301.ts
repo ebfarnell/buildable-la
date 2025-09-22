@@ -85,7 +85,11 @@ Time: ${elapsed.toFixed(1)}s
 `);
 
   // First add address column if it doesn't exist
-  db.prepare('ALTER TABLE candidates ADD COLUMN address TEXT').run().changes;
+  try {
+    db.prepare('ALTER TABLE candidates ADD COLUMN address TEXT').run();
+  } catch {
+    // Column might already exist
+  }
 
   // Get top viable properties
   console.log('\n=== Top Properties for 1000 sqft ADU ===');

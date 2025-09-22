@@ -1,11 +1,20 @@
-# Dependencies
+# Build & vendors
 node_modules/
-
-# Build outputs
 dist/
 build/
-out/
 coverage/
+.trash/
+
+# Experimental / archived (agent/investigation code)
+archive/
+archived/
+**/investigation_scripts/
+**/temp_scripts/
+
+# Agent artifacts (let the agent own these)
+*.yaml
+.claude_code_agent.yaml
+agent_config.yaml
 
 # Data files
 *.db
@@ -13,14 +22,14 @@ coverage/
 *.gdb
 *.gdbtable
 data/
-
-# Cache
+out/
 cache/
-.cache/
+resources/
+templates/
 
-# Temporary
-tmp/
-.trash/
+# Test utilities (not production code)
+utils/
+tests/
 
 # Lockfiles
 package-lock.json
@@ -31,8 +40,3 @@ yarn.lock
 *.min.js
 *.min.css
 *.map
-
-# YAML files with issues
-.claude_code_agent.yaml
-agent_config.yaml
-*.yaml

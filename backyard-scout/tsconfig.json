@@ -31,5 +31,19 @@
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "build", "coverage", "**/*.spec.ts", "**/*.test.ts"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    ".trash",
+    "archive",
+    "archived",
+    "**/investigation_scripts",
+    "**/temp_scripts",
+    "tests",
+    "utils",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
 }
