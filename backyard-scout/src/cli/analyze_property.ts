@@ -23,7 +23,7 @@ async function analyzeProperty(address: string, city: string, zip: string) {
   }
 
   const houseNumber = match[1];
-  const streetName = match[2].toUpperCase();
+  const streetName = match[2]?.toUpperCase() ?? '';
 
   // Query for the specific parcel
   const params = new URLSearchParams({

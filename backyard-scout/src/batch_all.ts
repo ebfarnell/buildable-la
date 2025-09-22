@@ -189,7 +189,7 @@ db.prepare(
 ).run();
 
 // CLI usage
-if (process.argv[1].endsWith('batch_all.ts')) {
+if (process.argv[1]?.endsWith('batch_all.ts')) {
   const inputFile = process.argv[2];
   const maxParcels = process.argv[3] ? parseInt(process.argv[3]) : 2000;
 

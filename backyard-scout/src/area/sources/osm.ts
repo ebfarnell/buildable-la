@@ -5,7 +5,7 @@ export async function searchOSM(name: string, cityHint?: string) {
   const url = `https://nominatim.openstreetmap.org/search?format=json&polygon_geojson=1&q=${q}`;
   const res = await fetch(url, {
     headers: { 'User-Agent': 'backyard-scout/1.0' },
-    timeout: 10_000 as any,
+    signal: AbortSignal.timeout(10000),
   });
   if (!res.ok) return null;
   const arr = await res.json();
@@ -23,7 +23,7 @@ export async function searchOSM(name: string, cityHint?: string) {
   if (!hit?.geojson) return null;
   const gj = hit.geojson; // GeoJSON geometry
   const feature = {
-    type: 'Feature',
+    type: 'Feature' as const,
     properties: { source: 'osm', display_name: hit.display_name },
     geometry: gj,
   };
