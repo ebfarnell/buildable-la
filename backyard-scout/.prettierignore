@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+coverage/
+
+# Data files
+*.db
+*.csv
+*.gdb
+*.gdbtable
+data/
+
+# Cache
+cache/
+.cache/
+
+# Temporary
+tmp/
+.trash/
+
+# Lockfiles
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Generated files
+*.min.js
+*.min.css
+*.map
