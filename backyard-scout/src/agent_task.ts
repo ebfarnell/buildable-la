@@ -1,5 +1,5 @@
 import * as turf from '@turf/turf';
-import { ENDPOINTS, SETTINGS } from './config.js';
+import { ENDPOINTS } from './config.js';
 import { exportImage } from './arcgis.js';
 import { footprintsByParcel, zoningIntersect, metroStopsNearby } from './sources.js';
 import { inwardSetbackEnvelope, subtractFootprints, toSqft } from './geo.js';

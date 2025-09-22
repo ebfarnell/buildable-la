@@ -1,7 +1,7 @@
 import * as turf from '@turf/turf';
 import { fetch } from 'undici';
 import { promises as fs } from 'node:fs';
-import { dirname } from 'node:path';
+// Removed unused import
 import {
   detectBuildings,
   type BuildingDetectionResult,
@@ -49,7 +49,7 @@ interface PropertyConfig {
 function createPropertyConfig(address: string): PropertyConfig {
   // Extract street number and street name
   const match = address.match(/(\d+)\s+(.+?)\s*,\s*([^,]+)\s*,\s*CA/i);
-  if (!match) {
+  if (!match || !match[1] || !match[2] || !match[3]) {
     throw new Error(`Cannot parse address: ${address}`);
   }
 
@@ -179,8 +179,10 @@ async function analyzeProperty(config: PropertyConfig, parcelFeature: any) {
     },
     properties: {},
   };
-  const centroid = turf.centroid(geojsonForCentroid as any);
-  const [lng, lat] = centroid.geometry.coordinates;
+  // Centroid calculation removed as it was not being used
+  // Can be re-added if coordinates are needed in future:
+  // const centroid = turf.centroid(geojsonForCentroid as any);
+  // const [lng, lat] = centroid.geometry.coordinates;
 
   let zoningData;
   let setbacks: { front: number; side: number; rear: number } | null = null;
@@ -401,7 +403,25 @@ async function main(addresses?: string[]) {
     return;
   }
 
-  const results = [];
+  type AnalysisResult = {
+    address: string;
+    apn: string;
+    lotSize: number;
+    zone: string | null;
+    buildableArea: number;
+    maxAduSize: number;
+    recommendedSize: number;
+    viable: boolean;
+    monthlyRent: number;
+    developmentCost: number;
+  };
+
+  type ErrorResult = {
+    address: string;
+    error: string;
+  };
+
+  const results: (AnalysisResult | ErrorResult)[] = [];
 
   for (const property of properties) {
     const parcel = await findParcel(property);
@@ -421,13 +441,15 @@ async function main(addresses?: string[]) {
   console.log('📊 FINAL SUMMARY');
   console.log('='.repeat(80));
 
-  const viable = results.filter((r) => r.viable);
+  const viable = results.filter((r): r is AnalysisResult =>
+    'viable' in r && r.viable
+  );
   console.log(`\nTotal Properties Analyzed: ${results.length}`);
   console.log(`Viable for ADU Development: ${viable.length}/${results.length}`);
 
   console.log('\n📋 VIABILITY SUMMARY:');
   for (const result of results) {
-    if (result.error) {
+    if ('error' in result) {
       console.log(`   ❌ ${result.address}: ${result.error}`);
     } else {
       const status = result.viable ? '✅' : '❌';
