@@ -306,7 +306,7 @@ function generateHTMLReport(analysis: PropertyAnalysis): string {
             <div class="metric">${analysis.buildings.count}</div>
             <p>Total Area: ${analysis.buildings.total_area_sqft.toLocaleString()} sqft<br>
             Source: ${analysis.buildings.source}<br>
-            Checksum: ${analysis.buildings.checksum}</p>
+            Quality: ${analysis.buildings.quality}</p>
         </div>
         <div class="info-box">
             <h3>Buildable Area</h3>
