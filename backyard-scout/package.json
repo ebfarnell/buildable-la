@@ -8,7 +8,7 @@
     "build": "tsc --noEmit",
     "start": "tsx src/agent_task.ts",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"src/**/*.{ts,tsx,js}\"",
+    "lint": "eslint \"src/**/*.{ts,tsx,js}\" --max-warnings=0",
     "lint:fix": "eslint \"src/**/*.{ts,tsx,js}\" --fix",
     "format": "prettier --write \"src/**/*.{ts,js,json}\" \"*.{json,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,js,json}\" \"*.{json,md}\"",

@@ -49,7 +49,7 @@ async function getParcelGeometry(address: string): Promise<{ geometry: any; apn:
     return null;
   }
 
-  const [_, streetNum, streetName, city] = match;
+  const [_, streetNum, streetName, _city] = match;
   const streetParts = streetName
     .replace(
       /\b(St|Street|Ave|Avenue|Rd|Road|Dr|Drive|Ln|Lane|Pl|Place|Ct|Court|Blvd|Boulevard)$/i,

@@ -1,7 +1,7 @@
 import * as turf from '@turf/turf';
 
 // Simple college resolver - in production, use a geocoding service
-export async function resolveCollege(name: string, city?: string) {
+export async function resolveCollege(name: string, _city?: string) {
   // California Lutheran University coordinates
   if (name.toLowerCase().includes('lutheran') || name.toLowerCase().includes('clu')) {
     return {

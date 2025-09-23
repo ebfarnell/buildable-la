@@ -58,12 +58,12 @@ function performQC(polygon: any): string {
 
     // Create grid points
     let pointsInside = 0;
-    let totalPoints = 0;
+    let _totalPoints = 0;
 
     for (let x = bbox[0]; x <= bbox[2]; x += gridSpacing) {
       for (let y = bbox[1]; y <= bbox[3]; y += gridSpacing) {
         const pt = turf.point([x, y]);
-        totalPoints++;
+        _totalPoints++;
         if (turf.booleanPointInPolygon(pt, polygon)) {
           pointsInside++;
         }
