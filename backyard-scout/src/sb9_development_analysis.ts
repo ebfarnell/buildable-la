@@ -4,7 +4,7 @@
  * Comprehensive analysis for subdivision and development potential
  */
 
-import { analyzeRequestedProperties } from './analyze_requested_properties.js';
+import { _analyzeRequestedProperties } from './analyze_requested_properties.js';
 
 interface SB9Analysis {
   address: string;
@@ -169,7 +169,7 @@ function analyzeSB9Potential(property: any): SB9Analysis {
 }
 
 async function main() {
-  const addresses = [
+  const _addresses = [
     '20616 Archwood St, Winnetka, CA 91306',
     '10921 Polaris Dr, San Diego, CA 92126',
     '1843 S Bedford St, Los Angeles, CA 90035',

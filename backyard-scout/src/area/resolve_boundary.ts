@@ -57,19 +57,25 @@ export async function resolveBoundary(
         geojson: fc,
       };
     }
-  } catch {}
+  } catch {
+    // Ignore cache error
+  }
 
   // ArcGIS known hubs (extend later)
   try {
     const g = await searchArcGISBoundary(name, cityHint);
     if (g) return g;
-  } catch {}
+  } catch {
+    // Ignore cache error
+  }
 
   // Wiki fallback (optional)
   try {
     const g = await searchWikiPolygon(name, cityHint);
     if (g) return g;
-  } catch {}
+  } catch {
+    // Ignore cache error
+  }
 
   return null;
 }

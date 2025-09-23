@@ -57,7 +57,7 @@ function checkCache(address: string): ParcelResult | null {
         console.log(`   📦 Using cached parcel data`);
         return { ...data.result, cached: true };
       }
-    } catch (error) {
+    } catch (_error) {
       // Invalid cache, will refetch
     }
   }
@@ -124,7 +124,7 @@ function parseAddress(address: string) {
 function getCountyFromCity(city: string): string | null {
   const cityUpper = city.toUpperCase();
 
-  for (const [countyKey, countyData] of Object.entries(californiaServices.counties)) {
+  for (const [_countyKey, countyData] of Object.entries(californiaServices.counties)) {
     const county = countyData as any;
     if (county.cities) {
       const found = county.cities.some(

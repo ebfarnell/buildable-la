@@ -1,7 +1,7 @@
 import fs from 'node:fs';
-import * as turf from '@turf/turf';
+import * as _turf from '@turf/turf';
 import { streamFeatureServer } from './net/stream_query.js';
-import { routeCountyByPoint } from './services/county.js';
+import { _routeCountyByPoint } from './services/county.js';
 import { getLayerBlock } from './services/layers_router.js';
 import slugify from 'slugify';
 

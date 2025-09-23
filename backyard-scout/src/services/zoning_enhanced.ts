@@ -137,7 +137,7 @@ function loadCachedResult(cacheKey: string): ZoningResult | null {
         return cached;
       }
     }
-  } catch (error) {
+  } catch (_error) {
     // Cache error - continue without cache
   }
   return null;
@@ -150,7 +150,7 @@ function saveToCache(cacheKey: string, result: ZoningResult): void {
   try {
     const cachePath = path.join(CACHE_DIR, `${cacheKey}.json`);
     fs.writeFileSync(cachePath, JSON.stringify(result, null, 2));
-  } catch (error) {
+  } catch (_error) {
     // Cache error - continue without saving
   }
 }
@@ -305,7 +305,7 @@ async function queryZoningEndpoint(
           };
         }
       }
-    } catch (error) {
+    } catch (_error) {
       // Try next URL
     }
   }

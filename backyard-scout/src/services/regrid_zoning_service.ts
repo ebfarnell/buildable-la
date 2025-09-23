@@ -99,7 +99,7 @@ export async function getRegridZoning(
     console.log(`   🔍 Querying Regrid API for APN ${apn}...`);
 
     // Method 1: Direct APN search
-    let url = `https://app.regrid.com/api/v2/parcels/apn?parcelnumb=${apn}&path=/us/ca/${county.toLowerCase()}&token=${token}`;
+    const url = `https://app.regrid.com/api/v2/parcels/apn?parcelnumb=${apn}&path=/us/ca/${county.toLowerCase()}&token=${token}`;
 
     let response = await fetch(url, {
       headers: { Accept: 'application/json' },

@@ -3,7 +3,7 @@
  */
 
 import { fetch } from 'undici';
-import * as protobuf from 'protobufjs';
+import * as _protobuf from 'protobufjs';
 
 export interface ZoneomicsZone {
   zone_code?: string;
@@ -86,7 +86,7 @@ function extractZoneFromProtobuf(buffer: ArrayBuffer): ZoneomicsZone[] {
       /\b[A-Z]{1,2}[0-9]{1,2}\b/g,
     ];
 
-    let foundZones: string[] = [];
+    const foundZones: string[] = [];
 
     // Extract all potential zone codes
     for (const pattern of zoneCodePatterns) {

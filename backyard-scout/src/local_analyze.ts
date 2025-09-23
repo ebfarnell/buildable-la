@@ -42,7 +42,7 @@ function createBuildableEnvelope(parcel: any, setbacks: Setbacks): any {
     }
 
     return envelope;
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -78,7 +78,7 @@ function performQC(polygon: any): string {
     }
 
     return '';
-  } catch (e) {
+  } catch (_e) {
     return 'qc_failed';
   }
 }

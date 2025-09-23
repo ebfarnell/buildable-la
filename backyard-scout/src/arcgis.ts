@@ -53,7 +53,7 @@ export async function queryFeatureLayer(url: string, params: Record<string, any>
       const js = await r.json().catch(() => null);
       if (js && Array.isArray((js as any).features)) return js; // already GeoJSON
     } else {
-      const txt = await r.text().catch(() => '');
+      const _txt = await r.text().catch(() => '');
       // fall through to JSON path; keep diagnostics in case both fail
       // console.warn(`geojson POST failed ${r.status}: ${base}\n${txt.slice(0,200)}`);
     }

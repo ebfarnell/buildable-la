@@ -157,7 +157,7 @@ async function analyzeADUPotential(parcel: any): Promise<ADUOpportunity | null> 
         dataQuality = 'high';
       }
     }
-  } catch (error) {
+  } catch (_error) {
     // Use defaults
   }
 
@@ -176,7 +176,7 @@ async function analyzeADUPotential(parcel: any): Promise<ADUOpportunity | null> 
     if (buildingData.data_quality === 'high' || buildingData.data_quality === 'medium') {
       buildingDataQuality = buildingData.data_quality as 'high' | 'medium';
     }
-  } catch (error) {
+  } catch (_error) {
     // Use estimate
     buildingArea = areaSqft * 0.22;
   }

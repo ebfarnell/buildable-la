@@ -54,13 +54,13 @@ export async function analyzeParcelSimple(
   // First add address column if it doesn't exist
   try {
     db.prepare('ALTER TABLE candidates ADD COLUMN address TEXT').run();
-  } catch (e) {
+  } catch (_e) {
     // Column might already exist
   }
 
   try {
     db.prepare('ALTER TABLE candidates ADD COLUMN lot_area_sqft REAL').run();
-  } catch (e) {
+  } catch (_e) {
     // Column might already exist
   }
 

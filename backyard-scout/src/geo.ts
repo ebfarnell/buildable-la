@@ -27,7 +27,7 @@ export function subtractFootprints(
     try {
       const diff = turf.difference(turf.featureCollection([result, f]));
       if (diff) result = diff;
-    } catch (e) {
+    } catch (_e) {
       // Skip if difference operation fails
       continue;
     }

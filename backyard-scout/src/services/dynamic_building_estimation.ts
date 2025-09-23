@@ -172,7 +172,7 @@ function getLotSizeAdjustment(lotSizeSqft: number): number {
 export function calculateDynamicEstimate(factors: EstimationFactors): BuildingEstimate {
   // Get base coverage from zone
   const zonePattern = getZonePattern(factors.zoneCode);
-  let baseCoverage = zonePattern.typical;
+  const baseCoverage = zonePattern.typical;
 
   // Apply lot size adjustment
   const sizeAdjustment = getLotSizeAdjustment(factors.lotSizeSqft);

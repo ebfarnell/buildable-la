@@ -95,7 +95,7 @@ async function analyzeProperties() {
   try {
     const westlakeResults = westlakeDb.prepare(query).all() as Property[];
     properties.push(...westlakeResults);
-  } catch (e) {
+  } catch (_e) {
     console.log('No data from westlake-agoura.db');
   }
 
@@ -103,7 +103,7 @@ async function analyzeProperties() {
   try {
     const backyardResults = backyardDb.prepare(query).all() as Property[];
     properties.push(...backyardResults);
-  } catch (e) {
+  } catch (_e) {
     console.log('No results table in backyard-scout.db\n');
   }
 

@@ -416,7 +416,7 @@ async function fetchOSMBuildings(parcel: ParcelInfo): Promise<BuildingFootprint[
 /**
  * Fetch building data from LA County Assessor
  */
-async function fetchAssessorData(apn: string): Promise<{ building_sqft: number } | null> {
+async function fetchAssessorData(_apn: string): Promise<{ building_sqft: number } | null> {
   // Simplified assessor lookup - would need actual API integration
   // This is a placeholder for the actual assessor API call
   return null;
@@ -466,7 +466,7 @@ function matchBuildingsToParcel(
           }
         }
       }
-    } catch (e) {
+    } catch (_e) {
       // If intersection fails, check if centroid is in parcel
       const buildingCentroid = turf.centroid(buildingPolygon);
       if (turf.booleanPointInPolygon(buildingCentroid, parcelPolygon)) {

@@ -168,7 +168,7 @@ async function analyzeProperty(address: string): Promise<PropertyAnalysis | null
         };
         minLotSize = zoneMins[baseZone] || 7500;
       }
-    } catch (error) {
+    } catch (_error) {
       console.log('   ⚠️ Could not fetch zoning');
     }
 
@@ -183,7 +183,7 @@ async function analyzeProperty(address: string): Promise<PropertyAnalysis | null
       console.log(
         `   🏢 Buildings: ${buildingArea.toLocaleString()} sqft (${buildingDataQuality})`,
       );
-    } catch (error) {
+    } catch (_error) {
       buildingArea = areaSqft * 0.22;
       console.log(`   🏢 Buildings: ${buildingArea.toLocaleString()} sqft (estimated)`);
     }
@@ -402,7 +402,7 @@ async function main() {
     try {
       const fileContent = await fs.readFile(args[1], 'utf-8');
       addresses = fileContent.split('\n').filter((line) => line.trim());
-    } catch (error) {
+    } catch (_error) {
       console.error(`❌ Could not read file: ${args[1]}`);
       return;
     }

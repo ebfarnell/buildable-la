@@ -9,7 +9,7 @@ const CLU_LON = -118.8814; // Thousand Oaks, CA 91360
 
 // Search radius: 1.5 miles (good for student/faculty housing)
 const SEARCH_RADIUS_MILES = 1.5;
-const MILES_TO_METERS = 1609.34;
+const _MILES_TO_METERS = 1609.34;
 
 // Ventura County Parcels service
 const VENTURA_PARCELS_URL =

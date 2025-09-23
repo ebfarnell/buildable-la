@@ -30,7 +30,7 @@ export async function resolve_zip(ctx: Ctx, { zip }: { zip: string }) {
 
 export async function resolve_poi(
   ctx: Ctx,
-  { kind, name, city }: { kind: 'college' | 'university'; name: string; city?: string },
+  { _kind, name, city }: { kind: 'college' | 'university'; name: string; city?: string },
 ) {
   const poi = await resolveCollege(name, city);
   if (!poi) throw new Error('POI not found: ' + name);
@@ -51,7 +51,7 @@ export async function extract_stream(
   ctx: Ctx,
   {
     county,
-    layer,
+    _layer,
     geometry,
     fields,
   }: { county: 'los_angeles' | 'ventura' | 'auto'; layer: string; geometry: any; fields: string[] },
@@ -131,7 +131,9 @@ export async function shortlist(
           rental_score: +(buildable / 1000).toFixed(1),
         });
       }
-    } catch {}
+    } catch {
+      // Skip if fetching property data fails
+    }
   }
   keep.sort((a, b) => b.rental_score - a.rental_score);
   ctx.shortlist = keep.slice(0, Number(limit));
@@ -163,7 +165,7 @@ export async function export_csv(ctx: Ctx, { path: filepath }: { path: string })
 // Optional: wire your existing rigorous batch
 export async function batch_analyze(
   ctx: Ctx,
-  { jsonl, limit }: { jsonl: string; limit?: number | string },
+  { _jsonl, _limit }: { jsonl: string; limit?: number | string },
 ) {
   // You can invoke your existing src/batch_all.ts here, or keep this as a no-op placeholder.
   return ctx;

@@ -131,7 +131,9 @@ export async function processParcels(options: ProcessOptions) {
               await import('./report_html.js')
                 .then((m) => (m as any).default?.('out/report_live.html'))
                 .catch(() => {});
-            } catch {}
+            } catch {
+              // Ignore report generation error
+            }
           }
         } catch (err: any) {
           errors++;

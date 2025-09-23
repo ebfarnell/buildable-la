@@ -122,7 +122,7 @@ async function analyzeProperty(address: string): Promise<DevelopmentAnalysis> {
   const coords = turf.centroid(polygon).geometry.coordinates;
   const zoningResult = await getEnhancedZoning(coords[1], coords[0]);
   const zone = zoningResult?.zone_code || 'RS-1';
-  const setbacks = getZoningRequirementsFromResult(zoningResult);
+  const _setbacks = getZoningRequirementsFromResult(zoningResult);
 
   console.log(`   🏘️ Zone: ${zone}`);
 

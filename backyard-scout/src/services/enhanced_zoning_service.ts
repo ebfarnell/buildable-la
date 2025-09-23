@@ -212,7 +212,7 @@ export function getZoningRequirementsFromResult(zoningResult: EnhancedZoningResu
   if (zoningResult.zone_code && zoningResult.zone_code !== 'UNKNOWN') {
     try {
       return getZoningRequirements(zoningResult.zone_code);
-    } catch (error) {
+    } catch (_error) {
       // If zone code not in local database, return conservative defaults
       console.log(`Using conservative defaults for zone: ${zoningResult.zone_code}`);
       return {

@@ -11,7 +11,7 @@
 
 import * as turf from '@turf/turf';
 import { fetch } from 'undici';
-import { getEnhancedZoning, getZoningRequirementsFromResult } from '../services/zoning_enhanced.js';
+import { getEnhancedZoning, _getZoningRequirementsFromResult } from '../services/zoning_enhanced.js';
 import { detectBuildings } from '../services/unified_building_detector.js';
 import { formatCurrency } from '../formulas/adu_formulas.js';
 
@@ -153,7 +153,7 @@ async function analyzeLotSplit(parcel: any): Promise<LotSplitCandidate | null> {
       const baseZone = zone.replace(/-.*$/, '').toUpperCase();
       minLotSize = ZONE_MIN_LOT_SIZES[baseZone] || ZONE_MIN_LOT_SIZES.DEFAULT;
     }
-  } catch (error) {
+  } catch (_error) {
     console.log(`   ⚠️ Could not get zoning for ${attrs.PARCEL_APN}`);
   }
 
@@ -167,7 +167,7 @@ async function analyzeLotSplit(parcel: any): Promise<LotSplitCandidate | null> {
   try {
     const buildingData = await detectBuildings(geometry, attrs.PARCEL_APN, attrs.COUNTYNAME);
     buildingArea = buildingData.total_area_sqft;
-  } catch (error) {
+  } catch (_error) {
     // Use estimate if detection fails
     buildingArea = areaSqft * 0.15; // Conservative estimate
   }

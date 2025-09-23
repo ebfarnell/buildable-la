@@ -11,7 +11,7 @@
 
 import * as turf from '@turf/turf';
 import { fetch } from 'undici';
-import { formatCurrency, formatPercent } from '../formulas/adu_formulas.js';
+import { formatCurrency, _formatPercent } from '../formulas/adu_formulas.js';
 import { promises as fs } from 'fs';
 
 const CA_PARCELS_URL =
@@ -274,7 +274,7 @@ async function main() {
     return;
   }
 
-  let assessments: QuickAssessment[] = [];
+  const assessments: QuickAssessment[] = [];
 
   if (args[0] === '--batch' && args[1]) {
     // Batch mode
@@ -291,7 +291,7 @@ async function main() {
           displayAssessment(assessment);
         }
       }
-    } catch (error) {
+    } catch (_error) {
       console.error(`❌ Could not read file: ${args[1]}`);
       return;
     }

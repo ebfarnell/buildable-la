@@ -198,7 +198,7 @@ function matchBuildingsToParcel(
           overlap_percent: overlapPercent,
         });
       }
-    } catch (error) {
+    } catch (_error) {
       // Geometry operation failed
       continue;
     }
@@ -254,7 +254,7 @@ function crossValidateBuildings(buildings: BuildingFootprint[]): BuildingFootpri
               used.add(other.id);
             }
           }
-        } catch (error) {
+        } catch (_error) {
           continue;
         }
       }

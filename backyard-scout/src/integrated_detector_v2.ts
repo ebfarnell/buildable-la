@@ -167,7 +167,7 @@ function matchBuildingsToParcel(
       let isWithin = false;
       try {
         isWithin = turf.booleanWithin(buildingPolygon, parcelPolygon);
-      } catch (e) {
+      } catch (_e) {
         // Geometry operation failed
       }
 
@@ -179,7 +179,7 @@ function matchBuildingsToParcel(
           const intersectionArea = turf.area(intersection) * 10.7639;
           overlapPercent = Math.round((intersectionArea / building.area_sqft) * 100);
         }
-      } catch (e) {
+      } catch (_e) {
         // Intersection failed
       }
 
@@ -187,7 +187,7 @@ function matchBuildingsToParcel(
       let centroidInParcel = false;
       try {
         centroidInParcel = turf.booleanPointInPolygon(buildingCentroid, parcelPolygon);
-      } catch (e) {
+      } catch (_e) {
         // Point in polygon failed
       }
 

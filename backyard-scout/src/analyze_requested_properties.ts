@@ -82,7 +82,7 @@ async function findParcel(config: PropertyConfig) {
   console.log(`\n🔍 Searching for: ${config.address}`);
 
   // First try with the search query
-  let params = new URLSearchParams({
+  const params = new URLSearchParams({
     f: 'json',
     where: config.searchQuery,
     outFields: '*',
