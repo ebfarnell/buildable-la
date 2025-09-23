@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "city_of_san_diego",
+        "name": "City of San Diego",
+        "note": "Simplified bounding box - replace with official boundary"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-117.28, 32.53],
+            [-116.91, 32.53],
+            [-116.91, 33.02],
+            [-117.28, 33.02],
+            [-117.28, 32.53]
+          ]
+        ]
+      }
+    }
+  ]
+}

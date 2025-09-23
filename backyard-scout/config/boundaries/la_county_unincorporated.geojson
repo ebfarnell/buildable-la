@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "la_county_unincorporated",
+        "name": "LA County Unincorporated",
+        "note": "Simplified bounding box - replace with official unincorporated areas"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-119.00, 33.50],
+            [-117.60, 33.50],
+            [-117.60, 34.82],
+            [-119.00, 34.82],
+            [-119.00, 33.50]
+          ]
+        ]
+      }
+    }
+  ]
+}

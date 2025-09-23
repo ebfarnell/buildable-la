@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "orange_county_unincorporated",
+        "name": "Orange County Unincorporated",
+        "note": "Simplified bounding box - replace with official unincorporated areas"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-118.10, 33.38],
+            [-117.40, 33.38],
+            [-117.40, 33.95],
+            [-118.10, 33.95],
+            [-118.10, 33.38]
+          ]
+        ]
+      }
+    }
+  ]
+}
