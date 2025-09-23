@@ -36,14 +36,12 @@ jobs:
       - name: Run TypeScript type checking
         run: |
           cd backyard-scout
-          npm run typecheck --if-present || true # TODO: Fix remaining TypeScript errors
-        continue-on-error: true
+          npm run typecheck --if-present
 
       - name: Run ESLint
         run: |
           cd backyard-scout
-          npm run lint --if-present || true # Warnings only for now
-        continue-on-error: true
+          npm run lint --if-present
 
       - name: Check code formatting
         run: |
@@ -63,8 +61,7 @@ jobs:
       - name: Build application
         run: |
           cd backyard-scout
-          npm run build --if-present || true # TypeScript errors are tracked separately
-        continue-on-error: true
+          npm run build --if-present
 
   code-quality:
     name: Code Quality Checks
