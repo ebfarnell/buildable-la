@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "updatedAt": "2024-12-23T00:00:00Z",
+  "jurisdictions": [
+    {
+      "key": "city_of_los_angeles",
+      "name": "City of Los Angeles",
+      "match": {
+        "type": "polygon",
+        "source": "config/boundaries/city_of_los_angeles.geojson",
+        "note": "Simplified city boundary polygon"
+      },
+      "layers": [
+        {
+          "id": "zoning_mvt",
+          "type": "vector_tile",
+          "url": "<REPLACE_ME_LA_VECTOR>/VectorTileServer/tile/{z}/{y}/{x}",
+          "format": "mvt",
+          "capabilities": ["zoning", "overlays"],
+          "properties": {
+            "zone_code": ["ZONE", "ZONE_CODE"],
+            "zone_name": ["ZONE_NAME"]
+          },
+          "priority": 0
+        },
+        {
+          "id": "zoning_feature_fallback",
+          "type": "feature",
+          "url": "<REPLACE_ME_LA_FEATURE>/FeatureServer/0/query",
+          "geometryField": "Shape",
+          "capabilities": ["zoning"],
+          "priority": 1
+        },
+        {
+          "id": "fema_nfhl",
+          "type": "map",
+          "url": "https://hazards.fema.gov/gis/nfhl/services/public/NFHL/MapServer",
+          "capabilities": ["flood"],
+          "priority": 2
+        }
+      ],
+      "docs": [
+        "https://data.lacity.org/",
+        "https://zimas.lacity.org/"
+      ]
+    },
+    {
+      "key": "la_county_unincorporated",
+      "name": "LA County Unincorporated",
+      "match": {
+        "type": "polygon",
+        "source": "config/boundaries/la_county_unincorporated.geojson",
+        "note": "Unincorporated areas only"
+      },
+      "layers": [
+        {
+          "id": "zoning_feature",
+          "type": "feature",
+          "url": "<REPLACE_ME_LAC_PLANNING>/FeatureServer/0/query",
+          "capabilities": ["zoning"],
+          "properties": {
+            "zone_code": ["ZONE"],
+            "zone_name": ["ZONE_DESC"]
+          },
+          "priority": 0
+        },
+        {
+          "id": "parcels_feature",
+          "type": "feature",
+          "url": "<REPLACE_ME_LAC_PARCELS>/FeatureServer/0/query",
+          "capabilities": ["parcels"],
+          "properties": {
+            "apn": ["APN", "AIN", "PARCEL_APN"]
+          },
+          "priority": 0
+        }
+      ]
+    },
+    {
+      "key": "ventura_county_unincorporated",
+      "name": "Ventura County Unincorporated",
+      "match": {
+        "type": "polygon",
+        "source": "config/boundaries/ventura_county_unincorporated.geojson"
+      },
+      "layers": [
+        {
+          "id": "zoning_feature",
+          "type": "feature",
+          "url": "<REPLACE_ME_VC_ZONING>/FeatureServer/0/query",
+          "capabilities": ["zoning"],
+          "priority": 0
+        },
+        {
+          "id": "parcels_feature",
+          "type": "feature",
+          "url": "<REPLACE_ME_VC_PARCELS>/FeatureServer/0/query",
+          "capabilities": ["parcels"],
+          "priority": 0
+        }
+      ]
+    },
+    {
+      "key": "city_of_san_diego",
+      "name": "City of San Diego",
+      "match": {
+        "type": "polygon",
+        "source": "config/boundaries/city_of_san_diego.geojson"
+      },
+      "layers": [
+        {
+          "id": "zoning_overlay_mapserver",
+          "type": "map",
+          "url": "https://webmapsqa.sandiego.gov/arcgis/rest/services/DSD/Zoning_Overlay/MapServer",
+          "capabilities": ["zoning", "overlays"],
+          "priority": 0
+        },
+        {
+          "id": "zapp_webmap",
+          "type": "web_app",
+          "url": "https://sandiego.maps.arcgis.com/apps/webappviewer/index.html?id=ZAPP",
+          "capabilities": ["zoning", "parcels", "overlays"],
+          "priority": 1
+        }
+      ]
+    },
+    {
+      "key": "orange_county_unincorporated",
+      "name": "Orange County Unincorporated",
+      "match": {
+        "type": "polygon",
+        "source": "config/boundaries/orange_county_unincorporated.geojson"
+      },
+      "layers": [
+        {
+          "id": "parcels_feature",
+          "type": "feature",
+          "url": "<REPLACE_ME_OC_PARCELS>/FeatureServer/0/query",
+          "capabilities": ["parcels"],
+          "properties": {
+            "apn": ["APN", "AIN"]
+          },
+          "priority": 0
+        },
+        {
+          "id": "zoning_feature",
+          "type": "feature",
+          "url": "<REPLACE_ME_OC_ZONING>/FeatureServer/0/query",
+          "capabilities": ["zoning"],
+          "priority": 1,
+          "notes": "Placeholder for OC zoning service"
+        }
+      ]
+    },
+    {
+      "key": "statewide_buildings",
+      "name": "Statewide Building Footprints",
+      "match": {
+        "type": "bbox",
+        "source": "california",
+        "note": "Fallback for building footprints statewide"
+      },
+      "layers": [
+        {
+          "id": "ms_buildings_stac",
+          "type": "stac",
+          "url": "https://planetarycomputer.microsoft.com/api/stac/v1/collections/ms-buildings",
+          "capabilities": ["buildings"],
+          "notes": "Quadkey partition; read parquet assets then filter bbox",
+          "priority": 0
+        }
+      ]
+    }
+  ]
+}

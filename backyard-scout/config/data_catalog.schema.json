@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Data Catalog Schema",
+  "description": "Schema for the Buildable-LA data catalog defining jurisdictions and their data layers",
+  "type": "object",
+  "required": ["version", "jurisdictions"],
+  "properties": {
+    "version": {
+      "type": "number",
+      "minimum": 1,
+      "description": "Schema version number"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "jurisdictions": {
+      "type": "array",
+      "description": "List of jurisdictions with their data layers",
+      "items": {
+        "$ref": "#/definitions/Jurisdiction"
+      }
+    }
+  },
+  "definitions": {
+    "Jurisdiction": {
+      "type": "object",
+      "required": ["key", "name", "match", "layers"],
+      "properties": {
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$",
+          "description": "Unique identifier for the jurisdiction"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable jurisdiction name"
+        },
+        "match": {
+          "type": "object",
+          "required": ["type", "source"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["polygon", "bbox"],
+              "description": "Match type for jurisdiction detection"
+            },
+            "source": {
+              "type": "string",
+              "description": "Source file or reference for boundary data"
+            },
+            "note": {
+              "type": "string",
+              "description": "Optional note about the matching strategy"
+            }
+          }
+        },
+        "layers": {
+          "type": "array",
+          "description": "Available data layers for this jurisdiction",
+          "items": {
+            "$ref": "#/definitions/Layer"
+          }
+        },
+        "docs": {
+          "type": "array",
+          "description": "Documentation URLs or references",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Layer": {
+      "type": "object",
+      "required": ["id", "type", "url"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$",
+          "description": "Unique layer identifier within jurisdiction"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["vector_tile", "feature", "map", "web_app", "stac", "flatgeobuf"],
+          "description": "Service type of the layer"
+        },
+        "url": {
+          "type": "string",
+          "description": "Base URL or URL template for the service"
+        },
+        "format": {
+          "type": "string",
+          "description": "Data format (e.g., mvt, json, pbf)"
+        },
+        "geometryField": {
+          "type": "string",
+          "description": "Name of the geometry field for feature services"
+        },
+        "auth": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["token", "basic", "none"],
+              "description": "Authentication type"
+            },
+            "env": {
+              "type": "string",
+              "description": "Environment variable name for credentials"
+            }
+          }
+        },
+        "rateLimit": {
+          "type": "object",
+          "properties": {
+            "perMinute": {
+              "type": "number",
+              "minimum": 1,
+              "description": "Requests per minute limit"
+            },
+            "burst": {
+              "type": "number",
+              "minimum": 1,
+              "description": "Burst limit for short intervals"
+            }
+          }
+        },
+        "properties": {
+          "type": "object",
+          "description": "Mapping of canonical property names to provider field names",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "description": "Data capabilities provided by this layer",
+          "items": {
+            "type": "string",
+            "enum": ["zoning", "parcels", "buildings", "addresses", "permits", "overlays", "flood", "elevation"]
+          }
+        },
+        "priority": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Priority for layer selection (lower is higher priority)"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes about the layer"
+        }
+      }
+    }
+  }
+}
