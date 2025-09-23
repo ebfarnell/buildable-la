@@ -25,7 +25,10 @@
     "area:resolve": "tsx src/cli/resolve_area.ts",
     "extract:online": "tsx src/extract_parcels.ts",
     "monitor:live": "tsx src/monitor.ts",
-    "run:task": "tsx src/cli/run_task.ts"
+    "run:task": "tsx src/cli/run_task.ts",
+    "catalog:validate": "tsx scripts/validate_catalog.ts",
+    "catalog:probe": "tsx scripts/probe_catalog.ts --",
+    "catalog:report": "tsx scripts/report_catalog_coverage.ts"
   },
   "keywords": [],
   "author": "Eric Farnell",
@@ -34,6 +37,8 @@
   "dependencies": {
     "@turf/turf": "^7.2.0",
     "@types/protobufjs": "^6.0.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^2.1.1",
     "better-sqlite3": "^12.2.0",
     "commander": "^12.1.0",
     "csv": "^6.4.1",
