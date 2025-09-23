@@ -1,0 +1,13 @@
+address,apn,owner_name,owner_address,opportunity_score,hidden_value,monthly_income_potential,unused_sqft,pitch_angle,comparable_rents,lot_size,current_use,highest_best_use,value_add,years_owned,tax_assessed_value,potential_equity_capture,financing_eligible,zoning,buildable_sqft,quick_wins,pain_points,objection_handlers,outreach_priority,contact_method,follow_up_date,status,notes
+"20616 Archwood St, Winnetka, CA",2148020015,"[Owner Name]","[Mailing Address]",9.2,"$43,200/year passive income",3600,3391,"Unused backyard = lost income","$3,400-3,800/mo in area",7504,"Single family","Single family + ADU","ADU rental income",15,485000,125000,"FHA ADU loan eligible",RS,3391,"Pre-approved zone; 45% unused lot","Empty backyard","Show comparable rentals",HIGH,Direct Mail,2025-10-01,New,"Large unused backyard - perfect for ADU"
+"123 Main St, Beverly Hills, CA",4321098765,"[Owner Name]","[Mailing Address]",8.7,"$60,000/year income potential",5000,4500,"Premium location ADU","$4,800-5,200/mo",12000,"Single family","Luxury ADU rental","Premium ADU market",8,1250000,200000,"Conventional loan",R1,4500,"High-rent area; simple permitting","Maintaining large lot","Landscape maintenance savings",HIGH,Phone,2025-10-02,New,"Prime Beverly Hills ADU opportunity"
+"456 Oak Ave, Pasadena, CA",5678901234,"[Owner Name]","[Mailing Address]",7.5,"$36,000/year opportunity",3000,2800,"Multi-generational housing solution","$2,800-3,200/mo",9000,"Single family","In-law suite potential","Family housing + income",22,620000,95000,"HELOC eligible",R2,2800,"Aging parents housing need","Large lot maintenance","Family proximity + income",MEDIUM,Email,2025-10-05,New,"Good for multi-generational setup"
+
+# COLUMN DESCRIPTIONS:
+# opportunity_score: 1-10 rating combining income potential, ease of development, and owner likelihood to act
+# hidden_value: The $ opportunity the owner might not realize they have
+# pitch_angle: The compelling story to tell the owner (income, family housing, equity capture)
+# quick_wins: What makes this property easy to develop
+# pain_points: Current problems the owner might have that ADU solves
+# objection_handlers: Ready responses to common owner concerns
+# outreach_priority: HIGH/MEDIUM/LOW based on opportunity score and owner profile

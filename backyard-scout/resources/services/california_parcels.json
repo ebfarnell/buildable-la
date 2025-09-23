@@ -1,0 +1,52 @@
+{
+  "name": "California Statewide Parcels Service",
+  "description": "Unified parcel data service for all 58 California counties",
+  "last_verified": "2025-09-19",
+  "status": "active",
+
+  "primary_endpoint": {
+    "url": "https://services1.arcgis.com/jUJYIo9tSA7EHvfZ/ArcGIS/rest/services/CA_Statewide_Parcels_Public_view/FeatureServer/0",
+    "type": "FeatureServer",
+    "authentication": "none",
+    "rate_limit": "5 requests/second tested",
+    "max_records": 2000
+  },
+
+  "available_fields": [
+    "COUNTYNAME",
+    "SITE_CITY",
+    "PARCEL_APN",
+    "SITE_ADDR",
+    "SITE_ZIP",
+    "SITE_HOUSE_NUMBER",
+    "SITE_STREET_NAME",
+    "OWNER_NAME"
+  ],
+
+  "query_examples": {
+    "by_city": "COUNTYNAME='VENTURA' AND SITE_CITY='THOUSAND OAKS'",
+    "by_zip": "SITE_ZIP='91362'",
+    "by_apn": "PARCEL_APN='570019111'",
+    "by_address": "SITE_HOUSE_NUMBER='1618' AND SITE_STREET_NAME LIKE '%BURNING TREE%'"
+  },
+
+  "counties_verified": [
+    "Los Angeles",
+    "Orange",
+    "San Diego",
+    "Ventura",
+    "San Francisco",
+    "Santa Clara",
+    "Sacramento",
+    "Riverside",
+    "San Bernardino",
+    "Santa Barbara"
+  ],
+
+  "notes": [
+    "Use uppercase for COUNTYNAME and SITE_CITY",
+    "Geometry returned in WGS84 (EPSG:4326)",
+    "Some fields may be null depending on county",
+    "Service covers all 58 California counties"
+  ]
+}

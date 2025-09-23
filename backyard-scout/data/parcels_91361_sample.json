@@ -1,0 +1,54 @@
+[
+  {
+    "apn": "2345-678-901",
+    "zip": "91361",
+    "parcel_geojson": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [-118.7500, 34.2500],
+              [-118.7490, 34.2500],
+              [-118.7490, 34.2510],
+              [-118.7500, 34.2510],
+              [-118.7500, 34.2500]
+            ]]
+          },
+          "properties": {
+            "APN": "2345-678-901",
+            "ZIP": "91361"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "apn": "2345-678-902",
+    "zip": "91361",
+    "parcel_geojson": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [-118.7480, 34.2520],
+              [-118.7470, 34.2520],
+              [-118.7470, 34.2530],
+              [-118.7480, 34.2530],
+              [-118.7480, 34.2520]
+            ]]
+          },
+          "properties": {
+            "APN": "2345-678-902",
+            "ZIP": "91361"
+          }
+        }
+      ]
+    }
+  }
+]

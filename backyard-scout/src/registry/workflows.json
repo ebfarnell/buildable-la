@@ -1,0 +1,65 @@
+[
+  {
+    "id": "near_college",
+    "patterns": [
+      "find * properties near college in *",
+      "find * properties near university in *",
+      "find * properties near * college",
+      "find * properties near * university",
+      "near college *",
+      "near university *"
+    ],
+    "params": {
+      "limit": 10,
+      "radius_miles": 1.5,
+      "county": "ventura"
+    },
+    "pipeline": [
+      { "op": "resolve_poi", "kind": "college", "name": "${poi_name}", "city": "${city}" },
+      { "op": "buffer_poi", "miles": "${radius_miles}" },
+      {
+        "op": "extract_stream",
+        "county": "${county}",
+        "layer": "parcels",
+        "geometry": "${buffer}",
+        "fields": ["APN", "SITUS_ADDR", "ZIP"]
+      },
+      { "op": "shortlist", "limit": "${limit}", "min_buildable_sqft": 770 },
+      { "op": "export_csv", "path": "out/top_${task_slug}.csv" }
+    ]
+  },
+  {
+    "id": "zip_scan",
+    "patterns": ["analyze zip *", "check adu potential in *", "scan * zip"],
+    "params": { "limit": 200, "county": "los_angeles" },
+    "pipeline": [
+      { "op": "resolve_zip", "zip": "${zip}" },
+      {
+        "op": "extract_stream",
+        "county": "${county}",
+        "layer": "parcels",
+        "geometry": "${zip_polygon}",
+        "fields": ["APN", "SITUS_ADDR", "ZIP"]
+      },
+      { "op": "batch_analyze", "jsonl": "${parcels_jsonl}", "limit": "${limit}" },
+      { "op": "export_csv", "path": "out/results_${zip}.csv" }
+    ]
+  },
+  {
+    "id": "neighborhood_scan",
+    "patterns": ["find buildable parcels in *", "analyze * neighborhood", "analyze * area"],
+    "params": { "limit": 200 },
+    "pipeline": [
+      { "op": "resolve_area", "name": "${area_name}", "city": "${city}" },
+      {
+        "op": "extract_stream",
+        "county": "auto",
+        "layer": "parcels",
+        "geometry": "${area_polygon}",
+        "fields": ["APN", "SITUS_ADDR", "ZIP"]
+      },
+      { "op": "batch_analyze", "jsonl": "${parcels_jsonl}", "limit": "${limit}" },
+      { "op": "export_csv", "path": "out/results_${area_slug}.csv" }
+    ]
+  }
+]

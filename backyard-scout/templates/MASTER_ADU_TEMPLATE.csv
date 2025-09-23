@@ -1,0 +1,38 @@
+# MASTER ADU ANALYSIS & PROSPECTING TEMPLATE
+# Comprehensive template for both technical analysis and business development
+
+# PROPERTY IDENTIFICATION
+address,apn,lat,lon,county,city,zip,owner_name,owner_address,mailing_same_as_property,years_owned,owner_type,tax_assessed_value,last_sale_price,last_sale_date
+
+# OPPORTUNITY SCORING (For Prospecting)
+opportunity_score,opportunity_rank,hidden_value_annual,income_potential_monthly,value_proposition,unique_advantages,development_ease_score,market_timing_score,owner_motivation_score
+
+# QUICK DECISION METRICS (Go/No-Go)
+adu_viable,viability_score,deal_classification,buildable_sqft,recommended_adu_sqft,max_adu_sqft,min_adu_sqft,reason_if_not_viable,critical_issues,quick_wins
+
+# SITE CHARACTERISTICS
+lot_size_sqft,lot_width_ft,lot_depth_ft,lot_shape,lot_regularity_score,existing_building_sqft,building_count,building_source,building_confidence,lot_coverage_current_pct,lot_coverage_after_adu_pct,unused_lot_sqft,unused_lot_pct
+
+# ZONING & REGULATORY
+zone_code,zone_name,zone_description,zone_source,zone_confidence,zone_verified,setback_front_ft,setback_side_ft,setback_rear_ft,height_limit_ft,parking_required,owner_occupancy_required,adu_ordinance,special_restrictions,permit_complexity
+
+# BUILDABLE AREA ANALYSIS
+buildable_envelope_sqft,net_buildable_area_sqft,buildable_pct_of_lot,optimal_adu_placement,access_type,utility_connections,slope_pct,soil_type,trees_impact,easements
+
+# FINANCIAL ANALYSIS
+total_development_cost,construction_cost,soft_costs,cost_per_sqft,estimated_monthly_rent,annual_gross_income,annual_noi,cap_rate,cash_on_cash_return,irr_5year,payback_months,monthly_cashflow,loan_amount,equity_required,ltv_ratio
+
+# MARKET ANALYSIS
+neighborhood_grade,market_tier,rental_demand_score,comparable_rent_range,vacancy_rate,appreciation_3yr,days_on_market_avg,demographic_score,employment_score,school_rating,walk_score,transit_score,crime_score
+
+# RISK ASSESSMENT
+overall_risk_score,zoning_risk,construction_risk,market_risk,financing_risk,timeline_risk,permit_risk,neighbor_risk,environmental_risk,risk_mitigation_notes
+
+# DEVELOPMENT TIMELINE
+design_weeks,permitting_weeks,construction_weeks,total_timeline_weeks,seasonality_factor,fastest_path,critical_milestones,potential_delays
+
+# PROSPECTING INTELLIGENCE
+pitch_angle,value_story,pain_points_addressed,objection_handlers,comparable_success_stories,financing_options,tax_benefits,outreach_priority,outreach_method,follow_up_date,contact_attempts,owner_response,interest_level
+
+# DATA QUALITY & METADATA
+analysis_date,analysis_version,data_quality_score,confidence_level,data_sources,zoning_data_source,building_data_source,market_data_source,verification_needed,manual_checks_required,warning_flags,processing_time_ms,analyst_notes,recommendations,next_steps

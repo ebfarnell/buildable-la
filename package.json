@@ -1,0 +1,24 @@
+{
+  "name": "buildable-la",
+  "version": "1.0.0",
+  "description": "Buildable-LA property development analysis system",
+  "private": true,
+  "scripts": {
+    "dev": "cd backyard-scout && npm run dev",
+    "build": "cd backyard-scout && npm run build",
+    "start": "cd backyard-scout && npm run start",
+    "typecheck": "cd backyard-scout && npm run typecheck",
+    "lint": "cd backyard-scout && npm run lint",
+    "format": "cd backyard-scout && npm run format",
+    "format:check": "cd backyard-scout && npm run format:check",
+    "test": "cd backyard-scout && npm test",
+    "install:all": "cd backyard-scout && npm install",
+    "scan-secrets": "bash scripts/scan-secrets.sh"
+  },
+  "author": "Eric Farnell",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
+  }
+}
