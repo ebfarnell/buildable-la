@@ -8,7 +8,7 @@ import { getEnhancedZoning } from './services/zoning_enhanced.js';
 import { getZoneomicsZoning } from './services/zoneomics_tiles_service.js';
 
 async function verifyBedfordZoning() {
-  const address = "1843 S Bedford St, Los Angeles, CA 90035";
+  const address = '1843 S Bedford St, Los Angeles, CA 90035';
   const lat = 34.044389;
   const lon = -118.382915;
 

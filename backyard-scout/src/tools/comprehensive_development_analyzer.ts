@@ -60,10 +60,10 @@ interface DevelopmentAnalysis {
 const ZONE_MIN_LOT_SIZES: Record<string, number> = {
   'RS-1': 5000,
   'RS-1-RIO': 5000,
-  'R1': 5000,
-  'RD2': 2500, // Multi-family zone
+  R1: 5000,
+  RD2: 2500, // Multi-family zone
   'EMX-1': 2500, // Mixed use
-  'PD': 5000, // Planned Development - varies
+  PD: 5000, // Planned Development - varies
 };
 
 /**
@@ -72,10 +72,10 @@ const ZONE_MIN_LOT_SIZES: Record<string, number> = {
 const ZONE_DENSITY: Record<string, number> = {
   'RS-1': 1, // Single family
   'RS-1-RIO': 1,
-  'R1': 1,
-  'RD2': 2, // Duplex allowed
+  R1: 1,
+  RD2: 2, // Duplex allowed
   'EMX-1': 4, // Mixed use - higher density
-  'PD': 2, // Planned Development - varies
+  PD: 2, // Planned Development - varies
 };
 
 async function getParcel(address: string): Promise<any> {
@@ -131,7 +131,9 @@ async function analyzeProperty(address: string): Promise<DevelopmentAnalysis> {
   const buildingArea = buildingResult.totalArea || lotSize * 0.22; // Default 22% coverage
   const buildingCoverage = buildingArea / lotSize;
 
-  console.log(`   🏢 Buildings: ${Math.round(buildingArea).toLocaleString()} sqft (${(buildingCoverage * 100).toFixed(1)}%)`);
+  console.log(
+    `   🏢 Buildings: ${Math.round(buildingArea).toLocaleString()} sqft (${(buildingCoverage * 100).toFixed(1)}%)`,
+  );
 
   // ADU Analysis
   const envelopeArea = lotSize * 0.75; // Simplified - after setbacks
@@ -174,9 +176,9 @@ async function analyzeProperty(address: string): Promise<DevelopmentAnalysis> {
       units: 1,
       developmentCost: aduSize * 195,
       monthlyRent: aduSize * 3,
-      annualNOI: (aduSize * 3 * 12) * 0.665,
-      capRate: ((aduSize * 3 * 12) * 0.665) / (aduSize * 195),
-      totalValue: (aduSize * 3 * 12) * 0.665 / 0.08, // 8% cap for valuation
+      annualNOI: aduSize * 3 * 12 * 0.665,
+      capRate: (aduSize * 3 * 12 * 0.665) / (aduSize * 195),
+      totalValue: (aduSize * 3 * 12 * 0.665) / 0.08, // 8% cap for valuation
     });
   }
 
@@ -191,9 +193,9 @@ async function analyzeProperty(address: string): Promise<DevelopmentAnalysis> {
       units: maxUnitsWithSplit,
       developmentCost: devCost,
       monthlyRent: totalRent,
-      annualNOI: (totalRent * 12) * 0.665,
-      capRate: ((totalRent * 12) * 0.665) / devCost,
-      totalValue: (totalRent * 12) * 0.665 / 0.08,
+      annualNOI: totalRent * 12 * 0.665,
+      capRate: (totalRent * 12 * 0.665) / devCost,
+      totalValue: (totalRent * 12 * 0.665) / 0.08,
     });
   }
 
@@ -208,30 +210,35 @@ async function analyzeProperty(address: string): Promise<DevelopmentAnalysis> {
       units: totalPotentialUnits,
       developmentCost: devCost,
       monthlyRent: totalRent,
-      annualNOI: (totalRent * 12) * 0.665,
-      capRate: ((totalRent * 12) * 0.665) / devCost,
-      totalValue: (totalRent * 12) * 0.665 / 0.08,
+      annualNOI: totalRent * 12 * 0.665,
+      capRate: (totalRent * 12 * 0.665) / devCost,
+      totalValue: (totalRent * 12 * 0.665) / 0.08,
     });
   }
 
   // Determine best strategy
-  const bestScenario = scenarios.reduce((best, current) =>
-    current.totalValue > (best?.totalValue || 0) ? current : best
-  , scenarios[0]);
+  const bestScenario = scenarios.reduce(
+    (best, current) => (current.totalValue > (best?.totalValue || 0) ? current : best),
+    scenarios[0],
+  );
 
   const bestStrategy = bestScenario?.name || 'No viable development';
 
   // Key opportunities
   const keyOpportunities: string[] = [];
   if (sb9Eligible) keyOpportunities.push('Eligible for SB 9 lot split - up to 4 units possible');
-  if (aduViable) keyOpportunities.push(`${Math.round(aduBuildableArea).toLocaleString()} sqft available for ADU`);
+  if (aduViable)
+    keyOpportunities.push(
+      `${Math.round(aduBuildableArea).toLocaleString()} sqft available for ADU`,
+    );
   if (baseUnitsAllowed > 1) keyOpportunities.push(`Zoning allows ${baseUnitsAllowed} base units`);
   if (buildingCoverage < 0.25) keyOpportunities.push('Low existing coverage - easier development');
 
   // Constraints
   const constraints: string[] = [];
   if (buildingCoverage > 0.4) constraints.push('High existing building coverage');
-  if (zone.includes('OVERLAY') || zone.includes('RIO')) constraints.push('Overlay zone - additional requirements');
+  if (zone.includes('OVERLAY') || zone.includes('RIO'))
+    constraints.push('Overlay zone - additional requirements');
   if (!sb9Eligible && sb9Constraints.length > 0) constraints.push(...sb9Constraints);
 
   return {
@@ -332,15 +339,21 @@ async function main() {
     console.log(`   📍 APN: ${r.apn}`);
     console.log(`   📐 Lot Size: ${r.lotSize.toLocaleString()} sqft`);
     console.log(`   🏘️ Zone: ${r.zone}`);
-    console.log(`   🏢 Current Buildings: ${r.currentBuildings.toLocaleString()} sqft (${(r.buildingCoverage * 100).toFixed(1)}%)`);
+    console.log(
+      `   🏢 Current Buildings: ${r.currentBuildings.toLocaleString()} sqft (${(r.buildingCoverage * 100).toFixed(1)}%)`,
+    );
 
     console.log('\n   📈 DEVELOPMENT OPTIONS:');
 
     // ADU Potential
-    console.log(`   • ADU Potential: ${r.aduViable ? '✅' : '❌'} ${r.aduViable ? `(${r.aduBuildableArea.toLocaleString()} sqft buildable)` : '(insufficient space)'}`);
+    console.log(
+      `   • ADU Potential: ${r.aduViable ? '✅' : '❌'} ${r.aduViable ? `(${r.aduBuildableArea.toLocaleString()} sqft buildable)` : '(insufficient space)'}`,
+    );
 
     // SB 9 Potential
-    console.log(`   • SB 9 Subdivision: ${r.sb9Eligible ? '✅' : '❌'} ${r.sb9Eligible ? `(Can create ${r.maxUnitsWithSplit} total units)` : ''}`);
+    console.log(
+      `   • SB 9 Subdivision: ${r.sb9Eligible ? '✅' : '❌'} ${r.sb9Eligible ? `(Can create ${r.maxUnitsWithSplit} total units)` : ''}`,
+    );
     if (r.sb9Eligible && r.resultingLotSizes.length > 0) {
       console.log(`     - Lot 1: ${Math.round(r.resultingLotSizes[0]).toLocaleString()} sqft`);
       console.log(`     - Lot 2: ${Math.round(r.resultingLotSizes[1]).toLocaleString()} sqft`);
@@ -364,12 +377,12 @@ async function main() {
 
     if (r.keyOpportunities.length > 0) {
       console.log('\n   ✅ KEY OPPORTUNITIES:');
-      r.keyOpportunities.forEach(o => console.log(`     • ${o}`));
+      r.keyOpportunities.forEach((o) => console.log(`     • ${o}`));
     }
 
     if (r.constraints.length > 0) {
       console.log('\n   ⚠️ CONSTRAINTS:');
-      r.constraints.forEach(c => console.log(`     • ${c}`));
+      r.constraints.forEach((c) => console.log(`     • ${c}`));
     }
   }
 
@@ -380,7 +393,9 @@ async function main() {
 
   // Rank by SB 9 potential
   console.log('\n📋 BEST FOR SB 9 SUBDIVISION:');
-  const sb9Candidates = results.filter(r => r.sb9Eligible).sort((a, b) => b.maxUnitsWithSplit - a.maxUnitsWithSplit);
+  const sb9Candidates = results
+    .filter((r) => r.sb9Eligible)
+    .sort((a, b) => b.maxUnitsWithSplit - a.maxUnitsWithSplit);
 
   if (sb9Candidates.length > 0) {
     sb9Candidates.forEach((r, i) => {
@@ -396,13 +411,13 @@ async function main() {
   // Rank by overall development value
   console.log('\n💰 BEST OVERALL DEVELOPMENT VALUE:');
   const byValue = results.sort((a, b) => {
-    const aValue = Math.max(...a.scenarios.map(s => s.totalValue));
-    const bValue = Math.max(...b.scenarios.map(s => s.totalValue));
+    const aValue = Math.max(...a.scenarios.map((s) => s.totalValue));
+    const bValue = Math.max(...b.scenarios.map((s) => s.totalValue));
     return bValue - aValue;
   });
 
   byValue.forEach((r, i) => {
-    const bestValue = Math.max(...r.scenarios.map(s => s.totalValue));
+    const bestValue = Math.max(...r.scenarios.map((s) => s.totalValue));
     console.log(`   ${i + 1}. ${r.address.split(',')[0]}`);
     console.log(`      - Best Strategy: ${r.bestStrategy}`);
     console.log(`      - Estimated Value: ${formatCurrency(bestValue)}`);

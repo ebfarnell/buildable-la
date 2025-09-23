@@ -33,32 +33,32 @@ const ZONE_CONFIG = {
     minLotSize: 5000,
     sb9Eligible: true,
     baseUnits: 1,
-    description: 'Single Family Residential with River Improvement Overlay'
+    description: 'Single Family Residential with River Improvement Overlay',
   },
   'RS-1': {
     minLotSize: 5000,
     sb9Eligible: true,
     baseUnits: 1,
-    description: 'Single Family Residential'
+    description: 'Single Family Residential',
   },
   'EMX-1': {
     minLotSize: 2500,
     sb9Eligible: false, // Mixed use not eligible for SB 9
     baseUnits: 4,
-    description: 'Employment Mixed Use - allows multi-unit'
+    description: 'Employment Mixed Use - allows multi-unit',
   },
-  'PD': {
+  PD: {
     minLotSize: 5000,
     sb9Eligible: false, // Planned Development varies
     baseUnits: 2,
-    description: 'Planned Development - check specific plan'
+    description: 'Planned Development - check specific plan',
   },
-  'RD2': {
+  RD2: {
     minLotSize: 2500,
     sb9Eligible: false, // Already multi-family
     baseUnits: 2,
-    description: 'Restricted Density Multiple Dwelling'
-  }
+    description: 'Restricted Density Multiple Dwelling',
+  },
 };
 
 function analyzeSB9Potential(property: any): SB9Analysis {
@@ -69,7 +69,7 @@ function analyzeSB9Potential(property: any): SB9Analysis {
     minLotSize: 5000,
     sb9Eligible: false,
     baseUnits: 1,
-    description: 'Unknown zone'
+    description: 'Unknown zone',
   };
 
   const sb9Reasons: string[] = [];
@@ -77,13 +77,16 @@ function analyzeSB9Potential(property: any): SB9Analysis {
 
   // Check SB 9 eligibility
   if (zoneConfig.sb9Eligible) {
-    if (lotSize >= 2400) { // Minimum lot size for SB 9
+    if (lotSize >= 2400) {
+      // Minimum lot size for SB 9
       if (lotSize >= zoneConfig.minLotSize * 2) {
         sb9Eligible = true;
         sb9Reasons.push('✅ Single-family zone eligible for SB 9');
         sb9Reasons.push(`✅ Lot size (${lotSize.toLocaleString()} sqft) allows splitting`);
       } else {
-        sb9Reasons.push(`❌ Lot size insufficient for 2 conforming lots (need ${(zoneConfig.minLotSize * 2).toLocaleString()} sqft)`);
+        sb9Reasons.push(
+          `❌ Lot size insufficient for 2 conforming lots (need ${(zoneConfig.minLotSize * 2).toLocaleString()} sqft)`,
+        );
       }
     } else {
       sb9Reasons.push('❌ Lot too small (minimum 2,400 sqft for SB 9)');
@@ -91,14 +94,16 @@ function analyzeSB9Potential(property: any): SB9Analysis {
   } else {
     sb9Reasons.push(`❌ Zone ${zone} not eligible for SB 9 (single-family zones only)`);
     if (zoneConfig.baseUnits > 1) {
-      sb9Reasons.push(`✅ Zone allows ${zoneConfig.baseUnits} units by-right (no subdivision needed)`);
+      sb9Reasons.push(
+        `✅ Zone allows ${zoneConfig.baseUnits} units by-right (no subdivision needed)`,
+      );
     }
   }
 
   // Calculate possible units
   const possibleUnits = {
     withoutSB9: zoneConfig.baseUnits + 1, // Base units + 1 ADU
-    withSB9: sb9Eligible ? 4 : zoneConfig.baseUnits + 1 // 2 primary + 2 ADUs if SB 9
+    withSB9: sb9Eligible ? 4 : zoneConfig.baseUnits + 1, // 2 primary + 2 ADUs if SB 9
   };
 
   // Financial scenarios
@@ -112,8 +117,8 @@ function analyzeSB9Potential(property: any): SB9Analysis {
       units: 1,
       cost: aduSize * 195,
       monthlyRent: aduSize * 3,
-      annualNOI: (aduSize * 3 * 12) * 0.665,
-      capRate: ((aduSize * 3 * 12) * 0.665) / (aduSize * 195)
+      annualNOI: aduSize * 3 * 12 * 0.665,
+      capRate: (aduSize * 3 * 12 * 0.665) / (aduSize * 195),
     });
   }
 
@@ -129,8 +134,8 @@ function analyzeSB9Potential(property: any): SB9Analysis {
       units: totalUnits,
       cost: cost,
       monthlyRent: totalSqft * 3,
-      annualNOI: (totalSqft * 3 * 12) * 0.665,
-      capRate: ((totalSqft * 3 * 12) * 0.665) / cost
+      annualNOI: totalSqft * 3 * 12 * 0.665,
+      capRate: (totalSqft * 3 * 12 * 0.665) / cost,
     });
   }
 
@@ -146,8 +151,8 @@ function analyzeSB9Potential(property: any): SB9Analysis {
       units: totalUnits,
       cost: cost,
       monthlyRent: totalSqft * 3,
-      annualNOI: (totalSqft * 3 * 12) * 0.665,
-      capRate: ((totalSqft * 3 * 12) * 0.665) / cost
+      annualNOI: totalSqft * 3 * 12 * 0.665,
+      capRate: (totalSqft * 3 * 12 * 0.665) / cost,
     });
   }
 
@@ -159,15 +164,15 @@ function analyzeSB9Potential(property: any): SB9Analysis {
     sb9Eligible,
     sb9Reasons,
     possibleUnits,
-    financials
+    financials,
   };
 }
 
 async function main() {
   const addresses = [
-    "20616 Archwood St, Winnetka, CA 91306",
-    "10921 Polaris Dr, San Diego, CA 92126",
-    "1843 S Bedford St, Los Angeles, CA 90035"
+    '20616 Archwood St, Winnetka, CA 91306',
+    '10921 Polaris Dr, San Diego, CA 92126',
+    '1843 S Bedford St, Los Angeles, CA 90035',
   ];
 
   console.log('🏗️ SB 9 AND MULTI-UNIT DEVELOPMENT ANALYSIS');
@@ -179,7 +184,8 @@ async function main() {
 
   // Read the recent analysis results
   const fs = await import('fs/promises');
-  const recentFile = '/Users/ericfarnell/Dev/Apps/Dev Apps/Buildable-LA/backyard-scout/out/three_property_analysis_1758577717353.json';
+  const recentFile =
+    '/Users/ericfarnell/Dev/Apps/Dev Apps/Buildable-LA/backyard-scout/out/three_property_analysis_1758577717353.json';
 
   try {
     const analysisData = JSON.parse(await fs.readFile(recentFile, 'utf-8'));
@@ -231,13 +237,13 @@ async function main() {
 
       // Rank by SB 9 potential
       console.log('\n📋 BEST FOR SB 9 SUBDIVISION:');
-      const sb9Eligible = sb9Results.filter(r => r.sb9Eligible);
+      const sb9Eligible = sb9Results.filter((r) => r.sb9Eligible);
       if (sb9Eligible.length > 0) {
         sb9Eligible.forEach((r, i) => {
           console.log(`   ${i + 1}. ${r.address.split(',')[0]}`);
           console.log(`      • ${r.lotSize.toLocaleString()} sqft lot in ${r.zone} zone`);
           console.log(`      • Can create 4 total units (2 primary + 2 ADUs)`);
-          const sb9Scenario = r.financials.find(f => f.scenario.includes('SB 9'));
+          const sb9Scenario = r.financials.find((f) => f.scenario.includes('SB 9'));
           if (sb9Scenario) {
             console.log(`      • ${(sb9Scenario.capRate * 100).toFixed(1)}% cap rate`);
           }
@@ -248,14 +254,15 @@ async function main() {
 
       // Rank by multi-unit potential
       console.log('\n🏢 BEST FOR MULTI-UNIT DEVELOPMENT:');
-      const multiUnit = sb9Results.filter(r => r.possibleUnits.withoutSB9 > 2)
+      const multiUnit = sb9Results
+        .filter((r) => r.possibleUnits.withoutSB9 > 2)
         .sort((a, b) => b.possibleUnits.withoutSB9 - a.possibleUnits.withoutSB9);
 
       if (multiUnit.length > 0) {
         multiUnit.forEach((r, i) => {
           console.log(`   ${i + 1}. ${r.address.split(',')[0]}`);
           console.log(`      • Zone ${r.zone} allows ${r.possibleUnits.withoutSB9} units by-right`);
-          const multiScenario = r.financials.find(f => f.scenario.includes('Multi-Unit'));
+          const multiScenario = r.financials.find((f) => f.scenario.includes('Multi-Unit'));
           if (multiScenario) {
             console.log(`      • ${(multiScenario.capRate * 100).toFixed(1)}% cap rate`);
           }
@@ -267,14 +274,14 @@ async function main() {
       // Overall best development value
       console.log('\n💰 BEST OVERALL DEVELOPMENT VALUE:');
       const byBestCapRate = sb9Results
-        .map(r => ({
+        .map((r) => ({
           ...r,
-          bestCapRate: Math.max(...r.financials.map(f => f.capRate)),
-          bestScenario: r.financials.find(f =>
-            f.capRate === Math.max(...r.financials.map(s => s.capRate))
-          )
+          bestCapRate: Math.max(...r.financials.map((f) => f.capRate)),
+          bestScenario: r.financials.find(
+            (f) => f.capRate === Math.max(...r.financials.map((s) => s.capRate)),
+          ),
         }))
-        .filter(r => r.bestCapRate > 0)
+        .filter((r) => r.bestCapRate > 0)
         .sort((a, b) => b.bestCapRate - a.bestCapRate);
 
       byBestCapRate.forEach((r, i) => {
@@ -286,13 +293,19 @@ async function main() {
 
       // Save comprehensive results
       const outputFile = `/Users/ericfarnell/Dev/Apps/Dev Apps/Buildable-LA/backyard-scout/out/sb9_analysis_${Date.now()}.json`;
-      await fs.writeFile(outputFile, JSON.stringify({
-        timestamp: new Date().toISOString(),
-        properties: sb9Results
-      }, null, 2));
+      await fs.writeFile(
+        outputFile,
+        JSON.stringify(
+          {
+            timestamp: new Date().toISOString(),
+            properties: sb9Results,
+          },
+          null,
+          2,
+        ),
+      );
 
       console.log(`\n💾 Detailed analysis saved to: ${outputFile}`);
-
     } else {
       console.error('No property data found in analysis file');
     }
