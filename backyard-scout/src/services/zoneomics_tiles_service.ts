@@ -103,7 +103,7 @@ function extractZoneFromProtobuf(buffer: ArrayBuffer): ZoneomicsZone[] {
         const excludeList = ['OK', 'ID', 'NO', 'OR', 'SO', 'US', 'CA', 'CO'];
         return !excludeList.includes(code) && code.length >= 2;
       })
-      .map((code) => code.replace(/[^A-Z0-9\.-]/g, '')) // Clean up
+      .map((code) => code.replace(/[^A-Z0-9.-]/g, '')) // Clean up
       .filter((code, index, arr) => arr.indexOf(code) === index); // Remove duplicates
 
     console.log('🔍 Found potential zone codes:', validZones);
