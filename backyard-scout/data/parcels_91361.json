@@ -1,0 +1,94 @@
+[
+  {
+    "apn": "1234-567-890",
+    "zip": "91361",
+    "parcel_geojson": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {"apn":"1234-567-890"},
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [-118.84250, 34.14320],
+              [-118.84210, 34.14320],
+              [-118.84210, 34.14290],
+              [-118.84250, 34.14290],
+              [-118.84250, 34.14320]
+            ]]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "apn": "0987-654-321",
+    "zip": "91361",
+    "parcel_geojson": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {"apn":"0987-654-321"},
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [-118.84090, 34.14280],
+              [-118.84050, 34.14280],
+              [-118.84050, 34.14250],
+              [-118.84090, 34.14250],
+              [-118.84090, 34.14280]
+            ]]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "apn": "5555-123-456",
+    "zip": "91361",
+    "parcel_geojson": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {"apn":"5555-123-456"},
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [-118.84180, 34.14350],
+              [-118.84140, 34.14350],
+              [-118.84140, 34.14310],
+              [-118.84180, 34.14310],
+              [-118.84180, 34.14350]
+            ]]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "apn": "7777-888-999",
+    "zip": "91361",
+    "parcel_geojson": {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {"apn":"7777-888-999"},
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [-118.84320, 34.14380],
+              [-118.84280, 34.14380],
+              [-118.84280, 34.14340],
+              [-118.84320, 34.14340],
+              [-118.84320, 34.14380]
+            ]]
+          }
+        }
+      ]
+    }
+  }
+]

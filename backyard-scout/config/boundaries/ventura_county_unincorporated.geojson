@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "ventura_county_unincorporated",
+        "name": "Ventura County Unincorporated",
+        "note": "Simplified bounding box - replace with official unincorporated areas"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-119.50, 33.95],
+            [-118.63, 33.95],
+            [-118.63, 34.60],
+            [-119.50, 34.60],
+            [-119.50, 33.95]
+          ]
+        ]
+      }
+    }
+  ]
+}

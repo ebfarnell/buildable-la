@@ -1,0 +1,28 @@
+# CODEOWNERS for Buildable-LA
+# These owners will be the default owners for everything in the repo.
+# Unless a later match takes precedence, @ebfarnell will be requested for
+# review when someone opens a pull request.
+
+# Global owners
+* @ebfarnell
+
+# Documentation
+*.md @ebfarnell
+/docs/ @ebfarnell
+
+# Core application
+/backyard-scout/ @ebfarnell
+/backyard-scout/src/ @ebfarnell
+
+# Configuration files
+*.json @ebfarnell
+*.yml @ebfarnell
+*.yaml @ebfarnell
+.env.example @ebfarnell
+
+# Scripts and tools
+/scripts/ @ebfarnell
+*.sh @ebfarnell
+
+# CI/CD
+/.github/ @ebfarnell

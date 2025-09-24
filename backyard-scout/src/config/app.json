@@ -1,0 +1,4 @@
+{
+  "online_mode": true,
+  "fetch": { "timeout_ms": 15000, "max_retries": 3, "concurrency_per_host": 2, "page_size": 1000 }
+}

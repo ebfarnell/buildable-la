@@ -1,0 +1,143 @@
+name: backyard-scout
+description: ADU buildability analysis for California parcels (LA County + San Diego)
+version: 1.1.0
+author: Backyard Scout Team
+updated: 2025-09-21
+
+capabilities:
+  - Analyze parcels for ADU buildability
+  - Calculate buildable area after setbacks
+  - Query live zoning and building data
+  - Generate reports in CSV, JSON, HTML
+
+commands:
+  analyze_zip:
+    description: Analyze parcels in a ZIP code
+    usage: npm run agent -- --zip <zipcode> [--limit <number>]
+    example: npm run agent -- --zip 90024 --limit 50
+
+  analyze_address:
+    description: Analyze a specific address
+    usage: npm run agent -- --address "<full address>"
+    example: npm run agent -- --address "10960 Wilshire Blvd, Los Angeles, CA"
+
+  analyze_city:
+    description: Analyze parcels in a city
+    usage: npm run agent -- --city "<city name>" [--format <type>]
+    example: npm run agent -- --city "Beverly Hills" --format html
+
+  generate_report:
+    description: Generate a formatted report
+    usage: npm run agent -- --zip <zip> --format <csv|json|html> --output <filename>
+    example: npm run agent -- --zip 90024 --format html --output report.html
+
+triggers:
+  - "analyze ADU potential"
+  - "check backyard buildability"
+  - "find ADU opportunities"
+  - "assess property for ADU"
+  - "buildable area analysis"
+  - "feasibility of these locations"
+  - "feasibility of these properties"
+  - "property feasibility"
+  - "viable for development"
+  - "viability analysis"
+  - "California addresses"
+  - "CA property analysis"
+  - "multiple addresses with CA"
+
+parameters:
+  zip:
+    type: string[]
+    description: ZIP code(s) to analyze
+    example: ["90024", "90025"]
+
+  address:
+    type: string
+    description: Full street address
+    example: "123 Main St, Los Angeles, CA"
+
+  city:
+    type: string
+    description: City name
+    options: ["Los Angeles", "Beverly Hills", "Santa Monica", "Culver City", "Venice", "Westwood"]
+
+  limit:
+    type: number
+    description: Maximum parcels to process
+    default: 100
+
+  format:
+    type: string
+    description: Output format
+    options: ["csv", "json", "html"]
+    default: "csv"
+
+  output:
+    type: string
+    description: Output filename
+    example: "adu_analysis.csv"
+
+setup:
+  requirements:
+    - Node.js >= 18
+    - GDAL/ogr2ogr installed
+    - LA County Parcels geodatabase
+
+  install: |
+    npm install
+    npm run build
+
+  test: |
+    npm run agent -- --zip 90024 --limit 5
+
+examples:
+  - prompt: "Analyze ADU potential in ZIP 90024"
+    command: npm run agent -- --zip 90024 --limit 100
+
+  - prompt: "Check if 123 Main St, LA can have an ADU"
+    command: npm run agent -- --address "123 Main St, Los Angeles, CA"
+
+  - prompt: "Find best ADU opportunities in Beverly Hills"
+    command: npm run agent -- --city "Beverly Hills" --format html --output beverly_hills_adu.html
+
+outputs:
+  csv:
+    description: Comma-separated values for Excel/analysis
+    columns: [apn, zip, zone, buildable_sqft, score, thumbnail_url]
+
+  json:
+    description: Structured JSON for API integration
+    schema: Array of parcel objects with all fields
+
+  html:
+    description: Interactive HTML report with statistics
+    features: [summary stats, sortable table, aerial imagery links]
+
+data_sources:
+  - name: LA County Parcels
+    type: Geodatabase
+    size: 1.5GB
+    location: ./data/geodatabases/LACounty_Parcels.gdb
+
+  - name: LARIAC Building Footprints
+    type: ArcGIS REST API
+    url: https://services.arcgis.com/RmCCgQtiZLDCtblq/arcgis/rest/services/Countywide_Building_Outlines_(2020)/FeatureServer/0
+
+  - name: ZIMAS Zoning
+    type: ArcGIS REST API
+    url: https://zimas.lacity.org/arcgis/rest/services/zma/zimas/MapServer
+
+error_handling:
+  - Metro API failures are ignored (optional service)
+  - Failed parcels logged but processing continues
+  - Retry with exponential backoff for API errors
+  - Unknown zones get default setbacks
+
+critical_fixes_2025_09_21:
+  - Building API expects 3 params not object: getBuildingFootprints(geometry, county, apn)
+  - Zoning API needs GeoJSON: getEnhancedZoning({type: 'FeatureCollection', features: [...]})
+  - calcBuildableEnvelope needs dimensions not area: (width, depth, front, side, rear)
+  - Must calculateDimensions(geometry) before buildable envelope
+  - OSM may return empty array for vacant lots (this is correct behavior)
+  - Always check source field to know if data is real or estimated

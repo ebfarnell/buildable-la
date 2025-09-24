@@ -1,0 +1,5 @@
+apn,zip,buildable_sqft,score,static_thumb_url
+5555-123-456,91361,15554.24785728175,1,https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/exportImage?bbox=-118.8418%2C34.1431%2C-118.8414%2C34.1435&bboxSR=4326&size=512%2C512&format=jpg&f=image
+7777-888-999,91361,15554.188708469805,1,https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/exportImage?bbox=-118.8432%2C34.1434%2C-118.8428%2C34.1438&bboxSR=4326&size=512%2C512&format=jpg&f=image
+0987-654-321,91361,11440.234181725304,1,https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/exportImage?bbox=-118.8409%2C34.1425%2C-118.8405%2C34.1428&bboxSR=4326&size=512%2C512&format=jpg&f=image
+1234-567-890,91361,11440.176177916495,1,https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer/exportImage?bbox=-118.8425%2C34.1429%2C-118.8421%2C34.1432&bboxSR=4326&size=512%2C512&format=jpg&f=image

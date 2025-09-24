@@ -1,0 +1,25 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "city_of_los_angeles",
+        "name": "City of Los Angeles",
+        "note": "Simplified bounding box - replace with official boundary"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-118.67, 33.70],
+            [-118.16, 33.70],
+            [-118.16, 34.34],
+            [-118.67, 34.34],
+            [-118.67, 33.70]
+          ]
+        ]
+      }
+    }
+  ]
+}

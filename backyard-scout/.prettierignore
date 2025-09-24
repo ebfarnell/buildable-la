@@ -1,0 +1,42 @@
+# Build & vendors
+node_modules/
+dist/
+build/
+coverage/
+.trash/
+
+# Experimental / archived (agent/investigation code)
+archive/
+archived/
+**/investigation_scripts/
+**/temp_scripts/
+
+# Agent artifacts (let the agent own these)
+*.yaml
+.claude_code_agent.yaml
+agent_config.yaml
+
+# Data files
+*.db
+*.csv
+*.gdb
+*.gdbtable
+data/
+out/
+cache/
+resources/
+templates/
+
+# Test utilities (not production code)
+utils/
+tests/
+
+# Lockfiles
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Generated files
+*.min.js
+*.min.css
+*.map

@@ -1,0 +1,28 @@
+# Generated/build
+dist/
+build/
+coverage/
+.trash/
+node_modules/
+
+# Experimental / archived (do not block CI)
+archive/
+archived/
+**/investigation_scripts/
+**/temp_scripts/
+
+# Agent artifacts
+*.yaml
+.claude_code_agent.yaml
+agent_config.yaml
+
+# Data files
+data/
+out/
+cache/
+resources/
+templates/
+
+# Test utilities
+utils/
+tests/

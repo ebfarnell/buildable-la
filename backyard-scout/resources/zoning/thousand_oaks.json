@@ -1,0 +1,113 @@
+{
+  "city": "Thousand Oaks",
+  "county": "Ventura",
+  "last_updated": "2025-09-19",
+  "data_quality": "estimated",
+  "verified": false,
+
+  "sources": {
+    "municipal_code": "https://codelibrary.amlegal.com/codes/thousandoaks/latest/thousandoaks_ca/",
+    "gis_service": "https://gis.toaks.org/serverwebadaptor/rest/services/Zoning/Zoning_ZIP/MapServer",
+    "planning_dept": "(805) 449-2300",
+    "notes": "GIS service exists but not publicly accessible. Using regional standards."
+  },
+
+  "zones": {
+    "RE-1AC": {
+      "description": "Residential Estate - 1 Acre Minimum",
+      "min_lot_sqft": 43560,
+      "setbacks": {
+        "front": 30,
+        "side": 10,
+        "rear": 25,
+        "corner_side": 20
+      },
+      "max_lot_coverage": 0.35,
+      "max_height": 25,
+      "adu_allowed": true
+    },
+
+    "RE-20": {
+      "description": "Residential Estate - 20,000 sqft minimum",
+      "min_lot_sqft": 20000,
+      "setbacks": {
+        "front": 25,
+        "side": 8,
+        "rear": 20,
+        "corner_side": 15
+      },
+      "max_lot_coverage": 0.4,
+      "max_height": 25,
+      "adu_allowed": true
+    },
+
+    "RE-10": {
+      "description": "Residential Estate - 10,000 sqft minimum",
+      "min_lot_sqft": 10000,
+      "setbacks": {
+        "front": 20,
+        "side": 5,
+        "rear": 15,
+        "corner_side": 12.5
+      },
+      "max_lot_coverage": 0.45,
+      "max_height": 25,
+      "adu_allowed": true
+    },
+
+    "R-1": {
+      "description": "Single Family Residential",
+      "min_lot_sqft": 7000,
+      "setbacks": {
+        "front": 20,
+        "side": 5,
+        "rear": 15,
+        "corner_side": 12.5
+      },
+      "max_lot_coverage": 0.5,
+      "max_height": 25,
+      "adu_allowed": true
+    },
+
+    "DEFAULT": {
+      "description": "Conservative defaults when zone unknown",
+      "setbacks": {
+        "front": 25,
+        "side": 5,
+        "rear": 15,
+        "corner_side": 12.5
+      },
+      "max_lot_coverage": 0.4,
+      "max_height": 25,
+      "adu_allowed": true
+    }
+  },
+
+  "adu_regulations": {
+    "max_size": 1200,
+    "min_size": 150,
+    "max_height": 16,
+    "min_setbacks": {
+      "side": 4,
+      "rear": 4,
+      "front": "match_primary",
+      "from_primary": 10
+    },
+    "parking": {
+      "spaces_required": 1,
+      "waivable_near_transit": true,
+      "transit_distance": 0.5
+    },
+    "owner_occupancy": false,
+    "impact_fees": "waived",
+    "source": "California ADU laws (SB 13, AB 68, AB 881) + local ordinance"
+  },
+
+  "notes": [
+    "Thousand Oaks adopted new General Plan on December 5, 2023",
+    "Comprehensive Zoning Code Update in progress",
+    "These values based on regional RE zone standards",
+    "Official verification recommended through Planning Department",
+    "Property at 1618 Burning Tree Dr likely RE-10 or RE-20 based on lot size"
+  ]
+}
