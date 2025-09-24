@@ -35,7 +35,10 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@mapbox/vector-tile": "^2.0.4",
     "@turf/turf": "^7.2.0",
+    "@types/mapbox__vector-tile": "^1.3.4",
+    "@types/pbf": "^3.0.5",
     "@types/protobufjs": "^6.0.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^2.1.1",
@@ -44,6 +47,7 @@
     "csv": "^6.4.1",
     "csv-stringify": "^6.6.0",
     "node-fetch": "^3.3.2",
+    "pbf": "^4.0.1",
     "proj4": "^2.19.10",
     "protobufjs": "^7.5.4",
     "slugify": "^1.6.6",
